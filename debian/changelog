@@ -1,3 +1,10 @@
+huskybase (1.0-2) unstable; urgency=low
+
+  * Change architecture to all
+  * DH_COMPAT=4
+
+ -- Pavel Andreew <pavel@collage.etel.ru>  Wed, 19 Mar 2003 16:39:24 +0500
+
 huskybase (1.0-1) unstable; urgency=low
 
   * Initial Release.

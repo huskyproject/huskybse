@@ -2,11 +2,11 @@ Source: huskybase
 Section: doc
 Priority: optional
 Maintainer: Pavel Andreew <pavel@collage.etel.ru>
-Build-Depends: debhelper (>> 3.0.0)
+Build-Depends-Indep: debhelper (>> 4.0.0)
 Standards-Version: 3.5.8
 
 Package: huskybase
-Architecture: any
+Architecture: all
 Description: Husky base package
  This package is required for building of all other parts of the Husky
  project and contains:
