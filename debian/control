@@ -1,0 +1,18 @@
+Source: huskybase
+Section: doc
+Priority: optional
+Maintainer: Pavel Andreew <pavel@collage.etel.ru>
+Build-Depends: debhelper (>> 3.0.0)
+Standards-Version: 3.5.8
+
+Package: huskybase
+Architecture: any
+Description: Husky base package
+ This package is required for building of all other parts of the Husky
+ project and contains:
+   * A file named INSTALL which contains step-by-step instructions on what
+     you need to download, how to compile and install the software, and
+     where to find additional documentation.
+   * A current template huskymak.cfg, the configuration file which you need
+     for compiling the software.
+   * Documentation for developers.

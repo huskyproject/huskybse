@@ -1,0 +1,9 @@
+huskybase for Debian
+--------------------
+
+This package only need for building other Husky packages. It's include
+/usr/share/husky/huskymak.cfg with required options for Makefiles.
+Besides, at /usr/share/doc/huskybase you can find additional documentation
+about writing and building Husky software.
+
+ -- Pavel Andreew <pavel@collage.etel.ru>, Wed,  5 Feb 2003 13:24:29 +0500
