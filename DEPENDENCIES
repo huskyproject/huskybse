@@ -20,7 +20,7 @@ hpt         1.9.0
 
 Current Husky also advertises a CVS source-code date, like:
 
-hpt 1.9.0/lnx-cur 01-06-01
+hpt 1.9.0/lnx-cur 07-02-03
                         ^^ year
                      ^^ month
                   ^^ day
