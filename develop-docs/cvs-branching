@@ -110,6 +110,8 @@ out without the "-r" directory (i.E. those of most other developers) will
 ONLY go to the development branch.  So be careful that you do checkins from
 the right directory.
 
+Current branch do not have named CVS tag, use HEAD pseudo tag instead.
+
 Here are some rules for creating a -stable branch
 
 - Do it at a point when the software is already rather stable.
@@ -169,6 +171,25 @@ anything to a -stable branch:
 
 Finally, here comes the technical info on how to migrate fixes betwee the
 current and the stable branch.
+
+
+Here are some rules for creating a release.
+
+- For release point please set tag like 'hpt-1_0_1-release': module hpt, major
+  version number '1', minor version number '0', patch level '1' (first release
+  in branch 1_1-stable). For second release in this branch can be used tag
+  hpt-1_0_2-release.
+- Also please change version information printed by program and create/update
+  VERSION file, placed into root level of module directory. VERSION file must
+  contents three lines:
+  1: version ID (hpt 1.0.1-release)
+  2: CVS tag value
+  3: dependencies
+  Example:
+hpt 1.2.2-stable
+cvs tag: hpt-1_2-stable
+required: fidoconfig 0.14-stable, smapi 2.2-stable
+
 
 Suppose a developer has informed me that he did a patch to file "scan.c" in
 project hpt".  Suppose I store the current checkout of hpt in
