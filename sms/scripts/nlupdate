@@ -12,8 +12,8 @@ function unpackdiff ()
  echo unpacking diff $diffname
 
  if [ $archiver = a ] ; then arc eo $diffname ; fi
- if [ $archiver = z ] ; then unzip -jL $diffname ${diffbase}.\* ; fi
- if [ $archiver = r ] ; then rar e $diffname ${diffbase}.\* ; fi
+ if [ $archiver = z ] ; then unzip -jCL $diffname ${diffbase}.\* ; fi
+ if [ $archiver = r ] ; then rar e $diffname ${diffbase}.\* -cl -o+ ; fi
  if [ $archiver = j ] ; then unarj e $diffname ${diffbase}.\* ; fi
  find -iname ${diffbase}".???" -exec tolower {} \;
  unpackeddiff=`ls ${diffbase}.???`
@@ -32,8 +32,8 @@ function unpacknl ()
  echo unpacking nodelist $nlname
 
  if [ $archiver = a ] ; then arc eo $nlname ; fi
- if [ $archiver = z ] ; then unzip -jL $nlname ${nlbase}.\* ; fi
- if [ $archiver = r ] ; then rar e $nlname ${nlbase}.\* ; fi
+ if [ $archiver = z ] ; then unzip -jCL $nlname ${nlbase}.\* ; fi
+ if [ $archiver = r ] ; then rar e $nlname ${nlbase}.\* -cl -o+ ; fi
  if [ $archiver = j ] ; then unarj e $nlname ${nlbase}.\* ; fi
  if [ $archiver = 0 ] ; then cp $nlname . ; fi
  if [ $archiver = 1 ] ; then cp $nlname . ; fi
