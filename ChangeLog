@@ -1,3 +1,7 @@
+2003-01-23 Thursday 10:52  stas_degteff
+
+	* huskymak.cfg.bsd (1.7): Fix man path
+
 2003-01-14 Tuesday 13:17  gerritkuehn
 
 	* huskymak.cfg.bsd (1.6): Added GPP (needed e.g. for fastlst).
