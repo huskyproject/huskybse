@@ -206,3 +206,14 @@ about which format makes sense, and always cast them explicitly. Some
 compilers generate huge amounts of warnings if you cast between (char *) and
 (unsigned char *) implicitly. This is not really a problem, but the warnings
 might distract the view from other warnings that are about real problems.
+
+PREPROCESSOR DIRECTIVES
+
+Preprocessor directives always must start in column 1. do
+#include <somestuff.h>
+you should never do
+  #include <somestuff.h>
+and you'd better also not do
+#  include <somestuff.h>
+or else you will get problems with some compilers not recognizing this as a
+preprocessor directives.
