@@ -4,13 +4,32 @@
 pushd /husky/filelist > /dev/null
 
 if [ -f /husky/in/protect/allfiles.rar ] ; then
- rar e /husky/in/protect/allfiles.rar -c- -cl
+ rar e /husky/in/protect/allfiles.rar -c- -cl -o+
  rm /husky/in/protect/allfiles.rar
+ fi
+
+if [ -f /husky/in/protect/24350022.zip ] ; then
+ unzip -joL /husky/in/protect/24350022.zip
+ mv allfiles.txt 24350022.all
+ rm /husky/in/protect/24350022.zip
  fi
 
 if [ -f 2243540.all ] ; then
  if [ -f 24350040.all ] ; then rm 24350040.all ; fi
  mv 2243540.all 24350040.all
  fi
+
+
+if [ -f /husky/in/protect/formall.rar ] ; then
+ rar e /husky/in/protect/formall.rar -c- -cl
+ rm /husky/in/protect/formall.rar
+ fi
+
+if [ -f formall.lst ] ; then
+ if [ -f 24610005.all ] ; then rm 24610005.all ; fi
+ mv formall.lst 24610005.all
+ fi
+
+
 
 popd > /dev/null 

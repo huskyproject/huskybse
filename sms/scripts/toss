@@ -4,7 +4,7 @@
 find /husky/in -name "*[A-Z]*" -exec tolower {} \;
 #
 # copy to PB1
-find /husky/in/test -type f \! -name "*.hr" \! -name "*.dt" -exec cp {} /husky/in/pb1 \;
+#find /husky/in/test -type f \! -name "*.hr" \! -name "*.dt" -exec cp {} /husky/in/pb1 \;
 find /husky/in/test/protect -type f \! -name "*.hr" \! -name "*.dt" -exec mv {} /husky/in/protect \;
 find /husky/in/test -type f \! -name "*.hr" \! -name "*.dt" -exec mv {} /husky/in \;
 # find /husky/in/pb1 -type f -exec echo \^{} \; >> /husky/out/zone/098301a8.clo

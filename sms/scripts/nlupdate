@@ -89,8 +89,9 @@ function lookfordiffs ()
  echo looking for diffs
 
  for curdiffmask in $diffmasks ; do
-  if [ /husky/in/protect/${curdiffmask}.[azrj0-9][0-9][0-9] != "/husky/in/protect/${curdiffmask}.[azrj0-9][0-9][0-9]" ] ; then
-   for curdiff in /husky/in/protect/${curdiffmask}.[ajrz0-9][0-9][0-9] ; do
+  find /husky/in/protect -name "${curdiffmask}.[azrj0-9][0-9][0-9]"
+  if [ $? = 0 ] ; then
+   for curdiff in `find /husky/in/protect -name "${curdiffmask}.[ajrz0-9][0-9][0-9]"` ; do
     applydiff $curdiff
    done
   fi
@@ -100,13 +101,14 @@ function lookfordiffs ()
 # lookfornls ()
 function lookfornls ()
 {
- local nlmasks="elek3d elektnet ldk-node ldk-pnt lfn linuxnet linuxpnt nodelist pcsnet points24 vplnet vplpnt wipost wipost3d"
+ local nlmasks="elek3d elektnet ldk-node ldk-pnt lfn linuxnet linuxpnt nodelist pcsnet points24 vplnet vplpnt wipost wipost3d z7nlist"
 
  echo looking for new nodelists
 
  for curnlmask in $nlmasks ; do
-  if [ /husky/in/protect/${curnlmask}.[azrj0-9][0-9][0-9] != "/husky/in/protect/${curnlmask}.[azrj0-9][0-9][0-9]" ] ; then
-   for curnl in /husky/in/protect/${curnlmask}.[ajrz0-9][0-9][0-9] ; do
+ find /husky/in/protect -name "${curnlmask}.[ajrz0-9][0-9][0-9]"
+  if [ $? = 0 ] ; then
+   for curnl in `find /husky/in/protect -name "${curnlmask}.[ajrz0-9][0-9][0-9]"` ; do
     copynl $curnl
    done
   fi
@@ -127,7 +129,7 @@ function checkold()
 function killold()
 {
  # kill old nodelists
- local nlmasks="elek3d elektnet ldk-node ldk-pnt lfn linuxnet linuxpnt nodelist pcsnet points24 vplnet vplpnt wipost wipost3d"
+ local nlmasks="elek3d elektnet ldk-node ldk-pnt lfn linuxnet linuxpnt nodelist pcsnet points24 vplnet vplpnt wipost wipost3d z7nlist"
 
  echo removing old nodelists
 

@@ -9,8 +9,8 @@ protick maint
 sqpack
 
 protick newfileshatch
-protick toss
-protick pack
+
+/husky/scripts/toss
 
 ptflg
 
@@ -30,4 +30,6 @@ purgeDupes
 # virscan
 
 /husky/scripts/toss
+
+protick pack
 
