@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     return 1;
   }
 
-  config = readConfig();
+  config = readConfig(NULL);
 
   if (config != NULL)
   {

@@ -17,7 +17,7 @@ void cfgInit()
   int i;
 
   memset(&cfg, 0, sizeof(tCfg));
-  cfg.fconf = readConfig();
+  cfg.fconf = readConfig(NULL);
 
   fname = getConfigFileNameForProgram("HUSKYUI", "huskyui.cfg");
   if (fname == NULL) fname = strdup("huskyui.cfg");
