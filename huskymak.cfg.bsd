@@ -236,6 +236,9 @@ _OBJ=.o
 # extension of (static) libs
 _LIB=.a
 
+# extension of dynamic libs
+_DLL=.so
+
 # extension of compiled pascal units
 _TPU=.ppu
 
