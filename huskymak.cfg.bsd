@@ -26,6 +26,9 @@ INCDIR=${prefix}/include
 # The fidoconfig config file will be in this DIRECTORY:
 CFGDIR=${prefix}/etc/fido
 
+# Filename (without path) for the config file (default: config)
+#CFGNAME=config
+
 # IF you have a working texinfo installation (consisting of the "makeinfo"
 # and "install-info" program), you should uncomment and adapt this 
 # line - it will cause GNU info documentation to be built and installed
