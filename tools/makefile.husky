@@ -3,9 +3,9 @@ include ../../huskymak.cfg
 all: poll$(EXE) request$(EXE) send$(EXE)
 
 ifeq ($(DEBUG), 1)
-  CFLAGS=-O3 -I../../smapi -I$(INCDIR) -ggdb
+  CFLAGS=-O3 -I$(INCDIR) -ggdb
 else
-  CFLAGS=-O3 -I../../smapi -I$(INCDIR) -s
+  CFLAGS=-O3 -I$(INCDIR) -s
 endif
 
 ifeq ($(SHORTNAME), 1)

@@ -2,7 +2,7 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include "fidoconfig.h"
+#include <fidoconfig/fidoconfig.h>
 #include "general.h"
 
 /* FLOName - generate name of FLO for a given address

@@ -1,7 +1,7 @@
 /* poll.c - create a flowfile for a node/point to call him */
 
 #include <errno.h>
-#include "fidoconfig.h"
+#include <fidoconfig/fidoconfig.h>
 #include "general.h"
 
 int main(int argc, char *argv[])
