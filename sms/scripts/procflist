@@ -8,10 +8,24 @@ if [ -f /husky/in/protect/allfiles.rar ] ; then
  rm /husky/in/protect/allfiles.rar
  fi
 
+if [ -f /husky/in/protect/city_all.arj ] ; then
+ unarj e /husky/in/protect/city_all.arj
+ mv city_all.lst 24100223.all
+ rm /husky/in/protect/city_all.arj
+ fi
+
 if [ -f /husky/in/protect/24350022.zip ] ; then
  unzip -joL /husky/in/protect/24350022.zip
+ if [ -f 24350022.all ] ; then rm 24350022.all ; fi
  mv allfiles.txt 24350022.all
  rm /husky/in/protect/24350022.zip
+ fi
+
+if [ -f /husky/in/protect/02432215.zip ] ; then
+ unzip -joL /husky/in/protect/02432215.zip
+ if [ -f 24320216.all ] ; then rm 24320216.all ; fi
+ mv 02432215.lst 24320216.all
+ rm /husky/in/protect/02432215.zip
  fi
 
 if [ -f 2243540.all ] ; then

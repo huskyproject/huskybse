@@ -4,8 +4,8 @@ B	Programmers BBS, normal access
 C	Fido
 D	LDK
 E	LinuxNet
-F	ElektroNet	
-G	RKLNet
+F	ElektroNet
+G	Zone7
 H	MxBBS
 I	WIP
 J	BLC/Taygeta
@@ -19,6 +19,9 @@ R	LFN (LinuxFileNet)
 S	FIP (Fido over IP)
 T	VPL-Runden
 U	BLand (Tobias Ernst)
-
+V	FTN-Backbone
+W       GeosNet
+X       SoliNet
+Y
 Z	SysOp access
 

@@ -1,5 +1,8 @@
 @FILES /husky/files/24350424.all
+@NODELIST       /husky/files/nodediff/nodelist.a??
+@POINTS24       /husky/files/24000/points24.a??
 /husky/files/205/echolist/*
+/husky/files/205/filelist/*
 /husky/files/24000/*
 /husky/files/aed/beta/*
 /husky/files/ael/beta/*
@@ -22,6 +25,7 @@
 /husky/files/blc/pic/*
 /husky/files/blc/prosoft/*
 /husky/files/btxebsrc/*
+/husky/files/cdpoint/*
 /husky/files/el/node/*
 /husky/files/el/point/*
 /husky/files/fastecho/*
@@ -120,23 +124,22 @@
 /husky/files/lin44/xdiv/*
 /husky/files/linux/app/*
 /husky/files/linux/binpc/*
-/husky/files/linux/diff/*
 /husky/files/linux/div/*
 /husky/files/linux/fs/*
 /husky/files/linux/fstools/*
 /husky/files/linux/husky/cvs/arch/*
 /husky/files/linux/husky/cvs/diff/*
+/husky/files/linux/inet/*
 /husky/files/linux/kp/*
 /husky/files/linux/net/*
-/husky/files/linux/node/*
 /husky/files/linux/perlmod/*
-/husky/files/linux/point/*
 /husky/files/linux/txt/*
 /husky/files/linux/util/*
 /husky/files/linux/xapp/*
 /husky/files/lxapps/*
 /husky/files/lxcomm/*
 /husky/files/lxdevel/*
+/husky/files/lxdocs/*
 /husky/files/lxgames/*
 /husky/files/lxgnu/*
 /husky/files/lxkde/*
@@ -150,6 +153,7 @@
 /husky/files/mbl/gi_we/*
 /husky/files/mx/ndif/*
 /husky/files/mx/win/*
+/husky/files/node/ger/*
 /husky/files/nodediff/*
 /husky/files/nw/files/*
 /husky/files/pb/test/*
@@ -159,10 +163,6 @@
 /husky/files/plc2435/*
 /husky/files/recliste/*
 /husky/files/region24/*
-/husky/files/rkllist/*
-/husky/files/rklpic/*
-/husky/files/rklsoft/*
-/husky/files/rkltext/*
 /husky/files/rules24/*
 /husky/files/vpl/host/*
 /husky/files/vpl/host/addo/*
@@ -210,3 +210,7 @@
 /husky/files/wip/tx/wir/allg/*
 /husky/files/wwb/*
 /husky/files/wwb/fwdl/*
+/husky/files/z7ndiff/*
+/husky/files/z7nlist/*
+/husky/files/zyx/pres/*
+/husky/files/zyx/router/*

@@ -3,11 +3,9 @@
 # convert all filenames to lowercase
 find /husky/in -name "*[A-Z]*" -exec tolower {} \;
 #
-# copy to PB1
-#find /husky/in/test -type f \! -name "*.hr" \! -name "*.dt" -exec cp {} /husky/in/pb1 \;
-find /husky/in/test/protect -type f \! -name "*.hr" \! -name "*.dt" -exec mv {} /husky/in/protect \;
-find /husky/in/test -type f \! -name "*.hr" \! -name "*.dt" -exec mv {} /husky/in \;
-# find /husky/in/pb1 -type f -exec echo \^{} \; >> /husky/out/zone/098301a8.clo
+# create backup copies
+find /husky/in -type f -maxdepth 1 \! -name "*.hr" \! -name "*.dt" -exec cp {} /husky/in/test \;
+find /husky/in/protect -type f -maxdepth 1 \! -name "*.hr" \! -name "*.dt" -exec cp {} /husky/in/test/protect \;
 #
 # unpack archives
 # carc x
@@ -41,6 +39,9 @@ fi
 
 # toss
 hpt toss
+
+# check for areafix mails
+hpt afix
 
 # check for bad pkts, archives, etc.
 
