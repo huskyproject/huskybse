@@ -1,0 +1,33 @@
+#!/bin/cat
+Stage	Program		Description
+I01	ifcico, BinkD,	incoming files put into /husky/stages/I01/in and
+	QMail(UUE),	/husky/stages/I01/in/protect, incoming emails into
+	progate		/husky/stages/I01/netmail
+I02	cp		copy incoming files and netmails to backup system
+I03	nlupdate, 	process incoming nodediffs and UPDs
+	procupd
+I04	protick toss,	toss TICs and PKTs
+	hpt toss
+I05	lxtrack		filter incoming netmails
+I06	protick scan	scan for filefix mails
+I07	lxtrack		filter FileFix-mails
+I08	lxtrack		put netmails into secondary netmails folders
+I09	hpt scan	scan for outgoing mails
+I10	lxtrack		filter outgoing mails
+I11	progate		scan for outgoing emails
+I12	hpt pack,	pack outgoing netmails and TIC archives
+	protick pack
+I13	send_uue	send UUE-EMails
+I14	hpt link	link echomails
+
+O01	msged		put outgoing netmails/emails into secondary netmail
+			folders
+O02	hpt scan	scan for outgoing mails
+O03	lxtrack		filter outgoing netmails
+O04	protick scan	scan for filefix-mails
+O05	lxtrack		filter outgoing filefix-mails
+O06	progate		scan for outgoing emails
+O07	hpt pack	pack outgoing netmails
+O08	send_uue	send UUE-EMails
+O09	hpt link	link echomails
+

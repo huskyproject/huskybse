@@ -1,0 +1,13 @@
+#!/bin/cat
+ISDN:
+ttyI0		mgetty, X75 dialin
+ttyI1		mgetty, X75 dialin
+ttyI2		pppd, Internet dialout
+ttyI3		minicom, manual dialout
+ttyI4		ifcico, Fido dialout
+
+Analog:
+ttyS2		mgetty, dialin
+		ifcico, Fido dialout
+		minicom, manual dialout
+

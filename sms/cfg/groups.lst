@@ -1,0 +1,24 @@
+#!/bin/cat
+A	internal areas (Netmail, Badmail, etc.)
+B	Programmers BBS, normal access
+C	Fido
+D	LDK
+E	LinuxNet
+F	ElektroNet	
+G	RKLNet
+H	MxBBS
+I	WIP
+J	BLC/Taygeta
+K	VPLNet
+L	AquaBBS
+M	BTXE
+N	Heiko Wuest (tower.de)
+O	Gabriel Plutzar (hit.priv.at)
+P	PCSNet (PC Shopping)
+R	LFN (LinuxFileNet)
+S	FIP (Fido over IP)
+T	VPL-Runden
+U	BLand (Tobias Ernst)
+
+Z	SysOp access
+

@@ -1,0 +1,17 @@
+version 0.15
+Name Programmers BBS
+Sysop Sascha Silbe
+
+include /husky/cfg/address.cfg
+include /husky/cfg/path.cfg
+include /husky/cfg/packer.cfg
+include /husky/cfg/arealink.cfg
+include /husky/cfg/links.cfg
+include /husky/cfg/msgbase.cfg
+include /husky/cfg/filebase.cfg
+include /husky/cfg/rights.cfg
+include /husky/cfg/nodelist.cfg
+include /husky/cfg/routing.cfg
+include /husky/cfg/mailer.cfg
+include /husky/cfg/misc.cfg
+
