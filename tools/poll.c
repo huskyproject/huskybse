@@ -2,6 +2,8 @@
 
 #include <errno.h>
 #include <fidoconfig/fidoconfig.h>
+#include <string.h>
+#include <stdlib.h>
 #include "general.h"
 
 int main(int argc, char *argv[])
@@ -55,5 +57,6 @@ int main(int argc, char *argv[])
     return 5;
   }
 
+  return 0;
 }
 
