@@ -1,0 +1,31 @@
+
+OS		Compiler		Makefile
+-----------------------------------------------------------------------------
+Linux		gcc			makefile.lnx
+OS/2		EMX			makefile.emo
+OS/2		IBM CSet		makefile.ibo
+OS/2		Watcom			makefile.wco
+OS/2		hc (??)			makefile.hco
+OS/2		Borland			makefile.bco
+DOS		DJGPP			makefile.djd
+DOS		Borland			makefile.bcd
+DOS		qc (??)			makefile.qcd
+DOS		Watcom			makefile.wcd
+DOS 32Bit    	Watcom			makefile.wcx
+Win?		Watcom			makefile.wcw
+Win32		Ming			makefile.mgw
+Win32		Borland			makefile.bcw
+Win NT		RSX			makefile.rxw
+FreeBSD		gcc			makefile.bsd
+Digital Unix	?			makefile.osf
+Sun		gcc			makefile.sun
+AIX		?			makefile.aix
+
+
+Target		Description
+-----------------------------------------------------------------------------
+all		compile program(s) and/or lib
+install		install the compiled program(s) and/or lib
+clean		remove files used temporarily for compiling
+distclean	like clean, but also removes programs/libs
+
