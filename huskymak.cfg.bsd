@@ -149,6 +149,9 @@ SHORTNAMES=0
 # Perl support
 PERL=0
 
+# ZipInternal packer
+USE_HPTZIP=1
+
 # The DYNLIBS switch controls if dynamic or static linkage is used.
 # This is tricky. If you set DYNLIBS=1, dynamic libraries (.so files)
 # will be generated and used. This will only work if you are running "gcc"
