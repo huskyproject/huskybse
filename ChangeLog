@@ -1,3 +1,8 @@
+2002-12-30 Monday 15:46  stas_degteff
+
+	* develop-docs/cvs-branching (1.4): Add rules for creating a
+	release
+
 2002-11-29 Friday 10:18  stas_degteff
 
 	* INSTALL (1.9): update makefiles list
