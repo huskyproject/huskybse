@@ -1,0 +1,366 @@
+# $Id$
+# Config-Makefile for Husky-packages
+# Modified for Cygwin 1.5 by Andr Luk'yanov (2:5001/7@FIDOnet, andy@cbr-kem.ru)
+
+##############################################################################
+#PART 1: DIRECTORIES AND FILENAMES
+#You always need to change these to match your preferences
+##############################################################################
+
+# Prefix for all directories
+# Set to your homedir if you have no root privilegies
+PREFIX	= /usr/local
+
+# Where libraries (both .a and .so files) should be placed
+# You should take care that this directory is listed in the LD_LIBRARY_PATH
+# environment variable (if necessary, modify your /etc/profile file).
+LIBDIR	= $(PREFIX)/lib
+
+# Where the programs should be placed.
+BINDIR	= $(PREFIX)/bin
+
+# Where manual pages should be placed.
+MANDIR	= $(PREFIX)/man
+
+# Where include files should be placed (don't worry, no files will be over-
+# written, Husky will use its own subdirectories below this directory):
+INCDIR	= $(PREFIX)/include
+
+# The fidoconfig config file will be in this DIRECTORY:
+CFGDIR	= $(PREFIX)/etc/fido
+
+# Filename (without path) for the config file (default: config)
+#CFGNAME=config
+
+# IF you have a working texinfo installation (consisting of the "makeinfo"
+# and "install-info" programs), you should uncomment and adapt this
+# line - it will cause GNU info documentation to be built and installed
+# into the given directory. If you leave it commented out, the documentation
+# will not be compiled, and you won't know how to use the software ;-).
+# You should take care that this directory is listed in the INFOPATH
+# environment variable (if necessary, modify your /etc/profile file).
+# INFODIR=/usr/local/info
+
+# The same as above, but for DVI documentation. This requires a working
+# "texi2dvi" program.
+# DVIDIR=${PREFIX}/share/doc/husky
+
+# The same as above, but for HTML documentation. This requires a working
+# "texi2html" program.
+#HTMLDIR=$(PREFIX)/lib/husky
+
+# Name of the config file of MSGED TE:
+MSGEDCFG= \"$(CFGDIR)/msged.cfg\"
+
+
+##############################################################################
+#PART 2: PLATFORM DEPENDENT SECTION
+#If you are running Linux with GNU gcc, you don't need to modify anything in
+#the following sections. If you are running any other operating system or using
+#any other C compiler, you should check the values. For some operating
+#systems, the comments contain information on what you need to change.
+##############################################################################
+
+##############################################################################
+DEBUG=0
+
+ifeq (~$(DEBUG)~, ~1~)
+# C-compiler: debug
+DEBCFLAGS= -g -pedantic
+# object linker: debug
+DEBLFLAGS= -g
+endif
+##############################################################################
+
+##############################################################################
+# Programs
+##############################################################################
+
+# C-Compiler
+CC	= gcc
+
+# archiver (for object-files)
+AR	= ar
+# archiver options
+AR_R	= rs
+
+# library indexer
+RANLIB	= ranlib
+
+# linker program
+LINK	= ld
+
+# archiver program
+ARCHIVER= zip
+# options for archiver
+ARCFLAGS= -9r
+
+# remove file
+RM	= rm
+# options for removing files (e.g. for clean, distclean, uninstall)
+RMOPT	= -f
+
+# create directory command
+MKDIR	= mkdir
+# options for creating directories
+MKDIROPT= -p
+
+# remove directory command
+RMDIR	= rm
+# remove directory command options
+RMDIROPT= -rf
+
+# install command
+INSTALL	= install
+# install command options
+INSTOPT	= -c
+
+# copy command
+CP	= cp
+# copy command options
+CPOPT	= -f
+
+# move command
+MV	= mv
+# move command options
+MVOPT	= -uf
+
+# groff program (man pages formatter, possible use man2html perl script)
+GROFF	= groff
+# groff program option (this example doing format man page to html page)
+GROFFOPT= -Thtml -mman
+
+#############################################################################
+# program options
+#############################################################################
+
+# type of operating system (UNIX,MSDOS,OS2,WINNT)
+# for BeOS, use UNIX!
+OSTYPE=Cygwin
+
+# short name of operating system (used for PID lines etc.)
+UNAME=cyg
+
+# Perl support
+PERL=0
+PERL_DIR=
+
+ifeq (~$(PERL)~, ~1~)
+PERLFLAGS =`$(PERL_DIR)perl -MExtUtils::Embed -e ccopts`
+PERLDEFS  =-DDO_PERL
+PERLLIBS  =`$(PERL_DIR)perl -MExtUtils::Embed -e ldopts`
+PERLOBJ   = perl$(OBJ)
+endif
+
+# ZipInternal packer
+USE_HPTZIP=0
+
+ifeq (~$(USE_HPTZIP)~, ~1~)
+LIBS	+= ../../hptzip/make/$(LIBPREFIX)hptzip$(LIBSUFFIX)$(_LIB)
+CINCL	+= -I../../hptzip
+CDEFS	+= -DUSE_HPTZIP
+endif
+
+# C-compiler: specify name of executable
+EXENAMEFLAG= -o
+
+# C-compiler defines
+CDEFS	=
+
+# C-compiler: generate warnings
+WARNFLAGS= -Wno-long-long -Wall
+
+# C-compiler: common  options
+CFLAGS	= $(WARNFLAGS) $(DEBCFLAGS) -mno-cygwin -O3
+
+# C-compiler: optimization
+OPTCFLAGS= -c
+
+# options for build dll
+DLLOPT  = -shared
+
+# The DYNLIBS switch controls if dynamic or static linkage is used.
+# This is tricky. If you set DYNLIBS=1, dynamic libraries (.so files)
+# will be generated and used. This will only work if you are running "gcc"
+# on Linux, FreeBSD or another real Unix operating system.
+
+# On other systems, you must set DYNLIBS=0. Even on Linux, you might
+# want to do this if you are sick of shared library version mismatch
+# problems.
+
+# If you set DYNLIBS=0, but have Unix/Linux, you might want to add
+# "-static" to the OPTCFLAGS and WARNCFLAGS variables (above) in order
+# to avoid linkage with old .so files that may be floating around
+# (see 'ifeq ( $(DYNLIBS), 0 )' conditions)
+#
+DYNLIBS=1
+
+ifeq (~$(DYNLIBS)~, ~0~)
+WARNFLAGS+= -static
+OPTCFLAGS+= -static
+endif
+
+##############################################################################
+# Uncomment this for strip all simbols from binaries to reduce file sizes
+STRIP	= -s
+##############################################################################
+
+# object linker: optimization
+OPTLFLAGS=-s
+
+# options for installing programs
+OPTIBOPT=-c -s -m 555
+DEBIBOPT=-c -m 555
+
+# options for installing scripts
+ISOPT=-c -m 555
+
+# options for installing shared libs
+ILOPT=-c -m 555
+
+# options for installing static libs
+ISLOPT=-c -m 444
+
+# options for installing man-pages
+IMOPT=-c -m 444
+
+# options for installing includes
+IIOPT=-c -m 444
+
+# options for linking files
+LNOPT=-sf
+
+
+#############################################################################
+# file extensions
+#############################################################################
+
+# extension of source file
+_C	= .c
+
+# extension of object file
+_OBJ=.o
+
+# extension of executable (e.g. ".exe")
+_EXE	= .exe
+
+# extension of static libs
+_LIB	= .lib
+
+# extension of dynamic libs
+_DLL	= .dll
+
+# extension of shared library (export/import lists & etc.)
+_DEF	= .def
+
+# extension of shared library exported list
+_EXP	= .exp
+
+# extension of archive (package) file
+_ARC	= .zip
+
+# extension of documentation file (".info", ".html", ".div", ...)
+_HTML	= .html
+
+# extension of text file
+_TXT	= .txt
+
+
+#############################################################################
+# Library filename elements
+#############################################################################
+
+# Prefix to construct static library name
+LIBPREFIX=lib
+# Prefix to construct dll name
+DLLPREFIX=
+# Suffix to construct library name
+LIBSUFFIX=cyg
+# Suffix to construct dll name
+DLLSUFFIX=
+
+#############################################################################
+# Library names ##
+#############################################################################
+TARGETLIB = $(LIBPREFIX)$(LIBNAME)$(LIBSUFFIX)$(_LIB)
+TARGETDLL = $(DLLPREFIX)$(LIBNAME)$(DLLSUFFIX)$(_DLL)
+
+#############################################################################
+# Binary package name ##
+#############################################################################
+PACKAGEBASE=$(LIBNAME)$(LIBPREFIX)-$(LIBSUFFIX)-$(VERH)
+PACKAGENAME=$(LIBNAME)$(LIBPREFIX)-$(LIBSUFFIX)-$(VERH)$(_ARC)
+
+.PHONY:	distclean clean all static dll programs default
+
+## Default make rule ##
+
+default:
+
+clean:
+	-$(RM) $(RMOPT) *$(_OBJ)
+
+distclean: clean
+	-$(RM) $(RMOPT) $(TARGETDLL) $(TARGETLIB) $(PROGRAMS)
+
+doc:
+	cd ../doc ; make html
+
+pkg-dir:
+	$(MKDIR) $(MKDIROPT) $(PACKAGEBASE)
+
+pkg-doc-dir:
+	$(MKDIR) $(MKDIROPT) $(PACKAGEBASE)/doc
+
+pkg-doc: pkg-doc-dir
+	$(CP) $(CPOPT) ../doc $(PACKAGEBASE)/doc
+
+pkg-readme: pkg-dir
+	@echo $(LIBNAME) v.$(VERH) for `uname -s` platform > $(PACKAGEBASE)/file_id.diz
+	@echo "(Part of HUSKY Fidonet Software Project)" >> $(PACKAGEBASE)/file_id.diz
+	@echo See http://husky.sourceforge.net and/or >> $(PACKAGEBASE)/file_id.diz
+	@echo http://sourceforge.net/projects/husky >> $(PACKAGEBASE)/file_id.diz
+	$(CP) $(CPOPT) $(READMEFILES) $(PACKAGEBASE)
+
+pkg-man: pkg-doc-dir
+	-$(MKDIR) $(MKDIROPT) $(PACKAGEBASE)/man
+	$(CP) $(CPOPT) ../man/*.? $(PACKAGEBASE)/man
+	for f in ../man/*.? ; \
+	 do $(GROFF) $(GROFFOPT) $$f > $(PACKAGEBASE)/doc/`basename $$f`$(_HTML) ; done
+
+pkg-h-dir: pkg-dir
+	$(MKDIR) $(MKDIROPT) $(PACKAGEBASE)/$(LIBNAME)$(LIBPREFIX)/
+
+$(HEADERS): pkg-h-dir
+	$(CP) $(CPOPT) $(H_DIR)$@ $(PACKAGEBASE)/$(LIBNAME)$(LIBPREFIX)/$@
+
+pkg-h: $(HEADERS)
+
+pkg-bin-dir:
+	-$(MKDIR) $(MKDIROPT) $(PACKAGEBASE)/bin
+
+pkg-bin-static: static programs pkg-bin-dir
+	$(CP) $(CPOPT) $(TARGETLIB) $(PROGRAMS) $(PACKAGEBASE)/bin
+
+pkg-bin-dll: dll programs pkg-bin-dir
+	$(CP) $(CPOPT) $(TARGETDLL) $(PROGRAMS) $(PACKAGEBASE)/bin
+
+
+package-static: pkg-dir pkg-h pkg-man pkg-readme pkg-bin-static
+	$(ARCHIVER) $(ARCFLAGS) $(PACKAGENAME) $(PACKAGEBASE)/*
+
+package-dll: pkg-dir pkg-h pkg-man pkg-readme pkg-bin-dll
+	$(ARCHIVER) $(ARCFLAGS) $(PACKAGENAME) $(PACKAGEBASE)/*
+
+package:
+	@echo Run 'make package-dll' to build package with dll version
+	@echo Run 'make package-static' to build with static version
+
+pkgclean:
+	-$(RMDIR) $(RMDIROPT) $(PACKAGEBASE)
+
+pkgdistclean: pkgclean
+	-$(RM) $(RMOPT) $(PACKAGENAME)
+
+pkg-distclean: pkgdistclean
+pkg-clean: pkgclean
