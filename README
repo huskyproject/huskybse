@@ -8,6 +8,7 @@ sms		Setup at Sascha Silbe's system
 
 
 File		Description
+README.Makefiles IMPORTANT notes on the Makefiles
 systems.lst	A list of all supported operating system/compiler-combinations
 		and their makefiles
 

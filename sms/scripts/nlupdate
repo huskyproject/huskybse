@@ -152,6 +152,9 @@ function rebuildindex ()
  echo rebuilding index in the background
 
  ifindex &
+ pushd /husky/cfg > /dev/null
+ fastlst > /dev/null 2>&1 &
+ popd > /dev/null
 }
 
 # main ()
