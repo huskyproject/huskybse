@@ -1,4 +1,8 @@
 
+ATTENTION!
+
+INFORMATION IN THIS FILE IS MORE OR LESS OUTDATED. PLEASE REFER TO THE FILE NAMED "INSTALL" INSTEAD!
+
 I completely reorganized the Makefiles. Now there is a Makefile-Config
 "huskymak.cfg" which is used by all packages. You can find a sample in the
 same directory as this text.

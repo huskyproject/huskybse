@@ -1,15 +1,12 @@
 
 This package contains some files common to all packages of the Husky-project.
 
-Directory	Description
-develop-docs	Some tips and hints for developers modifying packages of the
-		Husky-project
-sms		Setup at Sascha Silbe's system
-mtt		Setup at Matthis Tichy's system
+File/Directory	Description
+INSTALL         How to compile, install and use the Husky software. READ THIS!
+develop-docs/	Some tips and hints for developers that work on Husky source.
+sms/		Setup at Sascha Silbe's system
+mtt/            Setup at Matthias Tichy's system
 
 
-File		Description
-README.Makefiles IMPORTANT notes on the Makefiles
-systems.lst	A list of all supported operating system/compiler-combinations
-		and their makefiles
+
 
