@@ -68,4 +68,10 @@ You should *NOT* make an entry in this file
   even complain about. A single entry "fixed several cosmetical bugs" for
   each release is enough to account for all such fixes.
 
+Mirroring at http://husky.sf.net/cvs2
+-------------------------------------
+If module contains file .nocvs2ftp, this module will not be tarred and put
+on www mirror. It is useful for example for modules test, homepage and
+some unused/freezed modules.
+
 [EOF]
