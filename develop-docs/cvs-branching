@@ -1,18 +1,3 @@
-Date:   2000-07-15 01:22:04
-From:   Tobias Ernst of 2:2476/418
-To:     ALL DEVELOPERS
-Subj:   "branching how-to"
-Attr:   Snt Loc Scn 
-Conf:   FIDOSOFT.HUSKY - Husky: Fido Software for Unix
-
-Hallo All!
-
-Here is the text I was speaking about.
-
-Viele Gruesse,
-Tobias
-
-   ----- branching.txt begins -----
 About Husky Software Version Numbers and CVS Branches
 =====================================================
 
@@ -28,37 +13,49 @@ for users and developers.
 1. Users's point of view
 ------------------------
 
-Each Husky project has a version number, like e.g. hpt 0.9.7.  This version
-number is changed from time to time, but is not unique.  As almost every
-day developers add modifications to the code, "hpt 0.9.7" can describe a
-vast number of actually different code levels.  If you have a verison of a
-Husky software that only advertises this version number, it is a direct
-snapshot of our development source code.  Using such snapshots is oly
-recommendet to experienced users like beta-testers and developers.
+1.a current branch
+------------------
+
+The development branch of Husky software may carry two or three version
+numbers, like "hpt 1.3" or "hpt 1.3.17" or similar. The second digit of a
+development branch version number (in the example above the "3") must always
+be a odd number (not divisble by 3). Development branch version numbers are
+not unique - there could be several flavours of "hpt 1.3" that behave quite
+differently. Thus, the authoratitive identifier of a development branch
+software is not the version number, but the cvs source code date stamp, which
+is usually advertised right after the version number. Users that use current
+software must always get *all* husky packages at once (i.E. with the same cvs
+source code date stamp) and recompile verything from scratch. Multiple sort
+of problems may arise. This is not very comfortable for the user.
+
+1.b stable branch
+-----------------
 
 When we make a release, we fork off a "stable" branch from the main branch.
-Software from the stable branch is release level software and advertises
-this by adding "-stable" to the version number.  E.g:  "hpt 0.9.7-stable".
-This version number is also the version number of the actual release.
+Software from the stable branch is release level software. "stable" branches
+always have an even (divisible by 2) digit as the second version number. For
+example, hpt "1.0" is stable, while "hpt 1.1" is not stable. Usually, the
+fact that the software is from the stable branch is also advertised using a
+"-stable" or "-current" prefix, like "hpt 1.0.0-stable".
 
 After we have done a public release, we probably get some bug reports for
 this.  In order to provide fixes for this bugs to the users without forcing
 the users to use the current development version (which also contains the
 fixes, but probably also new bugs etc.), it may happen that we do another
 release from the stable branch with the same basic version number.  Such a
-maintainance release is denoted by letters after the version number, like
-for example "hpt 0.9.7a-stable".
+maintainance release is denoted by the third version number, e.g. "hpt
+1.0.1-stable" is the first bugfix release for "hpt 1.0.0-stable".
 
 We try hard to guarantee interoperability between the different releases
 from the same stable branch.  A users who has installed the first stable
-release, like e.g.  "fidoconfig 0.10-stable" and "hpt 0.9.7-stable", can
+release, like e.g.  "fidoconfig 0.12-stable" and "hpt 1.0.0-stable", can
 safely upgrade to any subsequent stable release from the same branch and be
 sure that
 
 - He does not have to change anything in his configuration files
 
 - He does not have to recompile (or even update) the libraries he uses.
-This means that he can upgrade "hpt 0.9.7-stable" to "hpt 0.9.7c-stable"
+This means that he can upgrade "hpt 1.0.0-stable" to "hpt 1.0.3-stable"
 but leave fidoconfig untouched, or he can upgrade only fidoconfig, but
 leave hpt as is.  Of course he can also upgrade both if he wants to.
 
@@ -67,10 +64,10 @@ behaviour changes.  Even if a bug fix is so complex that we cannot make
 sure to integrate it without introducing side effects, it will NOT appear
 in the stable branch.
 
-Of course, when you upgrade to a different branch, e.g. from "hpt
-0.9.7c-stable" to "hpt 0.9.9a-stable", this does no longer hold true, so
-that in this case you will have to update your libraries and expect all
-sorts of configuration syntax and other behaviour changes.
+Of course, interoperability is only guaranteed inside a single branch. When
+you upgrade to a different branch, e.g. from "hpt 1.0.3-stable" to "hpt
+1.2.0-stable", you will probably still have to update your libraries and
+expect all sorts of configuration syntax and other behaviour changes.
 
 Programmer's View
 -----------------
@@ -94,7 +91,8 @@ branch for this version. This works like this:
 
 - Checkout a fresh copy of the software.
 - In the working directory, run "cvs tag -b TAG", where TAG is composed of
-  program name and version number with underscores, like e.g. "hpt-0_9_7".
+  program name and ONLY THE FIRST TWO DIGITS OF THE version number with
+  underscores and "-stable", like e.g. "hpt-1_0-stable".
   Don't forget the "-b" argument!!!
 - Remove the entire working directory.
 - Go to a subdirectory where you want to store working copies of the stable
@@ -223,8 +221,3 @@ any Husky stable branch.
 Thanks for your support!
 
 [EOF]
-   ----- branching.txt ends -----
-
---- Msged/2 TE 06 (pre)
- * Origin: Unisched - Die Loesung fuer den Fido-Tossertask! (2:2476/418)
-
