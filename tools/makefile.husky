@@ -1,6 +1,6 @@
 include ../../huskymak.cfg
 
-all: poll$(EXE) request$(EXE) send$(EXE)
+all: poll$(EXE) request$(EXE) send$(EXE) tolower$(EXE)
 
 ifeq ($(DEBUG), 1)
   CFLAGS=-O3 -I$(INCDIR) -ggdb
@@ -29,6 +29,9 @@ request$(EXE): request$(OBJ) general$(OBJ)
 send$(EXE): send$(OBJ) general$(OBJ)
 	$(CC) $(LFLAGS) -o send$(EXE) send$(OBJ) general$(OBJ)
 
+tolower$(EXE): tolower$(OBJ)
+	$(CC) $(LFLAGS) -o tolower$(EXE) tolower$(OBJ)
+
 clean:
 	-$(RM) *~
 	-$(RM) *$(OBJ)
@@ -37,9 +40,11 @@ distclean: clean
 	-$(RM) poll$(EXE)
 	-$(RM) request$(EXE)
 	-$(RM) send$(EXE)
+	-$(RM) tolower$(EXE)
 
 install:
 	$(INSTALL) $(IBOPT) poll$(EXE) $(BINDIR)
 	$(INSTALL) $(IBOPT) request$(EXE) $(BINDIR)
 	$(INSTALL) $(IBOPT) send$(EXE) $(BINDIR)
+	$(INSTALL) $(IBOPT) tolower$(EXE) $(BINDIR)
 
