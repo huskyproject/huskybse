@@ -1,0 +1,8 @@
+
+This package contains some files common to all packages of the Husky-project.
+
+Directory	Description
+develop-docs	Some tips and hints for developers modifying packages of the
+		Husky-project
+sms		Setup at Sascha Silbe's system
+
