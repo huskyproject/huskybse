@@ -222,12 +222,12 @@ _Keyword definitions_
   [BBSGrp {<group>}]
   # group(s)
   [AccessGrp {<groups>}]
-  # this is a list of groups for echo acess
+  # this is a list of groups for echo access
   # (see also PublicGroup and -g <group> in EchoArea options)
   [OptGrp {<groups>}]
-  # this is personal groups for echo acess
+  # this is personal groups for echo access
   # Export, Import & Mandatory uses OptGrp areas
-  # or AcessGrp if OptGrp not defined
+  # or AccessGrp if OptGrp not defined
   [Export (on|off)]
   # default on
   # if Export is off, mail for groups defined in OptGrp not tossed to link
@@ -539,7 +539,7 @@ _Keyword definitions_
   # CarbonArea		my.echomail
 
   [PublicGroup {<groups>}]
-  # this is a list of groups for public echo acess
+  # this is a list of groups for public echo access
   # to lazy sysops who don't want write AccessGrp for each link
 
   [ignoreCapWord]
