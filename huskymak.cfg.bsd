@@ -233,11 +233,10 @@ LIB=.a
 # extension of compiled pascal units
 TPU=.ppu
 
-# directory separator (DOS: "\", Unix: "/")
+# directory separator (DOS: "\\", Unix: "/")
 
 ifeq (${OSTYPE}, UNIX)
   DIRSEP=/
 else
   DIRSEP=\\
 endif
-
