@@ -5,7 +5,6 @@
 #include <ncurses.h>
 #include <stdio.h>
 #include <unistd.h>
-#include <pthread.h>
 #include <string.h>
 #include "screen.h"
 #include "sock.h"
