@@ -1,0 +1,213 @@
+Program xy fails with segmentation fault, what can I do?
+========================================================
+
+About
+-----
+
+This document is intended for Husky users that experience a "segmentation
+fault" type error in a Husky program. It describes how than can use gdb to
+provide a bug report to the developers that is much more useful than a simply
+"I did this and that and then got a segfault".
+
+Prerequistes
+------------
+
+Using gdb to debug a segmenetation fault works on all Unix systems where gcc
+is available, and on OS/2 if makefile.emx or the Husky build process is
+used. It does not work on Windows, nor on OS/2 if makefile.emo or a non-gcc
+compiler is used. On Unix systems where gcc is not available, a similar
+procedure ususally works with a vendor debugger like dbx, but treating this
+is outside the scope of this document.
+
+In order to use gdb to create a useful bug report you first must recompile
+the Husky source. If you never compiled your Husky software on your own, you
+should first master that task and then return to this document later-on. In
+the following, I will assume that you have a working setup of a huskymak.cfg
+and have successfully managed to compile and install all software in question
+(the failing program and smapi and fidoconf) by using the Husky build process
+makefile. The following also does not cover makefile.emx on OS/2 (but it does
+cover Makefile with huskymak.cfg on OS/2), but if you really need to use
+makefile.emx on OS/2, just drop me a mail.
+
+Enabling Debugging in Huskymak.cfg
+----------------------------------
+
+Your huskymak.cfg should contain one line setting the DEBCFLAGS variable.
+one setting the DEBLFLAGS variable, and one setting the DEBUG variable. If it
+does not, your huskymak.cfg is VERY outdated and you should set up a fresh
+copy by using the latest huskybse module.
+
+Then, you must sure that those lines contain the following values:
+
+DEBCFLAGS=-g -c
+DEBLFLAGS=-g
+
+Alternatively, the following values can also be used. On systems where gcc
+and gdb is used, they are 100% equivalent, while on Unix systems with a
+vendor cc and a vendor dbx those won't work, that's why I usually just use
+-g:
+
+DEBCFLAGS=-ggdb -c
+DEBLFLAGS=-ggdb
+
+After you have done so, you can change the DEBUG variable to read
+
+DEBUG=1
+
+Compiling and installing debug binaries
+---------------------------------------
+
+Now, you must do a "make clean; make; make install" in each library
+directory, i.E. usually in the smapi and in the fidoconf directory.
+
+This will replaced your installed non-debugging libraries with debugging
+versions of the libraries. This does absolute no harm to your installation
+(besides of a usually invisible small performance penalty) as long as the
+debugging versions are compiled from the same source code as your already
+installed non-debugging versions.
+
+After that, change to the directoy of the program that you want to debug and
+to a "make clean; make; make install". Debugging is also possible without
+installing, but for simplicty I will not cover this in here.
+
+Creating a core file
+--------------------
+
+Then, you can do whatever you do to create the segfault. After you recreated
+the failure, you should find a file anmed "core" or "PROGRAMNAME.core" (like
+"hpt.core") or "core.programnam" in the directory which was the current
+directory when the program ran. Try your home directory, your fido user's
+home directory, or similar places. 
+
+If you cannot find such a core file, you must run "umlimit -c unlimited"
+before executing the failing program. You can type this by hand, but be aware
+that this only affects the current running shell, so it's probably best to
+place this command into the script which calls the failing program directly
+before the failing program is called. Also note that this only works in
+Korn/Bourne-Shell derivatives like sh, ksh, bash. It does not work for the C
+shell. C shell is not covered in this document.
+
+After this, you really should be able to find a core file. If not, you can
+try the "debugging interactivly" section below instead.
+
+Once you have found the core file, you can type "gdb <name-of-program> <name
+of corefile>", like "gdb hpt core". It is important that you specify the
+correct files here, especially the correct executable. Users often tend to
+not install the debugging executable, but run it from their home directory to
+create the core file. In thise case, "gdb hpt core" would NOT debug the
+debugging version in the home, but the installed non-debugging version. So in
+case of doubt, specify the full path to the debugging version of the
+executable. If in doubt, you can just look at the directory (ls -l) entry of
+the executables - the debugging version should be much larger than the
+non-debugging version.
+
+
+Reading the core file with gdb
+------------------------------
+
+After entering the gdb command from above, gdb should start up and finally
+present you with a prompt like in the following example
+
+  tobi@lilapause:~$ gdb ./testprogram core
+  GNU gdb 4.17
+  Copyright 1998 Free Software Foundation, Inc.
+  GDB is free software, covered by the GNU General Public License, and you are
+  welcome to change it and/or distribute copies of it under certain conditions.
+  Type "show copying" to see the conditions.
+  There is absolutely no warranty for GDB.  Type "show warranty" for details.
+  This GDB was configured as "alphaev56-dec-osf4.0e"...
+  Core was generated by `testprogram'.
+  Program terminated with signal 11, Segmentation fault.
+  Reading symbols from /usr/shlib/libc.so...done.
+  #0  0x12000112c in testfn (ptr=0x0) at test.c:3
+  3           *ptr = 23;
+  (gdb)
+
+You should NOT see any message like "no debugging symbols found" when
+starting up gdb. If you do, something went wrong. Either your huskymak.cfg
+has not the right flags, or you used the wrong executable. Make sure that the
+executable you used to create the core file and that you supplied as argument
+to gdb is much larger than usually. If you stil thing you did everything
+right, you might have a flaky gdb installation. Some SuSE Linux distributions
+had a buggy gdb per default, but update rpm's for gdb are available for those
+versions of SuSE linux.
+
+Now, at the (gdb) prompt, type (gdb) where:
+
+  (gdb) where
+  #0  0x12000112c in testfn (ptr=0x0) at test.c:3
+  #1  0x12000116c in main () at test.c:9
+  (gdb) 
+
+Use this information to contact us in FIDOSOFT.HUSKY or via netmail/email. It
+will be very valuable.
+
+As you can see, in the example output from the where command from above, we
+see the function name (testfn), file name (test.c) and line number (3) where
+the program crashed. Sometimes, this information is not visible, and you will
+simply see a lot of ?? signs instead of the relevant information. In this
+case, you should follow the information in the following sections. Otherwise,
+you are finished at this point.
+
+
+Debugging interactively
+-----------------------
+
+Debugging a core file has the advantage that it is a post mortem debugging
+method, that is you can let your system run normally, and it will throw a
+core file when it dies, which you can debug afterwards.
+
+However, this method sometimes does not work. Either you cannot convince your
+system into throwing a core file, or the core file is useless (showing just
+???? signs on the where command instead of proper information). In this case,
+you must debug the problem interactively.
+
+To do so, you must create a szenario in which invoking the program with a
+specific command line will create the crash. Then, recreate the szenario but
+don't recreate the crash, but load the program into gdb without supplying a
+core file as argument, like in "gdb hpt" or "gdb /usr/local/src/hpt/hpt".
+
+Again, make sure that no "no debugging symbols found" message pops up. If it
+does, read in the previous section what to do about it.
+
+At the (gdb) prompt, you can now type "set args <ARGUMENTS>" to supply any
+command line arguments to the program, like e.g. "set args toss" if you would
+debug hpt and the crash occurs upon tossing.
+
+Then you just type "run", and the program should sooner or stater stop like
+in the following example:
+
+
+tobi@lilapause:~$ gdb hpt
+GNU gdb 4.17
+Copyright 1998 Free Software Foundation, Inc.
+GDB is free software, covered by the GNU General Public License, and you are
+welcome to change it and/or distribute copies of it under certain conditions.
+Type "show copying" to see the conditions.
+There is absolutely no warranty for GDB.  Type "show warranty" for details.
+This GDB was configured as "alphaev56-dec-osf4.0e"...
+(gdb) set args toss
+(gdb) run
+Starting program: /home/tobi/bin/hpt toss
+
+Program received signal SIGSEGV, Segmentation fault.
+0x120001168 in testfn () at test.c:6
+6               a[i]=231;
+(gdb) 
+
+then, you  can again type "where" and send us the output:
+
+(gdb) where
+#0  0x120001168 in testfn () at test.c:6
+#1  0x1200011bc in main () at test.c:6
+
+In case that you still only see questionmarks, you have a really hard
+problem. In that case you probably can't do any more (well, of course if you
+are a C developer you could start single stepping the program by typing
+"break main" bevore "run" and using "s" (step into) and "n" (step over) to
+find out hwere it crashes). Contact us to get further assistance
+
+[EOF]
+
+
+
