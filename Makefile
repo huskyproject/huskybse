@@ -4,26 +4,26 @@ distclean: distclean-tools distclean-huskyui
 install: install-tools install-huskyui
 
 make-tools:
-	$(MAKE) -C tools -f makefile.husky
+	$(MAKE) -C tools
 
 clean-tools:
-	$(MAKE) -C tools -f makefile.husky clean
+	$(MAKE) -C tools clean
 
 distclean-tools:
-	$(MAKE) -C tools -f makefile.husky distclean
+	$(MAKE) -C tools distclean
 
 install-tools:
-	$(MAKE) -C tools -f makefile.husky install
+	$(MAKE) -C tools install
 
 make-huskyui:
-	$(MAKE) -C huskyui -f makefile.husky
+	$(MAKE) -C huskyui
 
 clean-huskyui:
-	$(MAKE) -C huskyui -f makefile.husky clean
+	$(MAKE) -C huskyui clean
 
 distclean-huskyui:
-	$(MAKE) -C huskyui -f makefile.husky distclean
+	$(MAKE) -C huskyui distclean
 
 install-huskyui:
-	$(MAKE) -C huskyui -f makefile.husky install
+	$(MAKE) -C huskyui install
 
