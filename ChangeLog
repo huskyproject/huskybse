@@ -1,3 +1,12 @@
+2003-06-21 Saturday 11:03  mche
+
+	* HUSKY.sln (1.7): documentation build added
+
+2003-06-21 Saturday 06:50  nssoft
+
+	* huskymak.cfg (1.52), huskymak.cfg.bsd (1.12), huskymak.cfg.debian
+	(1.8), huskymak.cfg.sun (1.5): Set USE_HPTZIP to "0" by default
+
 2003-06-20 Friday 09:12  nssoft
 
 	* huskymak.cfg (1.51), huskymak.cfg.bsd (1.11), huskymak.cfg.debian
