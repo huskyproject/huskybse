@@ -51,4 +51,6 @@ TARGETLIB = $(LIBPREFIX)$(LIBNAME)$(LIBSUFFIX)$(_LIB)
 TARGETDLL = $(DLLPREFIX)$(LIBNAME)$(DLLSUFFIX)$(_DLL)
 
 # List of HUSKY libraries required to build binary file(s)
-LIBS	=
+# Examples! Change to real please.
+LIBS	= -lhusky$(LIBSUFFIX) -lsmapi$(LIBSUFFIX)
+DLLS	= ../../$(DLLPREFIX)husky$(DLLSUFFIX)$(_DLL) ../../$(DLLPREFIX)smapi$(DLLSUFFIX)$(_DLL)

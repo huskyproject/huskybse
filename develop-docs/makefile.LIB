@@ -44,6 +44,7 @@ _OBJ	= .o
 _LIB	= .a
 _EXE	= .exe
 _DLL	= .dll
+_DEF	= .def
 
 ## program options ##
 
@@ -113,7 +114,7 @@ LIBS	+=
 ## other, usualy not modify below ##
 
 ## Additions (add into end of strings) ##
-CFLAGS	+= -I$(H_DIR) $(DEBUG)
+CFLAGS	+= -I$(H_DIR)
 
 ## make rules ##
 
@@ -125,17 +126,17 @@ programs: $(TARGETLIB) $(PROGRAMS)
 dllprograms: $(TARGETDLL) $(PROGRAMS)
 
 %$(_EXE): $(SRC_DIR)%$(_C) $(TARGETLIB)
-	$(CC) $(STRIP) $(CFLAGS) $(CDEFS) $(NAMEOPT)$@ $^ $(LIBS)
+	$(CC) $(STRIP) $(DEBUG) $(CFLAGS) $(CDEFS) $(NAMEOPT)$@ $^ $(LIBS)
 
 %$(_OBJ): $(SRC_DIR)%$(_C)
-	$(CC) $(CFLAGS) $(CDEFS) $(OBJOPT) $<
+	$(CC) $(CFLAGS) $(STRIP) $(DEBUG) $(CDEFS) $(OBJOPT) $<
 
 $(TARGETLIB):	$(OBJS)
 	$(AR) $(ARFLAGS) $@ $?
 #	$(RANLIB) $@   # 'ar rs' doing this
 	
 $(TARGETDLL):	$(OBJS)
-	$(CC) $(DLLOPT) $(CFLAGS) $(NAMEOPT)$@ $^
+	$(CC) $(DLLOPT) $(CFLAGS) $(STRIP) $(DEBUG) $(NAMEOPT)$@ $^
 
 
 clean:
