@@ -1,0 +1,308 @@
+2002-07-29 Monday 17:46  gerrit
+
+	* .cvs2cl (1.1): Added ChangeLog and .cvs2cl for automagically
+	updating ChageLog.
+
+2002-07-29 Monday 17:44  gerrit
+
+	* huskymak.cfg.bsd (1.3): Changed RANLIB to ranlib.
+
+2002-06-19 Wednesday 09:52  stas
+
+	* huskymak.cfg (1.42), huskymak.cfg.bsd (1.2): Fix DIRSEP
+	definition for DOS-like OS
+
+2001-11-26 Monday 14:01  tobi
+
+	* DEPENCENCIES (1.3), DEPENDENCIES (1.2): merged updates from
+	stable
+
+2001-11-26 Monday 13:26  tobi
+
+	* DEPENDENCIES (1.1): file DEPENDENCIES was initially added on
+	branch huskybse-0_2-stable.
+
+2001-06-03 Sunday 00:57  tobi
+
+	* DEPENCENCIES (1.2): removed cr's
+
+2001-06-03 Sunday 00:56  tobi
+
+	* DEPENCENCIES (1.1), develop-docs/cvs-branching (1.2,
+	huskybse-0_2_0-release): more info about version numbers
+
+2001-05-04 Friday 23:26  tobi
+
+	* develop-docs/portability-tips (1.3, huskybse-0_2_0-release):
+	added section about using "b" and "t" in fopen calls
+
+2001-05-04 Friday 23:26  tobi
+
+	* develop-docs/changelog-writing (1.1, huskybse-0_2_0-release):
+	added developers' document about wirting ChangeLog and HISTORY
+	files
+
+2001-05-01 Tuesday 07:37  ml
+
+	* huskymak.cfg (1.40, huskybse-0_2_0-release): HAVE_POPEN
+	definition
+
+2001-04-18 Wednesday 19:25  joerg.jaspert
+
+	* new/huskyfaq.texi (1.1, huskybse-0_2_0-release): Start of the
+	Husky-Faq.
+
+2001-04-15 Sunday 19:54  tobi
+
+	* huskymak.cfg (1.39): another debugging fix for huskybse
+
+2001-04-14 Saturday 17:48  tobi
+
+	* develop-docs/segfault (1.1, huskybse-0_2_0-release): added info
+	text about what to do when programs segfault
+
+2001-04-14 Saturday 14:51  tobi
+
+	* develop-docs/portability-tips (1.2): updated ptips
+
+2001-04-14 Saturday 10:49  tobi
+
+	* huskymak.cfg (1.38): added missing deblflags
+
+2001-03-06 Tuesday 21:02  oliver.grimm
+
+	* huskymak.cfg (1.37): OG: Added info for making .so's under
+	Solaris.
+
+2001-02-14 Wednesday 13:04  pavel.gulchouck
+
+	* huskymak.cfg (1.35): Added $PREFIX
+
+2001-01-07 Sunday 16:14  oliver.grimm
+
+	* huskymak.cfg (1.33): og: Added -DALTLOCKING for alternative file
+	locking.
+
+2000-12-03 Sunday 18:53  sms
+
+	* huskymak.cfg (1.32): added RMOPT
+
+2000-10-31 Tuesday 22:51  tobi
+
+	* INSTALL (1.6, huskybse-0_2_0-release): fixed typo
+
+2000-10-07 Saturday 18:53  tobi
+
+	* huskymak.cfg (1.31): added CXX variable
+
+2000-09-09 Saturday 14:23  tobi
+
+	* INSTALL (1.5): updated installation instructions
+
+2000-08-23 Wednesday 07:11  oliver.grimm
+
+	* huskymak.cfg (1.29): Add -DNOSEMAPHORES
+
+2000-08-20 Sunday 09:59  oliver.grimm
+
+	* huskymak.cfg (1.28): Add -DHAS_SEMUN for two styles of semctl()
+
+2000-08-14 Monday 19:42  sms
+
+	* huskymak.cfg (1.27): fixed 2 typos
+
+2000-08-07 Monday 23:57  sms
+
+	* Makefile (1.4): removed Makefile
+
+2000-08-07 Monday 01:03  tobi
+
+	* huskymak.cfg (1.26): beos adaptions
+
+2000-08-05 Saturday 18:59  oliver.grimm
+
+	* huskymak.cfg (1.25): Added variable LD for building shared
+	library via 'ld'
+
+2000-08-03 Thursday 11:49  tobi
+
+	* develop-docs/cvs-branching (1.1): added docs about stable
+	branches
+
+2000-07-18 Tuesday 22:55  tobi
+
+	* INSTALL (1.4): merged fix from stable
+
+2000-07-14 Friday 00:55  tobi
+
+	* VERSION (1.1): file VERSION was initially added on branch
+	huskybse-0_1.
+
+2000-07-02 Sunday 03:55  sms
+
+	* Makefile (1.3, huskybse-0_1a-release): added nmcopy
+
+2000-05-24 Wednesday 09:27  mt
+
+	* INSTALL (1.3): fixed filename example
+
+2000-05-23 Tuesday 18:42  tobi
+
+	* huskymak.cfg (1.23): fixed missing comment signs in huskymak.cfg
+
+2000-05-22 Monday 23:33  mt
+
+	* INSTALL (1.2): small changes
+
+2000-05-22 Monday 22:08  tobi
+
+	* INSTALL (1.1), README (1.5, huskybse-0_2_0-release),
+	README.Makefiles (1.5), huskymak.cfg (1.22): Added Installation
+	Instructions
+
+2000-05-18 Thursday 21:30  sms
+
+	* huskymak.cfg (1.21): added H2PAS to huskymak.cfg
+
+2000-04-26 Wednesday 14:47  sms
+
+	* huskymak.cfg (1.20): added MSGEDCFG to huskmak.cfg
+
+2000-04-26 Wednesday 14:41  sms
+
+	* huskymak.cfg (1.19): added some pascal options to huskymak.cfg
+
+2000-04-24 Monday 20:42  sms
+
+	* Makefile (1.2): removed -f makefile.husky
+
+2000-04-21 Friday 13:27  sms
+
+	* README.Makefiles (1.4), systems.lst (1.6): Changed
+	README.Makefiles to use Makefile instead of makefile.husky and
+	include the content of the former systems.lst
+
+2000-04-21 Friday 13:15  sms
+
+	* README (1.4): added dir mtt to README
+
+2000-04-21 Friday 13:14  sms
+
+	* Makefile (1.1), makefile.husky (1.4): renamed makefile.husky to
+	Makefile
+
+2000-04-10 Monday 13:51  sms
+
+	* huskymak.cfg (1.18): updated huskymak.cfg
+
+2000-04-09 Sunday 18:30  tobi
+
+	* huskymak.cfg (1.17): Added EXENAMEFLAG
+
+2000-04-08 Saturday 23:11  tobi
+
+	* huskymak.cfg (1.16): -static must be added to CFLAGS, not to CC
+
+2000-03-30 Thursday 17:01  tobi
+
+	* makefile.husky (1.3): Makefile fixes
+
+2000-03-27 Monday 15:55  sms
+
+	* makefile.husky (1.2): added huskyui
+
+2000-03-20 Monday 22:22  mt
+
+	* huskymak.cfg (1.15): fixed TEMRCAP entry
+
+2000-03-19 Sunday 23:06  tobi
+
+	* huskymak.cfg (1.14): Fixes for dynlibs=0, and for installbsd
+
+2000-03-19 Sunday 22:45  tobi
+
+	* huskymak.cfg (1.13): Added ranlib variable.
+
+2000-03-19 Sunday 22:32  tobi
+
+	* huskymak.cfg (1.12): Added a comment to explain DYNLIBS in more
+	detail.
+
+2000-03-19 Sunday 17:55  tobi
+
+	* huskymak.cfg (1.11): Makefile options
+
+2000-03-09 Thursday 18:00  sms
+
+	* README.Makefiles (1.3), systems.lst (1.5): updated
+	Makefile-documentation and sms/huskymak.cfg
+
+2000-03-09 Thursday 17:27  sms
+
+	* huskymak.cfg (1.10): moved smapi and fidoconfig headers to
+	INCDIR/smapi and INCDIR/fidoconfig
+
+2000-03-08 Wednesday 18:11  sms
+
+	* makefile.husky (1.1): Added makefile.husky to main directory of
+	husky-common
+
+2000-02-10 Thursday 09:24  sms
+
+	* huskymak.cfg (1.8): added ldconfig to makefile.husky and
+	makefile.lnx of smapi and fidoconfig
+
+2000-01-28 Friday 14:57  sms
+
+	* huskymak.cfg (1.7): removed huskymak.cfg dependency from
+	makefile.lnx, created/updated makefile.husky for pascal programs
+
+2000-01-24 Monday 00:31  sms
+
+	* huskymak.cfg (1.6): added DIRSEP to huskymak.cfg
+
+2000-01-23 Sunday 00:42  sms
+
+	* huskymak.cfg (1.5): Updated makefile.husky and huskymak.cfg
+
+2000-01-22 Saturday 12:00  sms
+
+	* huskymak.cfg (1.4): Created/Updated makefile.husky and
+	huskymak.cfg
+
+2000-01-16 Sunday 14:12  sms
+
+	* huskymak.cfg (1.3): updated huskymak.cfg and runbt
+
+1999-10-14 Thursday 18:07  sms
+
+	* README.Makefiles (1.1): reorganized Makefiles, read
+	husky-common/README.Makefiles \!\!\!
+
+1999-10-14 Thursday 17:40  sms
+
+	* README (1.3), huskymak.cfg (1.2), systems.lst (1.3): reorganized
+	Makefiles, read husky-common/README.Makefiles \!\!\!
+
+1999-10-12 Tuesday 10:51  tobi
+
+	* develop-docs/portability-tips (1.1, huskybse-0_1b-release,
+	huskybse-0_1a-release): Started the "Portability Guide"
+
+1999-10-12 Tuesday 09:38  tobi
+
+	* systems.lst (1.2): Updated systems.lst
+
+1999-10-08 Friday 22:59  sms
+
+	* huskymak.cfg (1.1), systems.lst (1.1): added systems.lst and
+	huskymak.cfg
+
+1999-10-08 Friday 22:59  sms
+
+	* README (1.2): updated README, poll and semact
+
+1999-09-23 Thursday 22:09  sms
+
+	* README (1.1): added README
+
