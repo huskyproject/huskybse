@@ -1,3 +1,8 @@
+2003-06-16 Monday 07:31  mche
+
+	* HUSKY.sln (1.6): vcproj Project File added for building txt2pkt
+	in Microsoft Visual Studio .NET
+
 2003-05-14 Wednesday 10:40  nssoft
 
 	* bugreport.rus (1.5), bugreport.txt (1.5): Added "Compiler
