@@ -1,3 +1,14 @@
+2003-01-09 Thursday 13:35  stas_degteff
+
+	* develop-docs/novice_programmers_how-to.txt (1.1): Small
+	instructions for beginners programming for husky with examples of
+	usage smapi & fidoconfig.
+
+2003-01-09 Thursday 12:39  stas_degteff
+
+	* huskymak.cfg (1.46): set permissions for install documentations &
+	libraries
+
 2002-12-30 Monday 15:46  stas_degteff
 
 	* develop-docs/cvs-branching (1.4): Add rules for creating a
