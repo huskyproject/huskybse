@@ -1,3 +1,7 @@
+2004-02-01 Sunday 13:52  mche
+
+	* HUSKY.sln (1.10): fix building
+
 2004-01-11 Sunday 15:19  mche
 
 	* HUSKY.sln (1.9): fix MSVC7 compilations and some warnings
