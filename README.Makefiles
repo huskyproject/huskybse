@@ -1,0 +1,40 @@
+
+I completely reorganized the Makefiles. Now there is a Makefile-Config
+"huskymak.cfg" which is used by all packages. You can find a sample in the
+same directory as this text.
+
+I you want to compile the packages, you have to arrange the sources as
+following:
+
+Directory maindir
+|
++-- File huskymak.cfg
+|
++-- Directory smapi
+|
++-- Directory fidoconfig
+|
++-- Directory hpt
+|
+...
+
+You only need to customize huskymak.cfg once, there is no need for changing
+the Makefiles of each package anymore.
+
+All Makefiles have the following targets:
+
+Target		Description
+-----------------------------------------------------------------------------
+all		compile program(s) and/or library
+install		install the compiled program(s) and/or lib
+clean		remove files used temporarily for compiling
+distclean	like clean, but also removes programs/libs
+
+A list of all possible Makefiles (not every package supports every system)
+can be found in "systems.lst" in this directory.
+
+Include-Files and Libs are now looked for and also installed in $(INCDIR) and
+$(LIBDIR) instead of ../smapi and ../fidoconfig.
+
+- sms
+
