@@ -1,3 +1,7 @@
+2003-01-14 Tuesday 13:17  gerritkuehn
+
+	* huskymak.cfg.bsd (1.6): Added GPP (needed e.g. for fastlst).
+
 2003-01-12 Sunday 17:42  i_zkh
 
 	* bugreport.rus (1.2), bugreport.txt (1.2), huskymak.cfg (1.47):
