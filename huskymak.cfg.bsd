@@ -17,7 +17,7 @@ LIBDIR=${prefix}/lib
 BINDIR=${prefix}/bin
 
 # Where manual pages should be placed.
-MANDIR=${prefix}/man/man
+MANDIR=${prefix}/man
 
 # Where include files should be placed (don't worry, no files will be over-
 # written, Husky will use it's own subdirectories below this directory):
