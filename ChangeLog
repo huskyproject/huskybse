@@ -1,3 +1,8 @@
+2002-10-08 Tuesday 03:30  nssoft
+
+	* huskymak.cfg.bsd (1.5): Add -DNOSEMAPHORES to ADDCDEFS and "Perl
+	Support" section.
+
 2002-08-05 Monday 13:58  quetschke
 
 	* huskymak.cfg (1.45): Added optional setting of LD (e.g. useful
