@@ -18,6 +18,9 @@ address         2:2432/645
 address         2:2432/646
 address         44:4932/110
 address         44:4932/111
+address         49:199/976
+address         54:490/976
+address         530:199/980
 #address		2:2433/1245.100@fidonet
 
 # AKAs:
@@ -29,13 +32,15 @@ address         44:4932/111
 # Passwords for nodes. Not checked by iftoss (unless -DPARANOID specified
 # at compile-time), checked by ifcico.
 # Inserted into outgoing mail packets, EMSI and yoohoo packets.
-password        2:2432/600     xxxxxxxx
-password        2:2432/605     xxxxxxxxx
-password        44:4932/100    xxxxxxxx
-password        2:2432/215      xxxxxxx
-password        2:2432/216     xxxxxxx
-password        2:24/0.999      CDP
-password        2:2490/1906     xxxxxxxx
+password        2:2432/600      asdasdsadsad
+password        2:2432/605      asdsadsadasd
+password        44:4932/100     sadsadasdasd
+password        2:2432/215      asdasdasd
+password        2:2432/216      asdasdasdsad
+password        2:240/6223      asdsadasda
+password        2:24/0.999      asdsadsad
+password        2:244/6260      sadsadasd
+password        2:2435/424      sadasdsadas
 
 ; +++ FREEPNT-MARKE +++
 #password	2:5929/23	ASDFG
@@ -103,6 +108,9 @@ nodelist	/home/mtt/fido/nodelist/nodelist
 #nodelist	pnt5020.ndl	2:5020/0@fidonet
 #nodelist	chatlist	100:0/0@chateaunet
 #nodelist	private.ndl	2:5020/0@fidonet
+nodelist        /home/mtt/fido/nodelist/geonode 
+nodelist        /home/mtt/fido/nodelist/unionnet
+nodelist        /home/mtt/fido/nodelist/linuxnet
 
 # domain translations, just context substitution.  Leading dot recommended.
 # May contain '@'-sign too.  First matching used.
@@ -253,7 +261,7 @@ ModemReset	ATZ\r\n\dat&e05251876291\r\n\d
 #ModemDial	(address 2:5020/49) AT&M5&N6DP\T\r
 #ModemDial	(speed < 4800) AT&N3DP\T\r
 #ModemDial	        ATDT24\r
-ModemDial		ATD\T\r
+ModemDial		ATD01030\T\r
 ModemHangup	ATZ\r
 ModemOK		OK
 ModemConnect	CONNECT
@@ -298,6 +306,6 @@ DialDelay       0
 Name		hpt HQ	
 Location	Paderborn GER
 SysOp		Matthias Tichy
-Phone		49-5251-608550
-Speed		9600
-Flags		XA,V32B,V42B
+Phone		49-5251-876291
+Speed		300	
+Flags		XA,CM,MO,X75
