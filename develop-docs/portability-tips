@@ -12,7 +12,7 @@ that code.
 I don't want to complain about this, after all it was my free choice to work
 on making the code more portable, but sometimes when i fix the same time for
 the seventh time, things start to annoy me a little bit. Therefore, I decided
-to create this document. It is intended as a guideline for every Huksy
+to create this document. It is intended as a guideline for every Husky
 programmer (not just for the beginners, for everybody) on writing portable
 code, i.E. code that compiles both on the different flavours of Unix (like
 Linux, SysV, BSD), and on DOS/OS2/NT, both on 32 and 64 bit machines, both
@@ -60,38 +60,6 @@ To put it short: Code like the line above in a open source project that calls
 itself "portable" is COMPLETE CRAP and not a single new line of code should be 
 written in this style. DON'T EVER use read/farread/fread to directly read from 
 a binary file into a structure, or write/farwrite/fwrite to write. PLEASE!
-
-Instead, to read some_struct, proceed as follows:
-
-  char buffer[6]; /* has room for 6 bytes == 16 bit + 32 bit */
-  fread(buffer, 6, 1, f);
-
-This works for sure, because ANSI C guarantees that a char is exactly one
-byte, and that array elements are adjacent to each other. This code does not
-rely on some obscure sizeof operator, but is simply hard coded to read
-exactly 6 bytes (one 16 bit integer and one 32 bit integer) from the file.
-
-Now, we need to interpret the buffer and store it into the integer
-variables. This goes as follows:
-
-  s.element1 = (unsigned short)  buffer[0] +
-               ((unsigned short)(buffer[1]) << 8L);
-  s.element2 = (unsigned long) buffer[2] +
-               ((unsigned long)(buffer[3]) << 8L)  +
-               ((unsigned long)(buffer[4]) << 16L) +
-               ((unsigned long)(buffer[5]) << 24L);
-
-This code assumes that the binary values in the file are stored in
-little-endian (Intel-style) byte order, which is true for about every fidonet
-file format that I know. This code reads in one byte at a time and weights it
-properly. The code works because the "<<" operator is defined to shift bits
-in the direction of highest significance (no matter if this actually means
-"left" or "right" on your hardware).
-
-Storing integers works in the same way:
-
-  buffer[0] = s.element1 & 0xFF;
-
 
 Instead, to read some_struct, proceed as follows:
 
