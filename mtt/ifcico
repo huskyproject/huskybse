@@ -29,13 +29,13 @@ address         44:4932/111
 # Passwords for nodes. Not checked by iftoss (unless -DPARANOID specified
 # at compile-time), checked by ifcico.
 # Inserted into outgoing mail packets, EMSI and yoohoo packets.
-password        2:2432/600      hghprt
-password        2:2432/605      hghprt
-password        44:4932/100     hghprt
-password        2:2432/215      irkutsk
-password        2:2432/216      irkutsk
+password        2:2432/600     xxxxxxxx
+password        2:2432/605     xxxxxxxxx
+password        44:4932/100    xxxxxxxx
+password        2:2432/215      xxxxxxx
+password        2:2432/216     xxxxxxx
 password        2:24/0.999      CDP
-password        2:2490/1906     BEDUINE
+password        2:2490/1906     xxxxxxxx
 
 ; +++ FREEPNT-MARKE +++
 #password	2:5929/23	ASDFG
