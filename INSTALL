@@ -49,7 +49,7 @@ The distribution filenames of the modules are named
 for the release versions or 
 
   MODULENAME-yymmdd.tar.gz     e.g. smapi-000521.tar.gz (snapshot from 21st May 2000)
-  MODULENAME-latest.tar.gz     e.g. smapi-000521.tar.gz (current snapshot)
+  MODULENAME-latest.tar.gz     e.g. smapi-latest.tar.gz (current snapshot)
 
 for the daily snapshots. Unless you are a very experienced user, or have
 explicitly been instructed, you should use the release versions. They are
