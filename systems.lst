@@ -7,7 +7,7 @@ OS/2		IBM CSet		makefile.ibo
 OS/2		Watcom			makefile.wco
 OS/2		High C			makefile.hco
 OS/2		Borland			makefile.bco
-DOS		DJGPP			makefile.djd
+DOS		DJGPP			makefile.djg
 DOS		Borland			makefile.bcd
 DOS		Quick C			makefile.qcd
 DOS		Watcom			makefile.wcd

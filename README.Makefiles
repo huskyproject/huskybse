@@ -36,5 +36,9 @@ can be found in "systems.lst" in this directory.
 Include-Files and Libs are now looked for and also installed in $(INCDIR) and
 $(LIBDIR) instead of ../smapi and ../fidoconfig.
 
+Please first do "make install" in smapi before you try to compile
+fidoconfig, and do "make install" in fidoconfig before you try to compile
+any of the other programs.
+
 - sms
 
