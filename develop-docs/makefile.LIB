@@ -6,7 +6,7 @@
 # LIBS, _OBJ and above; (possible) edit make rules.
 # See also makefile.INC
 
-# Makefile to build XXXXX with YYYYYY C on ZZZZZ
+# Makefile to build XXXXX with ZZZZZ C on YYYYY
 # No support for the Husky build environment.
 
 # Uncomment this for compile info for gdb and display more compiler warnings
