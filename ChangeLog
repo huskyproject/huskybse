@@ -1,3 +1,8 @@
+2002-07-31 Wednesday 14:32  gerrit
+
+	* develop-docs/cvs-branching (1.3): Bugfixing docu (odd does noch
+	mean not divisible by 3).
+
 2002-07-30 Tuesday 17:23  gerrit
 
 	* huskymak.cfg (1.44): Corrected case of PREFIX for DVIDIR in
