@@ -72,6 +72,7 @@ FreeBSD		gcc			makefile.bsd
 Tru64 Unix	DEC cc			makefile.osf
 Sun		gcc			makefile.sun
 AIX		IBM xlC			makefile.aix
+BeOS		cc			makefile.be
 
 --
 Sascha Silbe <Sascha.Silbe@ldknet.org>
