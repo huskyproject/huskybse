@@ -1,3 +1,7 @@
+2004-01-11 Sunday 15:19  mche
+
+	* HUSKY.sln (1.9): fix MSVC7 compilations and some warnings
+
 2003-12-18 Thursday 10:31  mche
 
 	* HUSKY.sln (1.8): project file for building areafix added
