@@ -14,6 +14,7 @@ if [ "$2" = "crash" ] ; then flavour=clo ; fi
 if [ "$2" = "normal" ] ; then flavour=flo ; fi
 if [ "$2" = "direct" ] ; then flavour=dlo ; fi
 if [ "$2" = "hold" ] ; then flavour=hlo ; fi
+mkdir -p ${base:0:${#base}-9}
 touch ${base}.${flavour}
 if [ -f ${base}.sts ] ; then rm ${base}.sts ; fi
 

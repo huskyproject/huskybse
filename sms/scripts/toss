@@ -30,12 +30,12 @@ find /husky/in -maxdepth 1 -name "*.pnt" -exec mv {} /husky/in/upd \;
 # toss TICs
 protick toss
 # /husky/work/bbsarea.log exists => new files
-if [ -f /husky/work/bbsarea.log ] ; then
+if [ -f /husky/work/pt/bbsarea.log ] ; then
  protick pack
- cat /husky/work/bbsarea.log >> /husky/log/bbsarea.log
- rm /husky/work/bbsarea.log
- cat /husky/work/areas.log >> /husky/log/areas.log
- rm /husky/work/areas.log
+ cat /husky/work/pt/bbsarea.log >> /husky/log/bbsarea.log
+ rm /husky/work/pt/bbsarea.log
+ cat /husky/work/pt/areas.log >> /husky/log/areas.log
+ rm /husky/work/pt/areas.log
 fi
 # endif
 
