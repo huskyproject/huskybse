@@ -1,3 +1,7 @@
+2003-10-23 Thursday 12:59  stas_degteff
+
+	* huskymak.cfg.cyg (1.2): Fix perl defines
+
 2003-10-17 Friday 07:06  andr_lukyanov
 
 	* huskymak.cfg.cyg (1.1), huskymak.cfg.djg (1.1), huskymak.cfg.emx
