@@ -170,7 +170,7 @@ EXENAMEFLAG=-o
 WARNFLAGS=-Wall
 
 # C-compiler: optimization
-OPTCFLAGS=-c -s -O3 -fomit-frame-pointer -fstrength-reduce -fPIC
+OPTCFLAGS=-c -s -O3 -fomit-frame-pointer -fstrength-reduce -fPIC -pedantic
 
 ifeq ( $(DYNLIBS), 0 )
   ifeq ($(OSTYPE), UNIX)
