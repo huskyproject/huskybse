@@ -34,17 +34,34 @@ RM	= rm
 MKDIR	= mkdir
 # remove directory command
 RMDIR	= rm
-# copy/move command
+# copy command
+CP	= cp
+# move command
+MV	= mv
+# install command
 INSTALL	= install
+
 
 ## file suffixes ##
 
+# source file
 _C	= .c
+# object file
 _OBJ	= .o
-_LIB	= .a
+# binary (executable) file
 _EXE	= .exe
+# static library
+_LIB	= .a
+# shared library
 _DLL	= .dll
+# shared library definitions file (export/import lists & etc.)
 _DEF	= .def
+# shared library exported list
+_EXP	= .exp
+# archive (package) file
+_ARC	= .zip
+# documentation file (".info", ".html", ".div", ...)
+_HTML	= .html
 
 ## program options ##
 
@@ -72,8 +89,12 @@ ARCFLAGS= -9 -j
 MKDIROPT= -p
 # remove directory command options
 RMDIROPT= -rf
-# copy/move command options
+# install command options
 INSTOPT	= -c
+# copy command options
+CPOPT	=
+# move command options
+MVOPT	=
 
 
 ## Library filename elements ##
@@ -86,9 +107,6 @@ DLLPREFIX=
 LIBSUFFIX=xxx
 # Suffix to construct dll name
 DLLSUFFIX=
-
-## Binary package name ##
-PACKAGENAME=$(LIBNAME)$(LIBSUFFIX)
 
 ## make directives ##
 
@@ -143,25 +161,44 @@ clean:
 	-$(RM) $(RMOPT) *$(_OBJ)
 	-cd ../doc ; make clean
 
-distclean:
+distclean: clean pkgclean
 	-$(RM) $(RMOPT) $(TARGETDLL)
 	-$(RM) $(RMOPT) $(TARGETLIB)
 	-$(RM) $(RMOPT) $(PROGRAMS)
-	-$(RM) $(RMOPT) $(PACKAGENAME)
-	-$(RM) $(RMOPT) file_id.diz
-	-$(RMDIR) $(RMDIROPT) $(LIBNAME)
 	-cd ../doc ; make distclean
 
 doc:
 	cd ../doc ; make html
 
-package: static programs doc
-        @echo XXXXX library v.$(VER) for YYYYY platform > file_id.diz
-	@echo (Part of HUSKY Fidonet Software Project) >> file_id.diz
-	$(MKDIR) $(MKDIROPT) $(LIBNAME)
-	$(INSTALL) $(INSTOPT) $(TARGETLIB) $(PROGRAMS) ../VERSION ../README $(LIBNAME)
-	$(INSTALL) $(INSTOPT) ../COPYING ../cvsdate.h ../INSTALL ../LICENSE $(LIBNAME)
-	$(INSTALL) $(INSTOPT) ../HISTORY file_id.diz ../ChangeLog  $(LIBNAME)
-	$(MKDIR) $(MKDIROPT) $(LIBNAME)/$(LIBNAME)
-	$(INSTALL) $(INSTOPT) ../$(H_DIR)/*.h $(LIBNAME)/$(LIBNAME)
-	$(ARCHIVER) $(ARCFLAGS) $(PACKAGENAME) $(LIBNAME)/*
+pkg-doc: pkg-dir
+	-$(MKDIR) $(MKDIROPT) $(PACKAGEBASE)/doc
+	$(CP) $(CPOPT) ../doc/*$(_HTML) $(PACKAGEBASE)/doc
+	
+pkg-dir:
+	-$(MKDIR) $(MKDIROPT) $(PACKAGEBASE)
+
+$(HEADERS):
+	$(CP) $(CPOPT) $@ $(PACKAGEBASE)/$(LIBNAME)
+
+pkg-h: $(HEADERS)
+
+package: static programs doc copy-h pkg-doc
+        @echo XXXXX library v.$(VER) for `uname -s` platform > $(PACKAGEBASE)/file_id.diz
+	@echo (Part of HUSKY Fidonet Software Project) >> $(PACKAGEBASE)/file_id.diz
+	@echo See http://husky.sourceforge.net and/or >> $(PACKAGEBASE)/file_id.diz
+	@echo http://sourceforge.net/projects/husky >> $(PACKAGEBASE)/file_id.diz
+	$(MKDIR) $(MKDIROPT) $(PACKAGEBASE)
+	$(CP) $(CPOPT) $(TARGETLIB) $(PROGRAMS) ../VERSION ../README $(PACKAGEBASE)
+	$(CP) $(CPOPT) ../COPYING ../cvsdate.h ../INSTALL ../LICENSE $(PACKAGEBASE)
+	$(CP) $(CPOPT) ../HISTORY ../ChangeLog  $(PACKAGEBASE)
+	$(MKDIR) $(MKDIROPT) $(PACKAGEBASE)/$(LIBNAME)
+	$(CP) $(CPOPT) ../$(H_DIR)/*.h $(PACKAGEBASE)/$(LIBNAME)
+	$(ARCHIVER) $(ARCFLAGS) $(PACKAGENAME) $(PACKAGEBASE)/*
+
+pkgclean:
+	-$(RM) $(RMOPT) $(PACKAGENAME)
+	-$(RM) $(RMOPT) $(PACKAGEBASE)/file_id.diz
+	-$(RM) $(RMOPT) $(PACKAGEBASE)/$(LIBNAME)/*
+	-$(RMDIR) $(RMDIROPT) $(PACKAGEBASE)/$(LIBNAME)
+	-$(RM) $(RMOPT) $(PACKAGEBASE)/*
+	-$(RMDIR) $(RMDIROPT) $(PACKAGEBASE)

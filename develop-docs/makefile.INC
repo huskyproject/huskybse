@@ -25,7 +25,8 @@ LIBNAME	= XXXXX
 # Version
 VERMAJOR= 0
 VERMINOR= 1
-VER	= $(VERMAJOR).$(VERMINOR)
+VERH	= $(VERMAJOR).$(VERMINOR)
+VER	= $(VERH).0
 
 # Object files (example from huskylib)
 OBJS1	= calendar$(_OBJ) cvtdate$(_OBJ) fexist$(_OBJ) ffind$(_OBJ) genmsgid$(_OBJ)
@@ -47,8 +48,14 @@ SRC_DIR	=../src/
 H_DIR	=../h/
 
 # Usually compose from LIBPREFIX, LIBSUFFIX and LIB.
+# Static library name
 TARGETLIB = $(LIBPREFIX)$(LIBNAME)$(LIBSUFFIX)$(_LIB)
+# Shared library name
 TARGETDLL = $(DLLPREFIX)$(LIBNAME)$(DLLSUFFIX)$(_DLL)
+# Binary package (archive) name
+PACKAGEBASE=$(LIBNAME)$(LIBSUFFIX)-$(VER)
+PACKAGENAME=$(LIBNAME)$(LIBSUFFIX)$(VER)$(_ARC)
+
 
 # List of HUSKY libraries required to build binary file(s)
 # Examples! Change to real please.
