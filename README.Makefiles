@@ -21,7 +21,7 @@ Directory maindir
 You only need to customize huskymak.cfg once, there is no need for changing
 the Makefiles of each package anymore.
 
-All Makefiles have the following targets:
+makefile.husky has the following targets:
 
 Target		Description
 -----------------------------------------------------------------------------
@@ -30,11 +30,15 @@ install		install the compiled program(s) and/or lib
 clean		remove files used temporarily for compiling
 distclean	like clean, but also removes programs/libs
 
-A list of all possible Makefiles (not every package supports every system)
-can be found in "systems.lst" in this directory.
+Every package contains makefile.husky (which uses huskymak.cfg) and the old
+makefiles (may be useful for systems without GNU make, but expect problems
+as they are poorly maintained).
+A list of all possible (old) Makefiles (not every package supports every
+system) can be found in "systems.lst" in this directory.
 
-Include-Files and Libs are now looked for and also installed in $(INCDIR) and
-$(LIBDIR) instead of ../smapi and ../fidoconfig.
+Include-Files and Libs are now looked for and also installed in
+$INCDIR/fidoconfig, $INCDIR/smapi and $LIBDIR instead of ../smapi and
+../fidoconfig.
 
 Please first do "make install" in smapi before you try to compile
 fidoconfig, and do "make install" in fidoconfig before you try to compile

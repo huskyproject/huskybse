@@ -1,6 +1,8 @@
 
 OS		Compiler		Makefile
 -----------------------------------------------------------------------------
+every (but requires GNU make)		makefile.husky
+
 Linux		gcc			makefile.lnx
 OS/2		EMX			makefile.emo
 OS/2		IBM CSet		makefile.ibo
@@ -11,13 +13,13 @@ DOS		DJGPP			makefile.djg
 DOS		Borland			makefile.bcd
 DOS		Quick C			makefile.qcd
 DOS		Watcom			makefile.wcd
-DOS 32Bit    	Watcom			makefile.wcx
+DOS 32Bit	Watcom			makefile.wcx
 Win32   	Watcom			makefile.wcw
 Win32		Ming			makefile.mgw
 Win32		Borland			makefile.bcw
 Win NT		RSX			makefile.rxw
 FreeBSD		gcc			makefile.bsd
-Tru64 Unix      DEC cc			makefile.osf
+Tru64 Unix	DEC cc			makefile.osf
 Sun		gcc			makefile.sun
 AIX		IBM xlC			makefile.aix
 
