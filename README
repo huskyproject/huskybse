@@ -3,15 +3,14 @@ This package contains some files common to all packages of the Husky-project.
 
 File/Directory	Description
 INSTALL         How to compile, install and use the Husky software. READ THIS!
+huskymak.cfg    Template huskymak.cfg, required for compiling Husky.
 develop-docs/	Some tips and hints for developers that work on Husky source.
-sms/		Setup at Sascha Silbe's system
-mtt/            Setup at Matthias Tichy's system
+sms/		Example Setup at Sascha Silbe's system (may be outdated)
+mtt/            Example Setup at Matthias Tichy's system (may be outdated)
 
 tools, nmcopy und huskyui
-		Some tools that might be helpful, but are not officially
-		supported.
-
-
-
+                These tools are no longer part of the huskybse package, 
+                because they were unstable and confused new users.
+                They are now in the "huskmisc" pacakge.
 
 
