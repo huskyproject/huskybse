@@ -30,6 +30,12 @@ LINK	= ld
 ARCHIVER= zip
 # file removing command
 RM	= rm
+# create directory command
+MKDIR	= mkdir
+# remove directory command
+RMDIR	= rm
+# copy/move command
+INSTALL	= install
 
 ## file suffixes ##
 
@@ -61,6 +67,13 @@ ARFLAGS	= rs
 RMFLAGS	= -f
 # options for archiver
 ARCFLAGS= -9 -j
+# create directory command options
+MKDIROPT= -p
+# remove directory command options
+RMDIROPT= -rf
+# copy/move command options
+INSTOPT	= -c
+
 
 ## Library filename elements ##
 
@@ -127,11 +140,16 @@ $(TARGETDLL):	$(OBJS)
 
 clean:
 	-$(RM) $(RMOPT) *$(_OBJ)
+	-cd ../doc ; make clean
 
 distclean:
 	-$(RM) $(RMOPT) $(TARGETDLL)
 	-$(RM) $(RMOPT) $(TARGETLIB)
 	-$(RM) $(RMOPT) $(PROGRAMS)
+	-$(RM) $(RMOPT) $(PACKAGENAME)
+	-$(RM) $(RMOPT) file_id.diz
+	-$(RMDIR) $(RMDIROPT) $(LIBNAME)
+	-cd ../doc ; make distclean
 
 doc:
 	cd ../doc ; make html
@@ -139,9 +157,10 @@ doc:
 package: static programs doc
         @echo XXXXX library v.$(VER) for YYYYY platform > file_id.diz
 	@echo (Part of HUSKY Fidonet Software Project) >> file_id.diz
-	$(ARCHIVER) $(ARCFLAGS) $(PACKAGENAME) $(TARGETLIB) $(PROGRAMS)
-	$(ARCHIVER) $(ARCFLAGS) $(PACKAGENAME) ../VERSION ../README ../LICENSE
-	$(ARCHIVER) $(ARCFLAGS) $(PACKAGENAME) ../COPYING ../cvsdate.h
-	$(ARCHIVER) $(ARCFLAGS) $(PACKAGENAME) ../INSTALL ../HISTORY
-	$(ARCHIVER) $(ARCFLAGS) $(PACKAGENAME) ../doc/*.html
-	$(ARCHIVER) $(ARCFLAGS) $(PACKAGENAME) file_id.diz
+	$(MKDIR) $(MKDIROPT) $(LIBNAME)
+	$(INSTALL) $(INSTOPT) $(TARGETLIB) $(PROGRAMS) ../VERSION ../README $(LIBNAME)
+	$(INSTALL) $(INSTOPT) ../COPYING ../cvsdate.h ../INSTALL ../LICENSE $(LIBNAME)
+	$(INSTALL) $(INSTOPT) ../HISTORY file_id.diz ../ChangeLog  $(LIBNAME)
+	$(MKDIR) $(MKDIROPT) $(LIBNAME)/$(LIBNAME)
+	$(INSTALL) $(INSTOPT) ../$(H_DIR)/*.h $(LIBNAME)/$(LIBNAME)
+	$(ARCHIVER) $(ARCFLAGS) $(PACKAGENAME) $(LIBNAME)/*
