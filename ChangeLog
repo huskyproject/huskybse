@@ -283,13 +283,64 @@
 
 2001-11-26 Monday 13:01  tobi
 
-	* DEPENCENCIES (1.3), DEPENDENCIES (1.2): merged updates from
-	stable
+	* DEPENCENCIES (1.3), DEPENDENCIES (1.2), mtt/binkd.cfg (1.2),
+	mtt/config (1.4), mtt/huskymak.cfg (1.3), mtt/ifcico (1.4),
+	sms/README (1.4), sms/huskymak.cfg (1.7), sms/msged.cfg (1.3),
+	sms/msged.scheme (1.2), sms/msged.tpl (1.2), sms/cfg/address.cfg
+	(1.4), sms/cfg/arealink.cfg (1.3), sms/cfg/binkd.bsy.lst (1.3),
+	sms/cfg/binkd.cfg (1.4), sms/cfg/binkd.hld.lst (1.4),
+	sms/cfg/binkd.poll.lst (1.4), sms/cfg/binkley (1.3),
+	sms/cfg/binkley.cfg (1.2), sms/cfg/binkley.evt (1.3),
+	sms/cfg/binkley.lng (1.2), sms/cfg/compress.cfg (1.2),
+	sms/cfg/config (1.2), sms/cfg/cost.evt (1.2), sms/cfg/fastlst.cfg
+	(1.3), sms/cfg/ffma.ini (1.2), sms/cfg/fido_issue (1.2),
+	sms/cfg/filebase.cfg (1.2), sms/cfg/filelist.head (1.3),
+	sms/cfg/freepoll.cfg (1.3), sms/cfg/groups.lst (1.4),
+	sms/cfg/huskyui.cfg (1.2), sms/cfg/ifcico.cfg (1.4),
+	sms/cfg/ifcico.global.cfg (1.4), sms/cfg/isdncaus.cfg (1.2),
+	sms/cfg/links.cfg (1.4), sms/cfg/lxtrack.cfg (1.3),
+	sms/cfg/lxtrack.normal.cfg (1.3), sms/cfg/lxtrack.secnet.cfg (1.2),
+	sms/cfg/magic.cfg (1.2), sms/cfg/mailer.cfg (1.2), sms/cfg/misc.cfg
+	(1.2), sms/cfg/msgbase.bland.cfg (1.4), sms/cfg/msgbase.cfg (1.4),
+	sms/cfg/msgbase.elektro.cfg (1.2), sms/cfg/msgbase.fido.cfg (1.4),
+	sms/cfg/msgbase.ftnbb.cfg (1.3), sms/cfg/msgbase.geos.cfg (1.3),
+	sms/cfg/msgbase.hit.cfg (1.3), sms/cfg/msgbase.ldk.cfg (1.4),
+	sms/cfg/msgbase.lfn.cfg (1.4), sms/cfg/msgbase.linux.cfg (1.4),
+	sms/cfg/msgbase.mxbbs.cfg (1.4), sms/cfg/msgbase.pcs.cfg (1.4),
+	sms/cfg/msgbase.rkl.cfg (1.2), sms/cfg/msgbase.schach.cfg (1.2),
+	sms/cfg/msgbase.soli.cfg (1.3), sms/cfg/msgbase.tier.cfg (1.2),
+	sms/cfg/msgbase.tower.cfg (1.4), sms/cfg/msgbase.vpl-runden.cfg
+	(1.4), sms/cfg/msgbase.vpl.cfg (1.4), sms/cfg/msgbase.wip.cfg
+	(1.4), sms/cfg/msgbase.zone21.cfg (1.2), sms/cfg/msgbase.zone7.cfg
+	(1.3), sms/cfg/msged.cfg (1.2), sms/cfg/msged.scheme.cfg (1.2),
+	sms/cfg/msged.tpl (1.2), sms/cfg/msghelp.dat (1.2),
+	sms/cfg/netmgr.cfg (1.2), sms/cfg/nodelist.cfg (1.2),
+	sms/cfg/okfile.lst (1.4), sms/cfg/packer.cfg (1.4),
+	sms/cfg/password.lst (1.4), sms/cfg/path.cfg (1.2),
+	sms/cfg/pmknl.cfg (1.4), sms/cfg/progate.cfg (1.4),
+	sms/cfg/progbbs.tpl (1.2), sms/cfg/protick.ann.ftr (1.2),
+	sms/cfg/protick.ann.hdr (1.2), sms/cfg/protick.cfg (1.4),
+	sms/cfg/protick.key (1.3), sms/cfg/provider.cfg (1.3),
+	sms/cfg/reqmap (1.4), sms/cfg/rights.cfg (1.2), sms/cfg/routing.cfg
+	(1.4), sms/cfg/secnet.cfg (1.2), sms/cfg/stages.lst (1.2),
+	sms/cfg/tty.lst (1.3), sms/cfg/week.cfg (1.3), sms/cfg/wkend.cfg
+	(1.3), sms/cfg/x77mail.cfg (1.2), sms/scripts/14day (1.2),
+	sms/scripts/callin (1.2), sms/scripts/callout (1.2),
+	sms/scripts/maint (1.4), sms/scripts/month (1.3),
+	sms/scripts/mvhuskylog (1.2), sms/scripts/nlupdate (1.7),
+	sms/scripts/procflist (1.4), sms/scripts/procupd (1.2),
+	sms/scripts/runbt (1.5), sms/scripts/scan (1.4), sms/scripts/semact
+	(1.3), sms/scripts/toss (1.6), sms/scripts/week (1.2): merged
+	updates from stable
 
 2001-11-26 Monday 12:26  tobi
 
 	* DEPENDENCIES (1.1): file DEPENDENCIES was initially added on
 	branch huskybse-0_2-stable.
+
+2001-06-03 Sunday 14:12  sms
+
+	* sms/README (1.3): fixed contact info
 
 2001-06-02 Saturday 22:57  tobi
 
@@ -384,6 +435,20 @@
 
 	* Makefile (1.4): removed Makefile
 
+2000-08-07 Monday 20:50  sms
+
+	* huskyui/.cvsignore (1.2), huskyui/Makefile (1.3), huskyui/cfg.c
+	(1.3), huskyui/cfg.h (1.3), huskyui/huskyui.c (1.3),
+	huskyui/huskyui.h (1.2), huskyui/menu.c (1.2), huskyui/menu.h
+	(1.2), huskyui/screen.c (1.2), huskyui/screen.h (1.2),
+	huskyui/showlog.c (1.2), huskyui/showlog.h (1.2),
+	huskyui/showoutb.c (1.2), huskyui/showoutb.h (1.2), huskyui/sock.c
+	(1.2), huskyui/sock.h (1.2), nmcopy/Makefile (1.2), nmcopy/TODO
+	(1.2), nmcopy/nmcopy.c (1.3), tools/.cvsignore (1.2),
+	tools/Makefile (1.3), tools/general.c (1.5), tools/general.h (1.2),
+	tools/poll.c (1.6), tools/request.c (1.6), tools/send.c (1.6),
+	tools/tolower.c (1.3): moved huskyui, nmcopy and tools to huskmisc
+
 2000-08-06 Sunday 23:03  tobi
 
 	* huskymak.cfg (1.26): beos adaptions
@@ -407,13 +472,27 @@
 	* VERSION (1.1): file VERSION was initially added on branch
 	huskybse-0_1.
 
+2000-07-11 Tuesday 20:27  sms
+
+	* nmcopy/: TODO (1.1), nmcopy.c (1.2): using members of group fido
+	as users instead of specifying them on the
+
 2000-07-02 Sunday 01:55  sms
 
 	* Makefile (1.3, huskybse-0_1a-release): added nmcopy
 
+2000-07-02 Sunday 01:54  sms
+
+	* nmcopy/: Makefile (1.1), nmcopy.c (1.1): initial release
+
 2000-05-24 Wednesday 07:27  mt
 
 	* INSTALL (1.3): fixed filename example
+
+2000-05-23 Tuesday 17:32  tobi
+
+	* huskyui/Makefile (1.2), tools/Makefile (1.2): fixed lib order in
+	makefiles
 
 2000-05-23 Tuesday 16:42  tobi
 
@@ -429,6 +508,12 @@
 	README.Makefiles (1.5), huskymak.cfg (1.22): Added Installation
 	Instructions
 
+2000-05-22 Monday 18:23  mt
+
+	* mtt/: binkd.cfg (1.1), config (1.3), huskymak.cfg (1.2), ifcico
+	(1.3) (utags: huskybse-0_1a-release, huskybse-0_1b-release):
+	updated my config
+
 2000-05-18 Thursday 19:30  sms
 
 	* huskymak.cfg (1.21): added H2PAS to huskymak.cfg
@@ -437,6 +522,11 @@
 
 	* huskymak.cfg (1.20): added MSGEDCFG to huskmak.cfg
 
+2000-04-26 Wednesday 12:42  sms
+
+	* huskyui/.cvsignore (1.1), tools/.cvsignore (1.1): added
+	executables to .cvsignore
+
 2000-04-26 Wednesday 12:41  sms
 
 	* huskymak.cfg (1.19): added some pascal options to huskymak.cfg
@@ -444,6 +534,12 @@
 2000-04-24 Monday 18:42  sms
 
 	* Makefile (1.2): removed -f makefile.husky
+
+2000-04-24 Monday 18:34  sms
+
+	* huskyui/Makefile (1.1), huskyui/makefile.husky (1.3),
+	tools/Makefile (1.1), tools/makefile.husky (1.5): renamed
+	makefile.husky to Makefile
 
 2000-04-21 Friday 11:27  sms
 
@@ -460,6 +556,21 @@
 	* Makefile (1.1), makefile.husky (1.4): renamed makefile.husky to
 	Makefile
 
+2000-04-15 Saturday 18:09  tobi
+
+	* huskyui/cfg.h (1.2), tools/general.c (1.4), tools/poll.c (1.4),
+	tools/request.c (1.4), tools/send.c (1.4), tools/tolower.c (1.2):
+	fixed include statements to match new 8.3 filenames
+
+2000-04-10 Monday 14:37  sms
+
+	* tools/: general.c (1.3), poll.c (1.3), request.c (1.3), send.c
+	(1.3): fixed some warnings
+
+2000-04-10 Monday 11:52  sms
+
+	* huskyui/huskyui.c (1.2): removed include pthread.h
+
 2000-04-10 Monday 11:51  sms
 
 	* huskymak.cfg (1.18): updated huskymak.cfg
@@ -474,11 +585,47 @@
 
 2000-03-30 Thursday 15:01  tobi
 
-	* makefile.husky (1.3): Makefile fixes
+	* makefile.husky (1.3), huskyui/makefile.husky (1.2),
+	tools/makefile.husky (1.4): Makefile fixes
 
 2000-03-27 Monday 13:55  sms
 
-	* makefile.husky (1.2): added huskyui
+	* makefile.husky (1.2), huskyui/cfg.c (1.1), huskyui/cfg.h (1.1),
+	huskyui/huskyui.c (1.1), huskyui/huskyui.h (1.1),
+	huskyui/makefile.husky (1.1), huskyui/menu.c (1.1), huskyui/menu.h
+	(1.1), huskyui/screen.c (1.1), huskyui/screen.h (1.1),
+	huskyui/showlog.c (1.1), huskyui/showlog.h (1.1),
+	huskyui/showoutb.c (1.1), huskyui/showoutb.h (1.1), huskyui/sock.c
+	(1.1), huskyui/sock.h (1.1): added huskyui
+
+2000-03-27 Monday 13:52  sms
+
+	* sms/cfg/: ffma.ini (1.1), huskyui.cfg (1.1), msgbase.schach.cfg
+	(1.1), msgbase.tier.cfg (1.1), msgbase.zone21.cfg (1.1), msged.cfg
+	(1.1), msged.scheme.cfg (1.1), msged.tpl (1.1), x77mail.cfg (1.1)
+	(utags: huskybse-0_1a-release, huskybse-0_1b-release): added
+	missing files
+
+2000-03-25 Saturday 00:15  sms
+
+	* sms/: README (1.2), huskymak.cfg (1.6), cfg/address.cfg (1.3),
+	cfg/binkd.cfg (1.3), cfg/binkd.hld.lst (1.3), cfg/binkd.poll.lst
+	(1.3), cfg/binkley (1.2), cfg/fastlst.cfg (1.2), cfg/groups.lst
+	(1.3), cfg/ifcico.cfg (1.3), cfg/ifcico.global.cfg (1.3),
+	cfg/links.cfg (1.3), cfg/msgbase.bland.cfg (1.3), cfg/msgbase.cfg
+	(1.3), cfg/msgbase.fido.cfg (1.3), cfg/msgbase.ftnbb.cfg (1.2),
+	cfg/msgbase.geos.cfg (1.2), cfg/msgbase.ldk.cfg (1.3),
+	cfg/msgbase.lfn.cfg (1.3), cfg/msgbase.linux.cfg (1.3),
+	cfg/msgbase.mxbbs.cfg (1.3), cfg/msgbase.pcs.cfg (1.3),
+	cfg/msgbase.soli.cfg (1.2), cfg/msgbase.tower.cfg (1.3),
+	cfg/msgbase.vpl-runden.cfg (1.3), cfg/msgbase.vpl.cfg (1.3),
+	cfg/msgbase.wip.cfg (1.3), cfg/msgbase.zone7.cfg (1.2),
+	cfg/okfile.lst (1.3), cfg/packer.cfg (1.3), cfg/password.lst (1.3),
+	cfg/pmknl.cfg (1.3), cfg/progate.cfg (1.3), cfg/protick.cfg (1.3),
+	cfg/reqmap (1.3), cfg/routing.cfg (1.3), cfg/week.cfg (1.2),
+	cfg/wkend.cfg (1.2), scripts/maint (1.3), scripts/nlupdate (1.6),
+	scripts/runbt (1.4), scripts/scan (1.3), scripts/toss (1.5) (utags:
+	huskybse-0_1a-release, huskybse-0_1b-release): updated my config
 
 2000-03-20 Monday 21:22  mt
 
@@ -501,15 +648,25 @@
 
 	* huskymak.cfg (1.11): Makefile options
 
+2000-03-13 Monday 22:47  sms
+
+	* tools/tolower.c (1.1): added tool tolower
+
+2000-03-13 Monday 22:46  sms
+
+	* tools/makefile.husky (1.3): updated legacy makefiles
+
 2000-03-09 Thursday 17:00  sms
 
-	* README.Makefiles (1.3), systems.lst (1.5): updated
-	Makefile-documentation and sms/huskymak.cfg
+	* README.Makefiles (1.3), systems.lst (1.5), sms/huskymak.cfg
+	(1.5): updated Makefile-documentation and sms/huskymak.cfg
 
 2000-03-09 Thursday 16:27  sms
 
-	* huskymak.cfg (1.10): moved smapi and fidoconfig headers to
-	INCDIR/smapi and INCDIR/fidoconfig
+	* huskymak.cfg (1.10), tools/general.c (1.2), tools/makefile.husky
+	(1.2), tools/poll.c (1.2), tools/request.c (1.2), tools/send.c
+	(1.2): moved smapi and fidoconfig headers to INCDIR/smapi and
+	INCDIR/fidoconfig
 
 2000-03-08 Wednesday 17:11  sms
 
@@ -521,6 +678,64 @@
 	* huskymak.cfg (1.8): added ldconfig to makefile.husky and
 	makefile.lnx of smapi and fidoconfig
 
+2000-01-29 Saturday 22:07  sms
+
+	* sms/: huskymak.cfg (1.4), msged.cfg (1.2, huskybse-0_1b-release,
+	huskybse-0_1a-release), cfg/address.cfg (1.2), cfg/arealink.cfg
+	(1.2, huskybse-0_1b-release, huskybse-0_1a-release),
+	cfg/binkd.bsy.lst (1.2, huskybse-0_1b-release,
+	huskybse-0_1a-release), cfg/binkd.cfg (1.2), cfg/binkd.hld.lst
+	(1.2), cfg/binkd.poll.lst (1.2), cfg/binkley (1.1), cfg/binkley.evt
+	(1.2, huskybse-0_1b-release, huskybse-0_1a-release),
+	cfg/compress.cfg (1.1, huskybse-0_1b-release,
+	huskybse-0_1a-release), cfg/fastlst.cfg (1.1), cfg/filelist.head
+	(1.2, huskybse-0_1b-release, huskybse-0_1a-release),
+	cfg/freepoll.cfg (1.2, huskybse-0_1b-release,
+	huskybse-0_1a-release), cfg/groups.lst (1.2), cfg/ifcico.cfg (1.2),
+	cfg/ifcico.global.cfg (1.2), cfg/isdncaus.cfg (1.1,
+	huskybse-0_1b-release, huskybse-0_1a-release), cfg/links.cfg (1.2),
+	cfg/lxtrack.cfg (1.2, huskybse-0_1b-release,
+	huskybse-0_1a-release), cfg/lxtrack.normal.cfg (1.2,
+	huskybse-0_1b-release, huskybse-0_1a-release),
+	cfg/lxtrack.secnet.cfg (1.1, huskybse-0_1b-release,
+	huskybse-0_1a-release), cfg/magic.cfg (1.1, huskybse-0_1b-release,
+	huskybse-0_1a-release), cfg/msgbase.bland.cfg (1.2),
+	cfg/msgbase.cfg (1.2), cfg/msgbase.fido.cfg (1.2),
+	cfg/msgbase.ftnbb.cfg (1.1), cfg/msgbase.geos.cfg (1.1),
+	cfg/msgbase.hit.cfg (1.2, huskybse-0_1b-release,
+	huskybse-0_1a-release), cfg/msgbase.ldk.cfg (1.2),
+	cfg/msgbase.lfn.cfg (1.2), cfg/msgbase.linux.cfg (1.2),
+	cfg/msgbase.mxbbs.cfg (1.2), cfg/msgbase.pcs.cfg (1.2),
+	cfg/msgbase.soli.cfg (1.1), cfg/msgbase.tower.cfg (1.2),
+	cfg/msgbase.vpl-runden.cfg (1.2), cfg/msgbase.vpl.cfg (1.2),
+	cfg/msgbase.wip.cfg (1.2), cfg/msgbase.zone7.cfg (1.1),
+	cfg/netmgr.cfg (1.1, huskybse-0_1b-release, huskybse-0_1a-release),
+	cfg/okfile.lst (1.2), cfg/password.lst (1.2), cfg/pmknl.cfg (1.2),
+	cfg/progate.cfg (1.2), cfg/protick.cfg (1.2), cfg/protick.key (1.2,
+	huskybse-0_1b-release, huskybse-0_1a-release), cfg/provider.cfg
+	(1.2, huskybse-0_1b-release, huskybse-0_1a-release), cfg/reqmap
+	(1.2), cfg/routing.cfg (1.2), cfg/secnet.cfg (1.1,
+	huskybse-0_1b-release, huskybse-0_1a-release), cfg/tty.lst (1.2,
+	huskybse-0_1b-release, huskybse-0_1a-release), scripts/nlupdate
+	(1.5), scripts/procflist (1.3, huskybse-0_1b-release,
+	huskybse-0_1a-release), scripts/runbt (1.3), scripts/toss (1.4):
+	updated example config sms
+
+2000-01-28 Friday 22:27  sms
+
+	* sms/scripts/ptflg (1.2): removed ptflg
+
+2000-01-28 Friday 22:25  sms
+
+	* sms/scripts/: poll (1.4), request (1.3), send (1.3): removed
+	poll, request and send
+
+2000-01-28 Friday 22:13  sms
+
+	* tools/: general.c (1.1), general.h (1.1), makefile.husky (1.1),
+	poll.c (1.1), request.c (1.1), send.c (1.1): added tools subdir
+	containing poll, request and send
+
 2000-01-28 Friday 13:57  sms
 
 	* huskymak.cfg (1.7): removed huskymak.cfg dependency from
@@ -529,6 +744,10 @@
 2000-01-23 Sunday 23:31  sms
 
 	* huskymak.cfg (1.6): added DIRSEP to huskymak.cfg
+
+2000-01-23 Sunday 00:54  sms
+
+	* sms/huskymak.cfg (1.3): updated huskymak.cfg
 
 2000-01-22 Saturday 23:42  sms
 
@@ -541,17 +760,47 @@
 
 2000-01-16 Sunday 13:12  sms
 
-	* huskymak.cfg (1.3): updated huskymak.cfg and runbt
+	* huskymak.cfg (1.3), sms/huskymak.cfg (1.2), sms/scripts/runbt
+	(1.2): updated huskymak.cfg and runbt
+
+2000-01-05 Wednesday 19:53  mt
+
+	* mtt/ifcico (1.2): fix
+
+1999-12-02 Thursday 09:36  mt
+
+	* mtt/config (1.2): fix
+
+1999-11-28 Sunday 22:15  sms
+
+	* sms/scripts/: maint (1.2), month (1.2, huskybse-0_1b-release,
+	huskybse-0_1a-release), nlupdate (1.4), procflist (1.2), toss
+	(1.3): updated some scripts
+
+1999-11-26 Friday 08:35  mt
+
+	* mtt/huskymak.cfg (1.1): added huskymak.cfg
+
+1999-11-24 Wednesday 21:18  mt
+
+	* mtt/: config (1.1), ifcico (1.1): added mtt configs
+
+1999-11-15 Monday 21:39  sms
+
+	* sms/: cfg/packer.cfg (1.2), scripts/poll (1.3), scripts/request
+	(1.2), scripts/scan (1.2), scripts/send (1.2), scripts/toss (1.2):
+	sms: Updated packer.cfg and some scripts.
 
 1999-10-14 Thursday 16:07  sms
 
-	* README.Makefiles (1.1): reorganized Makefiles, read
-	husky-common/README.Makefiles \!\!\!
+	* README.Makefiles (1.1), sms/huskymak.cfg (1.1): reorganized
+	Makefiles, read husky-common/README.Makefiles \!\!\!
 
 1999-10-14 Thursday 15:40  sms
 
-	* README (1.3), huskymak.cfg (1.2), systems.lst (1.3): reorganized
-	Makefiles, read husky-common/README.Makefiles \!\!\!
+	* README (1.3), huskymak.cfg (1.2), systems.lst (1.3),
+	sms/scripts/nlupdate (1.3): reorganized Makefiles, read
+	husky-common/README.Makefiles \!\!\!
 
 1999-10-12 Tuesday 08:51  tobi
 
@@ -569,9 +818,76 @@
 
 1999-10-08 Friday 20:59  sms
 
-	* README (1.2): updated README, poll and semact
+	* README (1.2), sms/scripts/poll (1.2), sms/scripts/semact (1.2,
+	huskybse-0_1b-release, huskybse-0_1a-release): updated README, poll
+	and semact
+
+1999-09-26 Sunday 17:54  sms
+
+	* sms/scripts/nlupdate (1.2): updated nlupdate
 
 1999-09-23 Thursday 20:09  sms
 
 	* README (1.1): added README
+
+1999-09-23 Thursday 20:09  sms
+
+	* sms/: README (1.1), msged.cfg (1.1), msged.scheme (1.1,
+	huskybse-0_1b-release, huskybse-0_1a-release), msged.tpl (1.1,
+	huskybse-0_1b-release, huskybse-0_1a-release): added README
+	msged.cfg msged.scheme msged.tpl
+
+1999-09-23 Thursday 03:41  sms
+
+	* sms/cfg/: address.cfg (1.1), arealink.cfg (1.1), binkd.bsy.lst
+	(1.1), binkd.cfg (1.1), binkd.hld.lst (1.1), binkd.poll.lst (1.1),
+	binkley.cfg (1.1, huskybse-0_1b-release, huskybse-0_1a-release),
+	binkley.evt (1.1), binkley.lng (1.1, huskybse-0_1b-release,
+	huskybse-0_1a-release), config (1.1, huskybse-0_1b-release,
+	huskybse-0_1a-release), cost.evt (1.1, huskybse-0_1b-release,
+	huskybse-0_1a-release), fido_issue (1.1, huskybse-0_1b-release,
+	huskybse-0_1a-release), filebase.cfg (1.1, huskybse-0_1b-release,
+	huskybse-0_1a-release), filelist.head (1.1), freepoll.cfg (1.1),
+	groups.lst (1.1), ifcico.cfg (1.1), ifcico.global.cfg (1.1),
+	links.cfg (1.1), lxtrack.cfg (1.1), lxtrack.normal.cfg (1.1),
+	mailer.cfg (1.1, huskybse-0_1b-release, huskybse-0_1a-release),
+	misc.cfg (1.1, huskybse-0_1b-release, huskybse-0_1a-release),
+	msgbase.bland.cfg (1.1), msgbase.cfg (1.1), msgbase.elektro.cfg
+	(1.1, huskybse-0_1b-release, huskybse-0_1a-release),
+	msgbase.fido.cfg (1.1), msgbase.hit.cfg (1.1), msgbase.ldk.cfg
+	(1.1), msgbase.lfn.cfg (1.1), msgbase.linux.cfg (1.1),
+	msgbase.mxbbs.cfg (1.1), msgbase.pcs.cfg (1.1), msgbase.rkl.cfg
+	(1.1, huskybse-0_1b-release, huskybse-0_1a-release),
+	msgbase.tower.cfg (1.1), msgbase.vpl-runden.cfg (1.1),
+	msgbase.vpl.cfg (1.1), msgbase.wip.cfg (1.1), msghelp.dat (1.1,
+	huskybse-0_1b-release, huskybse-0_1a-release), nodelist.cfg (1.1,
+	huskybse-0_1b-release, huskybse-0_1a-release), okfile.lst (1.1),
+	packer.cfg (1.1), password.lst (1.1), path.cfg (1.1,
+	huskybse-0_1b-release, huskybse-0_1a-release), pmknl.cfg (1.1),
+	progate.cfg (1.1), progbbs.tpl (1.1, huskybse-0_1b-release,
+	huskybse-0_1a-release), protick.ann.ftr (1.1,
+	huskybse-0_1b-release, huskybse-0_1a-release), protick.ann.hdr
+	(1.1, huskybse-0_1b-release, huskybse-0_1a-release), protick.cfg
+	(1.1), protick.key (1.1), provider.cfg (1.1), reqmap (1.1),
+	rights.cfg (1.1, huskybse-0_1b-release, huskybse-0_1a-release),
+	routing.cfg (1.1), stages.lst (1.1, huskybse-0_1b-release,
+	huskybse-0_1a-release), tty.lst (1.1), week.cfg (1.1), wkend.cfg
+	(1.1): added Cfgs
+
+1999-09-23 Thursday 03:23  sms
+
+	* sms/scripts/: mvhuskylog (1.1, huskybse-0_1b-release,
+	huskybse-0_1a-release), ptflg (1.1): added ptflg and mvhuskylog to
+	Scripts
+
+1999-09-23 Thursday 03:22  sms
+
+	* sms/scripts/: 14day (1.1, huskybse-0_1b-release,
+	huskybse-0_1a-release), callin (1.1, huskybse-0_1b-release,
+	huskybse-0_1a-release), callout (1.1, huskybse-0_1b-release,
+	huskybse-0_1a-release), maint (1.1), month (1.1), nlupdate (1.1),
+	poll (1.1), procflist (1.1), procupd (1.1, huskybse-0_1b-release,
+	huskybse-0_1a-release), request (1.1), runbt (1.1), scan (1.1),
+	semact (1.1), send (1.1), toss (1.1), week (1.1,
+	huskybse-0_1b-release, huskybse-0_1a-release): added Scripts
 
