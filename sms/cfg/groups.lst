@@ -13,7 +13,7 @@ K	VPLNet
 L	AquaBBS
 M	BTXE
 N	Heiko Wuest (tower.de)
-O	Gabriel Plutzar (hit.priv.at)
+O
 P	PCSNet (PC Shopping)
 R	LFN (LinuxFileNet)
 S	FIP (Fido over IP)
@@ -24,4 +24,8 @@ W       GeosNet
 X       SoliNet
 Y
 Z	SysOp access
+
+schach		ChessNet
+tier		TierNet
+zone21		Zone 21 (former GerNet)
 

@@ -101,7 +101,7 @@ function lookfordiffs ()
 # lookfornls ()
 function lookfornls ()
 {
- local nlmasks="elek3d elektnet ldk-node ldk-pnt lfn linuxnet linuxpnt nodelist pcsnet pcsp3d points24 vplnet vplpnt wipost wipost3d z7nlist"
+ local nlmasks="elek3d elektnet geonode ldk-node ldk-pnt lfn linuxnet linuxpnt nodelist pcsnet pcsp3d points24 tiernode unionnet vplnet vplpnt wipost wipost3d z7nlist"
 
  echo looking for new nodelists
 
@@ -129,7 +129,7 @@ function checkold()
 function killold()
 {
  # kill old nodelists
- local nlmasks="elek3d elektnet ldk-node ldk-pnt lfn linuxnet linuxpnt nodelist pcsnet pcsp3d points24 vplnet vplpnt wipost wipost3d z7nlist"
+ local nlmasks="elek3d elektnet geonode ldk-node ldk-pnt lfn linuxnet linuxpnt nodelist pcsnet pcsp3d points24 tiernode unionnet vplnet vplpnt wipost wipost3d z7nlist"
 
  echo removing old nodelists
 
@@ -153,7 +153,7 @@ function rebuildindex ()
  # rebuilding index takes very long, so put it into background
  echo rebuilding index in the background
 
-# ifindex &
+ ifindex &
  pushd /husky/cfg > /dev/null
  fastlst -f > /dev/null 2>&1 &
  popd > /dev/null

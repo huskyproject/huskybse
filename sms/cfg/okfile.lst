@@ -1,6 +1,9 @@
 @FILES /husky/files/24350424.all
 @NODELIST       /husky/files/nodediff/nodelist.a??
 @POINTS24       /husky/files/24000/points24.a??
+/husky/files/*
+/husky/files/205/allfiles/*
+/husky/files/205/echolist/*
 /husky/files/205/echolist/*
 /husky/files/205/filelist/*
 /husky/files/24000/*
@@ -32,6 +35,7 @@
 /husky/files/fidonews/*
 /husky/files/filelist//2476/419/*
 /husky/files/ftsc/*
+/husky/files/geosnet/inf/*
 /husky/files/gfd/dev/edm/*
 /husky/files/gfd/dev/info/*
 /husky/files/hsim/beta/*
@@ -160,10 +164,13 @@
 /husky/files/pcs/ddsk/*
 /husky/files/pcs/inf/*
 /husky/files/pcs/ndl/*
+/husky/files/pcs/shw/*
 /husky/files/plc2435/*
 /husky/files/recliste/*
 /husky/files/region24/*
 /husky/files/rules24/*
+/husky/files/solinet/inf/*
+/husky/files/tiernet/inf/*
 /husky/files/vpl/host/*
 /husky/files/vpl/host/addo/*
 /husky/files/vpl/host/cpla/*
@@ -207,9 +214,14 @@
 /husky/files/wip/tx/kr/histor/*
 /husky/files/wip/tx/pol/prg/*
 /husky/files/wip/tx/pol/son/*
+/husky/files/wip/tx/soziales/*
 /husky/files/wip/tx/wir/allg/*
 /husky/files/wwb/*
 /husky/files/wwb/fwdl/*
+/husky/files/z21/491/*
+/husky/files/z21ndiff/*
+/husky/files/z21nodes/*
+/husky/files/z21point/*
 /husky/files/z7ndiff/*
 /husky/files/z7nlist/*
 /husky/files/zyx/pres/*

@@ -5,7 +5,7 @@ cp /husky/work/echotoss.log /husky/work/echotoss.log.2
 hpt scan
 protick scan
 
-# lxtrack
+# ffma scanall
 
 progate
 
@@ -14,7 +14,7 @@ hpt pack
 # /husky/scripts/send_uue
 
 cp /husky/work/echotoss.log.2 /husky/work/echotoss.log
-hpt link
+hptlink
 
 if [ -f /husky/work/echotoss.log ] ; then rm /husky/work/echotoss.log ; fi
 if [ -f /husky/work/echotoss.log.2 ] ; then rm /husky/work/echotoss.log.2 ; fi

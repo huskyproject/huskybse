@@ -1,7 +1,8 @@
 #!/bin/bash
 . /etc/profile
 
-export HOUR WEEK FREEMINUTE
+export TZ=CET-1
+export HOUR WEEK
 
 function BBS()
 {
@@ -110,15 +111,6 @@ function loop()
     if [ `date +%w` = 6 ] ; then WEEK=0 ; fi
     echo HOUR=$HOUR
     echo WEEK=$WEEK
-
-    FREEMINUTE=0
-    # if [ $HOUR >= 19 ] ; then FREEMINUTE=1 ; fi
-    # if [ $HOUR >= 20 ] ; then FREEMINUTE=1 ; fi
-    # if [ $HOUR >= 21 ] ; then FREEMINUTE=1 ; fi
-    # if [ $HOUR >= 22 ] ; then FREEMINUTE=1 ; fi
-    # if [ $HOUR >= 23 ] ; then FREEMINUTE=1 ; fi
-    FREEMINUTE=0
-    echo FREEMINUTE=$FREEMINUTE
 
     . /tmp/cbc/cbc
 

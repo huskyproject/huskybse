@@ -64,6 +64,9 @@ hpt scan
 # gate EMails
 progate
 
+# PNM->SNMs, MLs, etc.
+ffma scanall
+
 # pack netmails
 hpt pack
 
@@ -73,5 +76,5 @@ hpt pack
 # create import.log
 touch /husky/work/import.log
 # link areas with new mails
-hpt link
+hptlink
 

@@ -1,5 +1,5 @@
 
-This directory contains the scripts and cfgs I'm using on my system.
+This directory contains the scripts and cfgs I'm using on my home system.
 
 The following table is an overview to all the programs I am using:
 
@@ -8,7 +8,7 @@ Function        | Program
                 |
                 | *** Husky ***
 Tosser/Router   | HPT (works)
-Tracker         | lxtrack
+Tracker         | ffma (works)
 MailEditor      | MsgEd TE (works)
 Ticker          | ProTick (works)
 MkNL            | ProMkNL (works)
@@ -16,9 +16,10 @@ PutMsg          | MPost TE
 EMail-Gate      | ProGate (works)
 FileListGen     | ptflg (works)
 FLD             | (GNU Diff)
+Tools		| husky-common/tools (works)
                 |
                 | *** other ***
-Mailer          | Modem/ISDN: mgetty+ifcico (works) / Binkley
+Mailer          | Modem/ISDN: BT XE (works), mgetty+ifcico+pppd (works)
                 | TCP/IP: BinkD (works)
                 | ISDN Crash-Mails: x77mail
 VirScan         | McAffe for Linux?
@@ -26,10 +27,10 @@ RenamLog        | log-daemon, cron-job (works)
 SendFax         | mgetty+sendfax
 CallMon         | isdnlog (works)
 Scheduler       | cron + SemAct (works)
+V7(+)-Compiler  | fastlst
                 |
                 | *** nothing yet ***
 BBS             |
-V7(+)-Compiler  |
 FileBase-       |
  Maintenance    |
 AutoPassive     |
@@ -45,7 +46,6 @@ Fido-related:
 
 - arc
 - lha
-- tolower
 - unace
 - unarj
 - unzip
@@ -53,7 +53,7 @@ Fido-related:
 
 
 The whole system is running as user fido, all non-sensitive files (i.e. that
-contain not passwords or netmails) are world-readable (chmod 755 / 644).
+contain no passwords or netmails) are world-readable (chmod 755 / 644).
 Echomail areas are group-writable (chmod 664, group fido).
 No program has the setuid/setgid bit set.
 
@@ -121,26 +121,27 @@ This is the directory structure:
 - /tmp/ifcico				used by ifcico for temporarily storing
 					incoming filerequests
 
-/husky/bin is in PATH (/etc/profile), /husky/lib is in /etc/ld.so.conf (run
-ldconfig after editing that file)
+/husky/bin is in PATH (/etc/profile), /husky/lib is in /etc/ld.so.conf
 
 Minicom has two configs, the default one is for ISDN and uses /dev/ttyI3
-at 115200 with Init string "^M~ATZ^M~AT&E3012959^M~" (3012959 is the MSN I
-use for the mailbox). "ttyS2" is for the (analog) modem and uses /dev/ttyS2
-at 38400 with Init string "^M~ATZ^M~". Both setups set the BS (BackSpace) key
-to BS, not to DEL.
+at 115200 with Init string "^M~ATZ^M~AT&E6227041^M~" (6227041 is the MSN
+I use for the mailbox). "ttyS1" is for the (analog) modem and uses /dev/ttyS1
+at 115200 with Init string "^M~ATZ^M~". Both setups set the BS (BackSpace)
+key to BS, not to DEL.
 
 mgetty is compiled with Fido- and AutoPPP-Support and has its Cfgs in
-/etc/mgetty. /usr/local/bin/ppplogin is used for AutoPPP. The devices ttyS2,
-ttyI0 and ttyI1 are handled. The issue file /husky/cfg/fido_issue contains
-a small "Banner".
+/etc/mgetty. /usr/local/bin/ppplogin is used for AutoPPP. The devices ttyI5
+ttyS1 are handled. The issue file /husky/cfg/fido_issue contains
+a short greeting. On ttyI5 it listens to 6227042 for PPP callers.
+
+BTXE is compiled with fidoconfig-support, so the additional password list is
+rather short (ifcico needs it, though).
 
 This are the entries in /etc/inittab:
 
 === Cut ===
 S1:2345:respawn:/sbin/mgetty -i/husky/cfg/fido_issue /dev/ttyS1
-I0:2345:respawn:/sbin/mgetty -i/husky/cfg/fido_issue /dev/ttyI0
-I1:2345:respawn:/sbin/mgetty -i/husky/cfg/fido_issue /dev/ttyI1
+I5:2345:respawn:/sbin/mgetty -i/husky/cfg/fido_issue /dev/ttyI5
 === Cut ===
 
 /usr/local/bin/ppplogin uses /etc/ppp/options.ttyxx for assigning the remote
@@ -148,7 +149,6 @@ IPs
 
 ifcico uses /husky/cfg/ifcico.cfg as config, which includes
 /husky/cfg/ifcico.global.cfg and /husky/cfg/password.lst (chmod 640).
-The devices ttyI4 and ttyS2 are used for dial-out.
 
 /husky/cfg/tty.lst contains a list of all devices used by the fido subsystem
 and their purpose.
@@ -156,12 +156,6 @@ and their purpose.
 /husky/cfg/group.lst lists all groups used in fidoconfig.
 
 MsgEd has an own Cfg, but also uses fidoconfig for addresses, areas, etc.
-I called it msged.cfg so you can see it, in real life it's called ".msged".
-The same applies to msged.tpl (".msged.tpl") and msged.scheme ".msged.scheme".
-.msged.hlp is a link to /husky/work/msghelp.dat, so I only need to upgrade
-a single file when installing a new version of MsgEd.
-Similarily .msged.readmaps and .msged.writmaps are links to
-/husky/work/readmaps.dat and /husky/work/writmaps.dat, respectively.
 
 PTFLG (a filelist generator using the protick config) is a script and needs
 a bit of configuration, so it had better gone to /husky/scripts.
@@ -175,8 +169,8 @@ with the script /etc/init.d/fido.
 There are several entries in crontab:
   - /husky/bin/mvhuskylog at 23:59
   - /bin/touch: /husky/work/{maint.now, week.now, 14day.now, month.now}
-  - /husky/scripts/poll: uplinks
-  - /husky/scripts/request: request "FILES" from several nodes every month
+  - /husky/bin/poll: uplinks
+  - /husky/bin/request: request "FILES" from several nodes every month
 
 
 /husky/cfg/stages.lst contains a new concept I might use in future.
@@ -189,16 +183,12 @@ scripts			/husky/scripts
 cfg			/husky/cfg
 
 
-File			Original file
-msged.cfg		~/.msged
-msged.tpl		~/.msged.tpl
-msged.scheme		~/.msged.scheme
-
+2:2435/434 is my IP node at the university.
 
 If there is anything missing that you need or if you have a questions/
-suggestions/comment, do not hesitate to contact me.
+suggestions/comments, do not hesitate to contact me:
 
-Sascha Silbe, 2:2435/424
+Sascha Silbe, 2:2435/424 (ISDN/Analog), 2:2435/434 (BinkP)
 Sascha.Silbe@ldknet.org
 http://www.ldknet.org/~ssilbe/
 Handy (it's your phone bill :) ) 0170-4111488

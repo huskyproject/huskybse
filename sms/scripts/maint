@@ -22,7 +22,7 @@ if [ -f /husky/work/echotoss.log ] ; then rm /husky/work/echotoss.log ; fi
 hpt scan
 
 if [ -f /husky/work/import.log ] ; then rm /husky/work/import.log ; fi
-hpt link
+hptlink
 # sqpack index
 
 purgeDupes
