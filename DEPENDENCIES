@@ -125,5 +125,5 @@ d) Compile and Install Smapi 1.6.4
 
 Now, both your old Hpt 0.9.7 and your new Msged 6.0 will work.  If you want
 to recompile Msged (e.g. a newer version like Msged 6.0.1), you must repeat
-stebs b), c) and d).
+steps b), c) and d).
 
