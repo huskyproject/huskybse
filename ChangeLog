@@ -1,3 +1,8 @@
+2002-11-05 Tuesday 16:08  stas_degteff
+
+	* develop-docs/cpp2c.pl (1.1): Perl script for replacing C++
+	coments with pure C comments
+
 2002-10-18 Friday 05:45  stas_degteff
 
 	* bugreport.rus (1.1), bugreport.txt (1.1): Add bugreport forms
