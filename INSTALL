@@ -56,7 +56,7 @@ explicitly been instructed, you should use the release versions. They are
 available at the Husky homepage at http://husky.sourceforge.net.
 
 Note that IF you really want to get daily snapshots from
-http://cvs.physcip.uni-stuttgart.de/cvs2, you should fetch all modules that
+http://husky.sourceforge.net/cvs2, you should fetch all modules that
 you need at once, i.E. use snapshots from the same day for all libraries and
 programs.
 
@@ -76,7 +76,7 @@ directory. E.g:
 
 Replace -latest with the actual file name extension. This could be "-latest"
 if you download from our CVS site, but it could also be something like
-"-0.9.7-stable", etc.
+"-1.2.0-stable", "-1.2.1-release", etc.
 
 Then, there are two basic ways of building Husky source: You can use the
 standard Makefile with huskymak.cfg, or you can use the platform dependent
@@ -132,6 +132,8 @@ files are currently provided:
   -------------------------------------------------------------------
   huskymak.cfg      Generic UNIX (will work as is on Linux, contains
                     documentation on what to change for other Unices)
+  huskymak.cfg.bsd  FreeBSD (possible OpenBSD and NetBSD)
+  huskymak.cfg.sun  SunOS (Solaris), using GNU C & GNU make
 
 So, for example, you would do
 
@@ -141,7 +143,7 @@ So, for example, you would do
 
 Note that the "huskybse" subdirectory, like any other subdirectory mentioned
 from now on, might also have a version number as prefix, like
-"huskybse-0.10", depending from where you got the soruce files from.
+"huskybse-0.10", depending from where you got the source files from.
 
 Please read the comments in the template huskymak.cfg and change all values
 according to your needs.
@@ -189,11 +191,11 @@ the standard Makefile in the following ways:
   + You don't need to edit huskymak.cfg, the makefiles work for themselves
   + You can compile everything without having to install anything
   + Many non-UNIX systems are supported
-  + You don't need neither GNU make nor gcc
+  + You don't need neither GNU make nor gcc if not specified other
   + Sometimes gives less trouble than the standard Makefile
 
-  - You cannot install anything with these makefiles. It is within your
-    responsibility to copy the programs that you compiled to the
+  - You cannot install anything with these makefiles (usualy). It is within
+    your responsibility to copy the programs that you compiled to the
     proper directories.
   - No support for shared libraries, everything is linked statically.
 
@@ -204,34 +206,36 @@ II.2.2 List of platforms supported by the legacy makefiles
 The following is a list of platforms that are supported by legacy
 makefiles.
 
-  Makefile      Sup.  Platform  Compiler
-  --------------------------------------
+  Makefile         Sup.  Platform  Compiler
+  ---------------------------------------------------------------------------
 
-  makefile.unx  1     Unix      Any (standard "cc" is enough!)
-  makefile.emo  1     OS/2      EMX; OMF static (standalone) binaries
-  makefile.bcd  1     DOS       Borland C / Turbo C (requires TASM)
-  makefile.djg  1     DOS/32    DJ Delorie GNU gcc (DJGPP)
+  makefile.unx     1     Unix      Any (standard "cc" is enough!)
+  makefile.djg     1     DOS/32    DJ Delorie GNU gcc (DJGPP)
+  makefile.emo     1     OS/2      EMX; OMF static (standalone) binaries
+  makefile.cyg     1     Win32     Mingw32 on Cygwin: http://www.cygwin.com
+  makefile.mvc     1     Win32     Microsoft Visual C
+  makefile.mvcdll  1     Win32     Microsoft Visual C - dll build
 
-  makefile.lnx  2     Linux     GNU gcc
-  makefile.bsd  2     BSD       (tested: FreeBSD, NetBSD) GNU gcc
-  makefile.sun  2     Solaris   GNU gcc
-  makefile.emx  2     OS/2      EMX; a.out dynamic (EMXRT) binaries
-  makefile.ibo  2     OS/2      IBM CSet or VACPP
-  makefile.wco  2     OS/2      Watcom C
-  makefile.bco  2     OS/2      Borland C 2.0
-  makefile.qcd  2     DOS       Quick C / Microsoft MSC 6.0 (req. MASM)
-  makefile.wcd  2     DOS       Watcom C
-  makefile.wcx  2     DOS/32    Watcom C with DOS extender
-  makefile.wcw  2     Win32     Watcom C
-  makefile.mgw  2     Win32     Mingw32 or Mingw32/CPD gcc: www.mingw32.org
-  makefile.bcw  2     Win32     Borland C
-  makefile.rxw  2     Win32     EMX/RSXNT gcc with -Zwin32
-  makefile.be   2     BeOS      BeOS R5 with gcc
+  makefile.be      2     BeOS      BeOS R5 with gcc
+  makefile.bsd     2     BSD       (tested: FreeBSD) GNU gcc
+  makefile.emx     2     OS/2      EMX; a.out dynamic (EMXRT) binaries
+  makefile.lnx     2     Linux     GNU gcc
+  makefile.mgw     2     Win32     Mingw32 or Mingw32/CPD gcc: www.mingw32.org
+  makefile.rxw     2     Win32     EMX/RSXNT gcc with -Zwin32
+  makefile.sun     2     Solaris   GNU gcc
+  makefile.wco     2     OS/2      Watcom C
+  makefile.wcw     2     Win32     Watcom C
+  makefile.wcx     2     DOS/32    Watcom C with DOS extender
 
-  makefile.hco  3     OS/2      Metaware High C
-  makefile.osf  3     TRU64     Compaq CC (or DEC Unix with DEC cc)
-  makefile.aix  3     AIX       IBM xlC
-  makefile.mvc  3     Win32     Microsoft Visual C
+  makefile.aix     3     AIX       IBM xlC
+  makefile.bcd     3     DOS       Borland C / Turbo C (requires TASM)
+  makefile.bco     3     OS/2      Borland C 2.0
+  makefile.bcw     3     Win32     Borland C
+  makefile.ibo     3     OS/2      IBM CSet or VACPP
+  makefile.hco     3     OS/2      Metaware High C
+  makefile.osf     3     TRU64     Compaq CC (or DEC Unix with DEC cc)
+  makefile.wcd     2     DOS       Watcom C
+  makefile.qcd     2     DOS       Quick C / Microsoft MSC 6.0 (req. MASM)
 
 The "Sup." classification has the following meaning:
 
@@ -257,8 +261,8 @@ troublefree way of building everything!
 II.2.3 Compiling
 ----------------
 
-First, if your subdirectories contain version version number suffixes, you
-need to rename the smapi and fidoconf subdirectories to the base name with
+First, if your subdirectories contain version number suffixes, you need
+to rename the smapi and fidoconf subdirectories to the base name with
 out version number suffix. E.g., if, after extracting the sources, you have
 directories called like "smapi-1.6.4" and "fidoconf-0.10", you must rename
 them to "smapi" and "fidoconf", respectively. This is so that the other
@@ -297,7 +301,7 @@ This also works with Non-UNIX systems, e.g.:
 II.2.4 Installing
 -----------------
 
-As already noted, the legacy makefiles do not contain an "install"
+As already noted, the legacy makefiles usually do not contain an "install"
 target. Therefore, you have to "install" the programs manually if you use
 legacy makefiles (you don't need to install the libraries, as the programs
 are linked against those statically). For most Husky programs, installing is
@@ -361,13 +365,14 @@ Then type this to build the GNU info version:
   makeinfo fidoconfig
   info -f ./fidoconfig.info
 
+This requires a working TEXINFO installation on your Unix system. TEXINFO is
+also available for OS/2 and cygwin.
+
 Or, you can try to build the HTML version:
 
-  texi2html fidoconfig
+  makeinfo --html fidoconfig
+(or texi2html fidoconfig)
   lynx ./fidoconfig_toc.html
-
-This requires a working TEXINFO installation on your Unix system. TEXINFO is
-also available for OS/2.
 
 
 III.3 Examples
