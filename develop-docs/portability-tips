@@ -207,6 +207,7 @@ compilers generate huge amounts of warnings if you cast between (char *) and
 (unsigned char *) implicitly. This is not really a problem, but the warnings
 might distract the view from other warnings that are about real problems.
 
+
 PREPROCESSOR DIRECTIVES
 
 Preprocessor directives always must start in column 1. do
@@ -217,3 +218,41 @@ and you'd better also not do
 #  include <somestuff.h>
 or else you will get problems with some compilers not recognizing this as a
 preprocessor directives.
+
+
+FOPEN: B AND T FLAGS
+
+In fopen, you can set some flags in the second argument, like 
+fopen(fn, flags). The flags string contains standard chars like 'r' for
+reading and 'w' for writing, and there are optional 'b' (binary) and 't'
+(text) arguments. Under Unix, it does not matter if you use the 'b' or 't'
+flag or not - they are simply ignored. However, this is no so on other
+systems, so PLEASE do strictly use the following scheme:
+
+Use the 'b' flag for all files that are binary, i.E. that are not expected
+to be used with a text editor, and where you rely on the fact that every
+byte from 0 .. 255 is exactly written to the file as you specify it.
+Examples are PKT files, Fido *.MSG files or any other message base storage
+format, and so on.  Please also read Section 1 of this document for binary
+files.
+
+Never use the 't' flag. It is not ANSI C. ANSI C specifies that the absence
+of the 'b' flag designates a text file, so 't' is just a synonym for "not
+'b'". Some compilers will have problems when you use the 't' flag.
+
+Do not use neither 't' nor 'b' for files that users should be able to view
+and/or edit with an ordinary text editor of their operating systems.
+Examples are log files,*.?LO files in a Binkley outbound (!), and other types of lists that do not
+contain non-printable characters. For text files, on DOS, Windows and OS/2 a
+CRLF translation will occur, i.E. when you put a \n the file will contain
+\r\n, and when you read \r\n, your C program will only see a \n. For files
+that you open without the 'b' flag, i.E. in text mode, you should NOT rely
+on any mechanism for obtaining the file size (they just don't work, you must
+read the file line by line without knowing its final size), and you should
+not use fseek and ftell for other purposes than seeking to the very
+beginning or the very end of the file. It usually also works to get an
+offset with ftell and later seek to exactly the same offset - but NEVER do
+any arithmetic like adding anything to an offset obtained by ftell. This
+will NOT reliably work for text mode streams on non-Unix systems.
+
+[EOF]
