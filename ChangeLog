@@ -1,3 +1,15 @@
+2002-08-05 Monday 15:58  quetschke
+
+	* huskymak.cfg (1.45): Added optional setting of LD (e.g. useful
+	for Solaris).
+
+2002-08-05 Monday 15:51  quetschke
+
+	* huskymak.cfg.sun (1.1): Added huskymak.cfg.sun as an example for
+	a huskymak.cfg for Sun Solaris 8.  Tested with smapi, fidoconf, hpt
+	and msged using gcc 2.9.5-3 and 3.0.1 by 2:2411/12 and
+	2:2411/12.99.
+
 2002-07-31 Wednesday 14:32  gerrit
 
 	* develop-docs/cvs-branching (1.3): Bugfixing docu (odd does noch
