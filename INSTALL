@@ -44,9 +44,9 @@ full list of available modules, refer to the husky homepage.
 
 The distribution filenames of the modules are named
 
-  MODULENAME-VERSION.tar.gz    e.g. smapi-1.6.4.tar.gz
+  MODULENAME-VERSION.tar.gz    e.g. smapi-1.6.4-stable.tar.gz
 
-for the release versions or 
+for the release versions or
 
   MODULENAME-yymmdd.tar.gz     e.g. smapi-000521.tar.gz (snapshot from 21st May 2000)
   MODULENAME-latest.tar.gz     e.g. smapi-latest.tar.gz (current snapshot)
@@ -113,7 +113,7 @@ software can be compiled. If you don't want to install anything while
 compiling, you should use the Legacy Makefiles (Section II.2)
 
 
-II.1.2 Configuring 
+II.1.2 Configuring
 
 Every Module is supplied with a "Makefile". This is the standard Makefile,
 and will only work with GNU make.
@@ -121,7 +121,7 @@ and will only work with GNU make.
 In order to use it, you need to create a file named "huskymak.cfg" in the top
 level directory below which you extracted the individual module sources,
 which you will use to configure the peculiarities of your system. In the
-example from above, this file would be named "~/husky/huskymak.cfg". 
+example from above, this file would be named "~/husky/huskymak.cfg".
 
 You don't need to create this file by hand - the huskybse module contains
 template huskymak configuration files. Select one, copy it to the top-level
@@ -152,7 +152,7 @@ II.1.3 Compiling and Installing
 Now, you can build smapi and fidoconfig (please do it in this order) using
 
   cd ~/husky/smapi
-  make clean    
+  make clean
   # or use "gmake" if "make" does not invoke GNU make on your system!
   make all install
 
@@ -191,8 +191,8 @@ the standard Makefile in the following ways:
   + Many non-UNIX systems are supported
   + You don't need neither GNU make nor gcc
   + Sometimes gives less trouble than the standard Makefile
-  
-  - You cannot install anything with these makefiles. It is within your 
+
+  - You cannot install anything with these makefiles. It is within your
     responsibility to copy the programs that you compiled to the
     proper directories.
   - No support for shared libraries, everything is linked statically.
@@ -200,18 +200,18 @@ the standard Makefile in the following ways:
 
 II.2.2 List of platforms supported by the legacy makefiles
 ----------------------------------------------------------
-  
+
 The following is a list of platforms that are supported by legacy
 makefiles.
 
-  Makefile      Sup.  Platform  Compiler                        
+  Makefile      Sup.  Platform  Compiler
   --------------------------------------
 
   makefile.unx  1     Unix      Any (standard "cc" is enough!)
   makefile.emo  1     OS/2      EMX; OMF static (standalone) binaries
   makefile.bcd  1     DOS       Borland C / Turbo C (requires TASM)
   makefile.djg  1     DOS/32    DJ Delorie GNU gcc (DJGPP)
-  
+
   makefile.lnx  2     Linux     GNU gcc
   makefile.bsd  2     BSD       (tested: FreeBSD, NetBSD) GNU gcc
   makefile.sun  2     Solaris   GNU gcc
@@ -220,12 +220,13 @@ makefiles.
   makefile.wco  2     OS/2      Watcom C
   makefile.bco  2     OS/2      Borland C 2.0
   makefile.qcd  2     DOS       Quick C / Microsoft MSC 6.0 (req. MASM)
-  makefile.wcd  2     DOS       Watcom C     
+  makefile.wcd  2     DOS       Watcom C
   makefile.wcx  2     DOS/32    Watcom C with DOS extender
   makefile.wcw  2     Win32     Watcom C
   makefile.mgw  2     Win32     Mingw32 or Mingw32/CPD gcc: www.mingw32.org
   makefile.bcw  2     Win32     Borland C
   makefile.rxw  2     Win32     EMX/RSXNT gcc with -Zwin32
+  makefile.be   2     BeOS      BeOS R5 with gcc
 
   makefile.hco  3     OS/2      Metaware High C
   makefile.osf  3     TRU64     Compaq CC (or DEC Unix with DEC cc)
@@ -233,10 +234,10 @@ makefiles.
   makefile.mvc  3     Win32     Microsoft Visual C
 
 The "Sup." classification has the following meaning:
-  
+
   1  Means this makefile is the primary one used by Husky developers
      for this particular platform, e.g. for building binary releases. It is
-     very well supported and should work without problems. Every Husky 
+     very well supported and should work without problems. Every Husky
      module that has left beta phase should have this makefile.
 
   2  At least one Husky developer is sometimes using this file, so it will
@@ -295,7 +296,7 @@ This also works with Non-UNIX systems, e.g.:
 
 II.2.4 Installing
 -----------------
-  
+
 As already noted, the legacy makefiles do not contain an "install"
 target. Therefore, you have to "install" the programs manually if you use
 legacy makefiles (you don't need to install the libraries, as the programs
@@ -318,7 +319,7 @@ III.1 Creating the configuration file
 
 The good news is that all Husky programs only need a single configuration
 file. It's filename is "config", and you should put it into the directory
-that you have configured as CFGDIR in huskymak.cfg. 
+that you have configured as CFGDIR in huskymak.cfg.
 
 If you don't know the value of CFGDIR, because you compiled the source with
 legacy makefiles (no CFGDIR setting) or because you have downloaded binary
@@ -343,7 +344,7 @@ III.2 Fidoconfig documentation
 Each and every configuration value that you can put into the fidoconfig
 configuration file is described in the fidoconfig documentation. If you have
 a binary distribution of the Husky software, you should have received this
-documentation in HTML or a similar format. 
+documentation in HTML or a similar format.
 
 If you have compiled with huskymak.cfg / standard Makefiles, you should
 theoretically be able to type "info fidoconfig" on the command line to view
