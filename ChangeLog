@@ -1,3 +1,7 @@
+2003-09-22 Monday 11:14  sfpavel
+
+	* huskymak.cfg.beos (1.1): Add huskymak.cfg for BeOS
+
 2003-06-21 Saturday 11:03  mche
 
 	* HUSKY.sln (1.7): documentation build added
