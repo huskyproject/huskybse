@@ -141,6 +141,8 @@ DEBUG=0
 # 8.3 names - NOTE: This switch is obsolete and probably does not work!
 SHORTNAMES=0
 
+# Perl support
+PERL=0
 
 # The DYNLIBS switch controls if dynamic or static linkage is used.
 # This is tricky. If you set DYNLIBS=1, dynamic libraries (.so files)
@@ -178,11 +180,11 @@ endif
 DEBCFLAGS=-c -ggdb
 
 # C-compiler: additional defines, for features of your OS
-ADDCDEFS=-DHAS_POPEN
+ADDCDEFS=-DHAS_POPEN -DNOSEMAPHORES
 # On Solaris, Msged only works with the curses interface, so use:
-#ADDCDEFS=-DHAS_POPEN -DUSE_CURSES
+#ADDCDEFS=-DHAS_POPEN -DUSE_CURSES -DNOSEMAPHORES
 # On BeOS, file locking currently does not work, so use:
-# ADDCDEFS=-DHAS_POPEN -DNO_LOCKING
+# ADDCDEFS=-DHAS_POPEN -DNO_LOCKING -DNOSEMAPHORES
 
 # Pascal-Compiler: optimization
 OPTPFLAGS=
