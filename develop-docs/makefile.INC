@@ -1,4 +1,12 @@
 # $Id$
+
+# This is "makefile common part (include file)" template to build husky library
+# using any compiler and make utility.
+# Copy this file into your work directory as make/makefile.inc;
+# set LIBNAME, OBJ*, HEADERS*, PROGRAMS, VER*, (possible) H_DIR,
+# (possible) LIBS and above.
+# (1st: replace XXXXX with library name (not more 5 chars long if possible)
+
 #
 # Common makefiles part (include-file) for XXXXXlib
 
@@ -36,7 +44,7 @@ HEADERS	= $(HEADERS1) $(HEADERS2) $(HEADERS3) $(HEADERS4)
 PROGRAMS= gnmsgid$(_EXE)
 
 SRC_DIR	=../src/
-H_DIR	=../huskylib/
+H_DIR	=../h/
 
 # Usually compose from LIBPREFIX, LIBSUFFIX and LIB.
 TARGETLIB = $(LIBPREFIX)$(LIBNAME)$(LIBSUFFIX)$(_LIB)
