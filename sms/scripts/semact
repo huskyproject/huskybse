@@ -1,0 +1,71 @@
+#!/bin/bash
+###############################################################################
+# 
+# semact - execute commands if certain semaphores appear
+#
+# Author: Sascha Silbe <Sascha.Silbe@ldknet.org> - 03.05.1999
+#
+###############################################################################
+
+# set semaphore directory
+declare SemDir=/husky/work
+
+function scan ()
+{
+ if [ -f ${SemDir}/btmail.in ] ; then
+  # toss incoming mails
+  echo `date +%d.%m.%Y\ %T` /husky/scripts/toss
+  rm ${SemDir}/btmail.in
+  /husky/scripts/toss
+  fi
+
+ if [ -f ${SemDir}/scan.now ] ; then
+  # scan for outgoing mails
+  echo `date +%d.%m.%Y\ %T` /husky/scripts/scan
+  rm ${SemDir}/scan.now
+  /husky/scripts/scan
+  fi
+
+ if [ -f ${SemDir}/14day.now ] ; then
+  # two-weekly maintenance
+  echo `date +%d.%m.%Y\ %T` /husky/scripts/maint
+  rm ${SemDir}/14day.now
+  /husky/scripts/14day
+  fi
+
+ if [ -f ${SemDir}/week.now ] ; then
+  # weekly maintenance
+  echo `date +%d.%m.%Y\ %T` /husky/scripts/week
+  rm ${SemDir}/week.now
+  /husky/scripts/week
+  fi
+
+ if [ -f ${SemDir}/month.now ] ; then
+  # monthly maintenance
+  echo `date +%d.%m.%Y\ %T` /husky/scripts/month
+  rm ${SemDir}/month.now
+  /husky/scripts/month
+  fi
+
+ if [ -f ${SemDir}/maint.now ] ; then
+  # daily maintenance
+  echo `date +%d.%m.%Y\ %T` /husky/scripts/maint
+  rm ${SemDir}/maint.now
+  /husky/scripts/maint 
+  fi
+}
+
+. /etc/profile > /dev/null 2>&1
+
+# loop till exit-semaphore is found
+until [ -f ${SemDir}/semact.exit ] ; do
+ scan >> /husky/log/semact.log 2>&1
+ sleep 1
+ done 
+
+# remove exit-semaphore
+rm ${SemDir}/semact.exit
+
+# ByeBye
+exit 0
+

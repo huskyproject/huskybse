@@ -1,0 +1,16 @@
+#!/bin/sh
+# look for new filelists in inbound, unpack and rename them
+
+pushd /husky/filelist > /dev/null
+
+if [ -f /husky/in/protect/allfiles.rar ] ; then
+ rar e /husky/in/protect/allfiles.rar -c- -cl
+ rm /husky/in/protect/allfiles.rar
+ fi
+
+if [ -f 2243540.all ] ; then
+ if [ -f 24350040.all ] ; then rm 24350040.all ; fi
+ mv 2243540.all 24350040.all
+ fi
+
+popd > /dev/null 

@@ -1,0 +1,76 @@
+#!/bin/sh
+#
+# convert all filenames to lowercase
+find /husky/in -name "*[A-Z]*" -exec tolower {} \;
+#
+# copy to PB1
+find /husky/in/test -type f \! -name "*.hr" \! -name "*.dt" -exec cp {} /husky/in/pb1 \;
+find /husky/in/test/protect -type f \! -name "*.hr" \! -name "*.dt" -exec mv {} /husky/in/protect \;
+find /husky/in/test -type f \! -name "*.hr" \! -name "*.dt" -exec mv {} /husky/in \;
+# find /husky/in/pb1 -type f -exec echo \^{} \; >> /husky/out/zone/098301a8.clo
+#
+# unpack archives
+# carc x
+#
+# convert all filenames to lowercase
+# find /husky/in -name "*[A-Z]*" -exec tolower {} \;
+#
+# move UPDs except own UPDs to appropriate inbound
+find /husky/in/protect -maxdepth 1 -name "*.upd" \! -name "net2435.upd" -exec mv {} /husky/in/upd \;
+find /husky/in/protect -maxdepth 1 -name "*.pnt" -exec mv {} /husky/in/upd \;
+find /husky/in -maxdepth 1 -name "*.upd" -exec mv {} /husky/in/upd \;
+find /husky/in -maxdepth 1 -name "*.pnt" -exec mv {} /husky/in/upd \;
+
+# check for Node/PointDiffs
+/husky/scripts/nlupdate
+
+# check for filelists
+/husky/scripts/procflist
+
+# toss TICs
+protick toss
+# /husky/work/bbsarea.log exists => new files
+if [ -f /husky/work/bbsarea.log ] ; then
+ protick pack
+ cat /husky/work/bbsarea.log >> /husky/log/bbsarea.log
+ rm /husky/work/bbsarea.log
+ cat /husky/work/areas.log >> /husky/log/areas.log
+ rm /husky/work/areas.log
+fi
+# endif
+
+# toss
+hpt toss
+
+# check for bad pkts, archives, etc.
+
+# gate EMails
+progate
+
+# lxtrack
+
+# scan for FileFix requests
+protick scan
+
+# lxtrack
+
+# create echotoss.log
+echo >> /husky/work/echotoss.log
+
+# scan for mails to send
+hpt scan
+
+# gate EMails
+progate
+
+# pack netmails
+hpt pack
+
+# send UUE-Emails
+# /husky/scripts/send_uue
+
+# create import.log
+touch /husky/work/import.log
+# link areas with new mails
+hpt link
+

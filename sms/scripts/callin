@@ -1,0 +1,36 @@
+#!/bin/sh
+# params: $1 Username (EMSI_INQ)
+
+function printresult ()
+{
+ local result=$1
+
+ case $result in
+  0 ) echo `date +%d.%m.%Y\ %T` Call successful ; touch /husky/work/btmail.in ;;
+  1 ) echo `date +%d.%m.%Y\ %T` Dialout port unavailable ;;
+  2 ) echo `date +%d.%m.%Y\ %T` Dial failed \(No CONNECT\) ;;
+  3 ) echo `date +%d.%m.%Y\ %T` Could not reset modem \(No OK\) ;;
+  4 ) echo `date +%d.%m.%Y\ %T` System locked ;;
+  5 ) echo `date +%d.%m.%Y\ %T` Retry time not reached ;;
+  6 ) echo `date +%d.%m.%Y\ %T` Fatal error in nodelist lookup ;;
+  7 ) echo `date +%d.%m.%Y\ %T` Call prohibited by config options ;;
+  8 ) echo `date +%d.%m.%Y\ %T` Phone number unavailable ;;
+  9 ) echo `date +%d.%m.%Y\ %T` No matching ports defined ;;
+  [12][0-9] ) echo `date +%d.%m.%Y\ %T` Session failure ;;
+  30 ) echo `date +%d.%m.%Y\ %T` Could not establish session ;;
+  * ) echo `date +%d.%m.%Y\ %T` Unknown error: error \#$result ;;
+ esac
+
+ echo `date +%d.%m.%Y\ %T` end \(rc=$result\)
+}
+
+function main ()
+{
+ echo `date +%d.%m.%Y\ %T` incoming Fido-call \($1\), starting ifcico >> /husky/log/callin.log
+ /husky/bin/ifcico $*
+ let result=$?
+ printresult $result >> /husky/log/callin.log
+}
+
+main $* 
+

@@ -1,0 +1,16 @@
+#!/bin/sh
+echo >> /husky/work/echotoss.log
+
+hpt scan
+protick scan
+
+# lxtrack
+
+progate
+
+hpt pack
+
+# /husky/scripts/send_uue
+
+hpt link
+

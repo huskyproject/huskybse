@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# FLD make
+
+protick toss
+protick pack
+

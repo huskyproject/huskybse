@@ -1,0 +1,160 @@
+#!/bin/bash
+
+# docallout (zone, net, node, point, curtry, errcode, flavour)
+# call out to the given system
+function docallout ()
+{
+ local zone=$1 net=$2 node=$3 point=$4 curtry=$5 errcode=$6 flavour=$7
+  
+ echo `date +%d.%m.%Y\ %T` calling ${zone}:${net}/${node}.${point} \(flavour ${flavour}, try \#${curtry}, last error ${errcode}\)
+ if [ $point = 0 ] ; then
+  ifcico f${node}.n${net}.z${zone}
+  let result=$?
+ else
+  ifcico p${point}.f${node}.n${net}.z${zone}
+  let result=$?
+ fi
+ case $result in
+  0 ) echo `date +%d.%m.%Y\ %T` Call successful ;;
+  1 ) echo `date +%d.%m.%Y\ %T` Dialout port unavailable ;;
+  2 ) echo `date +%d.%m.%Y\ %T` Dial failed \(No CONNECT\) ;;
+  3 ) echo `date +%d.%m.%Y\ %T` Could not reset modem \(No OK\) ;;
+  4 ) echo `date +%d.%m.%Y\ %T` System locked ;;
+  5 ) echo `date +%d.%m.%Y\ %T` Retry time not reached ;;
+  6 ) echo `date +%d.%m.%Y\ %T` Fatal error in nodelist lookup ;;
+  7 ) echo `date +%d.%m.%Y\ %T` Call prohibited by config options ;;
+  8 ) echo `date +%d.%m.%Y\ %T` Phone number unavailable ;;
+  9 ) echo `date +%d.%m.%Y\ %T` No matching ports defined ;;
+  [12][0-9] ) echo `date +%d.%m.%Y\ %T` Session failure ;;
+  30 ) echo `date +%d.%m.%Y\ %T` Could not establish session ;;
+  127 ) echo `date +%d.%m.%Y\ %T` Could not execute ifcico ;;
+  * ) echo `date +%d.%m.%Y\ %T` Unknown error: error \#$result ;;
+ esac
+ if [ $result = 0 ] ; then touch /husky/work/btmail.in ; fi
+ echo `date +%d.%m.%Y\ %T` end \(rc=$result\)
+}
+
+# checkcallout (flavour, retries, errcode, timediff, zone, net, node, point)
+# check if callout allowed and call out
+function checkcallout ()
+{
+ local flavour=$1 retries=$2 errcode=$3 timediff=$4 zone=$5 net=$6 node=$7 point=$8 try
+ let try=${retries}+1
+
+ # check if we have a BinkD-link to this system
+ if [ $point = 0 ] ; then
+  fgrep "${zone}:${net}/${node}" /husky/cfg/binkd.poll.lst
+ else
+  fgrep "${zone}:${net}/${node}.${point}" /husky/cfg/binkd.poll.lst
+ fi
+ if [ $? == 0 ] ; then return ; fi
+  
+ if [ $flavour = immediate ] ; then
+  # call at any time
+
+  # last try was free => up to 50 tries
+  if [ $[(($timediff > 300) && ($errcode <= 10) && ($retries < 50))] = 1 ] ; then
+   docallout $zone $net $node $point $curtry $errcode $flavour
+  fi
+  
+  # last try was charged => up to 3 tries
+  if [ $[ (($timediff > 300) && ($errcode > 10) && ($retries < 3)) ] = 1 ] ; then
+   docallout $zone $net $node $point $curtry $errcode $flavour
+  fi
+ fi
+
+ if [ $flavour = crash ] ; then
+  # call at any time
+
+  # last try was free => up to 50 tries
+  if [ $[(($timediff > 300) && ($errcode <= 10) && ($retries < 50))] = 1 ] ; then
+   docallout $zone $net $node $point $curtry $errcode $flavour
+  fi
+  
+  # last try was charged => up to 3 tries
+  if [ $[ (($timediff > 300) && ($errcode > 10) && ($retries < 3)) ] = 1 ] ; then
+   docallout $zone $net $node $point $curtry $errcode $flavour
+  fi
+ fi
+
+ if [ $flavour = normal ] ; then
+  # never call out
+  : 
+ fi
+
+ if [ $flavour = direct ] ; then
+  # only call out on weekdays at 21:00-05:00
+  let curhour=`date +%H` curdow=`date +%w`
+  if [ $[ (($curhour > 20) || ($curhour < 5)) && (($curdow > 0) && ($curdow < 6))] = 1 ] ; then
+   # last try was free => up to 50 tries
+   if [ $[(($timediff > 300) && ($errcode <= 10) && ($retries < 50))] = 1 ] ; then
+    docallout $zone $net $node $point $curtry $errcode $flavour
+   fi
+  
+   # last try was charged => up to 3 tries
+   if [ $[ (($timediff > 300) && ($errcode > 10) && ($retries < 3)) ] = 1 ] ; then
+    docallout $zone $net $node $point $curtry $errcode $flavour
+   fi
+  fi
+ fi
+
+ if [ $flavour = hold ] ; then
+  # do not call out
+  :
+ fi
+
+}
+
+# scanflavour (flavour)
+# scan for flowfiles and packets
+function scanflavour ()
+{
+ if [ $1 = "normal" ] ; then flowext=flo outext=out ; fi
+ if [ $1 = "direct" ] ; then flowext=dlo outext=dut ; fi
+ if [ $1 = "crash" ] ; then flowext=clo outext=cut ; fi
+ if [ $1 = "hold" ] ; then flowext=hlo outext=hut ; fi
+ if [ $1 = "immediate" ] ; then flowext=ilo outext=iut ; fi
+
+ find /husky/out -name "*."${outext} -or -name "*."${flowext} > /husky/work/${1}.lst
+ for file in `cat /husky/work/${1}.lst` ; do
+  eval `echo $file | awk '{ sub(/\/husky\/out\//, "")
+   sub(/zone\//, "zone.002/")
+   sub(/zone/, "")
+   if (substr($0, 14, 4) == ".pnt") { point = substr($0, 23, 4) }
+   else { point = 0 }
+   printf "zonehex=%s nethex=%s nodehex=%s pointhex=%s let zone=0x%s net=0x%s node=0x%s point=0x%s", 
+    substr($0, 2, 3), substr($0, 6, 4), substr($0, 10, 4), point,
+    substr($0, 2, 3), substr($0, 6, 4), substr($0, 10, 4), point }'`
+  sts=${file%%${outext}}
+  sts=${sts%%${flowext}}sts
+  if [ ! -f $sts ] ; then 
+   let lasttime=0 retries=0 errcode=0
+  else
+   `cat $sts|awk '{ print "let lasttime=" $1 " retries=" $2 " errcode=" $3 }'`
+  fi
+  let curtime=`date +%s`
+  let timediff=${curtime}-${lasttime}
+  let curtry=${retries}+1
+
+  checkcallout $1 $retries $errcode $timediff $zone $net $node $point
+ 
+ done
+ rm /husky/work/${1}.lst
+}
+
+function main ()
+{
+while [ ! -f /husky/work/callout.exit ] ; do
+ scanflavour immediate
+ scanflavour crash
+ scanflavour direct
+ scanflavour normal
+ scanflavour hold
+ sleep 10
+ done
+rm /husky/work/callout.exit
+}
+
+. /etc/profile > /dev/null 2>&1
+main >> /husky/log/callout.log 2>&1
+

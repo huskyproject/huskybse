@@ -1,0 +1,170 @@
+#!/bin/bash
+# look for nodelist updates, apply them and rebuild index
+
+# unpackdiff (diffname, diffbase) -> unpackeddiff
+function unpackdiff ()
+{
+ local diffname=$1 diffbase=$2 archiver
+ archiver=`echo $diffname|awk '{ sub(/.*\./, "") ; print substr($0, 1, 1) ; }'`
+
+ pushd /husky/nodelist > /dev/null
+
+ echo unpacking diff $diffname
+
+ if [ $archiver = a ] ; then arc eo $diffname ; fi
+ if [ $archiver = z ] ; then unzip -jL $diffname ${diffbase}.\* ; fi
+ if [ $archiver = r ] ; then rar e $diffname ${diffbase}.\* ; fi
+ if [ $archiver = j ] ; then unarj e $diffname ${diffbase}.\* ; fi
+ find -iname ${diffbase}".???" -exec tolower {} \;
+ unpackeddiff=`ls ${diffbase}.???`
+
+ popd > /dev/null
+}
+
+# unpacknl (nlname, nlbase)
+function unpacknl ()
+{
+ local nlname=$1 archiver
+ archiver=`echo $nlname|awk '{ sub(/.*\./, "") ; print substr($0, 1, 1) ; }'`
+
+ pushd /husky/nodelist > /dev/null
+
+ echo unpacking nodelist $nlname
+
+ if [ $archiver = a ] ; then arc eo $nlname ; fi
+ if [ $archiver = z ] ; then unzip -jL $nlname ${nlbase}.\* ; fi
+ if [ $archiver = r ] ; then rar e $nlname ${nlbase}.\* ; fi
+ if [ $archiver = j ] ; then unarj e $nlname ${nlbase}.\* ; fi
+ if [ $archiver = 0 ] ; then cp $nlname . ; fi
+ if [ $archiver = 1 ] ; then cp $nlname . ; fi
+ if [ $archiver = 2 ] ; then cp $nlname . ; fi
+ if [ $archiver = 3 ] ; then cp $nlname . ; fi
+ if [ $archiver = 4 ] ; then cp $nlname . ; fi
+ if [ $archiver = 5 ] ; then cp $nlname . ; fi
+ if [ $archiver = 6 ] ; then cp $nlname . ; fi
+ if [ $archiver = 7 ] ; then cp $nlname . ; fi
+ if [ $archiver = 8 ] ; then cp $nlname . ; fi
+ if [ $archiver = 9 ] ; then cp $nlname . ; fi
+ find -iname ${nlbase}".???" -exec tolower {} \;
+
+ popd > /dev/null
+}
+
+# applydiff (diffname)
+function applydiff ()
+{
+ local diffname=$1 diffbase listbase listname
+ diffbase=`echo $diffname|awk '{ sub(/\..../, "") ; sub(/.*\//, "") ; print $0 }'`
+
+ echo applying diff $diffname
+
+ if [ $diffbase = nodediff ]; then listbase=nodelist ; fi
+ if [ $diffbase = pr24diff ]; then listbase=points24 ; fi
+ listname=`ls /husky/nodelist/${listbase}.???`
+ unpackdiff $diffname $diffbase
+ for f in $listname ; do nlpatch $f /husky/nodelist/${unpackeddiff} ; done
+ rm /husky/nodelist/${unpackeddiff}
+
+ updated=1
+}
+
+# copynl (nlname)
+function copynl ()
+{
+ local nlname=$1 nlbase
+ nlbase=`echo $nlname|awk '{ sub(/\..../, "") ; sub(/.*\//, "") ; print $0 }'`
+
+ echo copying nodelist $nlname
+
+ unpacknl $nlname $nlbase
+
+ updated=1
+}
+
+# lookfordiffs ()
+function lookfordiffs ()
+{
+ local diffmasks="pr24diff nodediff"
+
+ echo looking for diffs
+
+ for curdiffmask in $diffmasks ; do
+  if [ /husky/in/protect/${curdiffmask}.[azrj0-9][0-9][0-9] != "/husky/in/protect/${curdiffmask}.[azrj0-9][0-9][0-9]" ] ; then
+   for curdiff in /husky/in/protect/${curdiffmask}.[ajrz0-9][0-9][0-9] ; do
+    applydiff $curdiff
+   done
+  fi
+ done
+}
+
+# lookfornls ()
+function lookfornls ()
+{
+ local nlmasks="elek3d elektnet ldk-node ldk-pnt lfn linuxnet linuxpnt nodelist pcsnet points24 vplnet vplpnt wipost wipost3d"
+
+ echo looking for new nodelists
+
+ for curnlmask in $nlmasks ; do
+  if [ /husky/in/protect/${curnlmask}.[azrj0-9][0-9][0-9] != "/husky/in/protect/${curnlmask}.[azrj0-9][0-9][0-9]" ] ; then
+   for curnl in /husky/in/protect/${curnlmask}.[ajrz0-9][0-9][0-9] ; do
+    copynl $curnl
+   done
+  fi
+ done
+}
+
+# checkold(nlname)
+function checkold()
+{
+ local nlname=$1 nlbase
+ nlbase=`echo $nlname|awk '{ sub(/\..../, "") ; sub(/.*\//, "") ; print $0 }'`
+
+ find . -name "${nlbase}.[0-9][0-9][0-9]" \! -name "$nlname" \! -newer $nlname -exec bash -c "echo removing {} ; rm {}" \;
+
+}
+
+# killold()
+function killold()
+{
+ # kill old nodelists
+ local nlmasks="elek3d elektnet ldk-node ldk-pnt lfn linuxnet linuxpnt nodelist pcsnet points24 vplnet vplpnt wipost wipost3d"
+
+ echo removing old nodelists
+
+ pushd /husky/nodelist > /dev/null
+
+ for curnlmask in $nlmasks ; do
+  find . -name "${curnlmask}.[0-9][0-9][0-9]" > /dev/null
+  if [ $? = 0 ] ; then
+   for curnl in ${curnlmask}.[0-9][0-9][0-9] ; do
+    checkold $curnl
+   done
+  fi
+ done
+
+ popd > /dev/null
+}
+
+# rebuildindex ()
+function rebuildindex ()
+{
+ # rebuilding index takes very long, so put it into background
+ echo rebuilding index in the background
+
+ ifindex &
+}
+
+# main ()
+function main ()
+{
+ updated=0
+
+ lookfordiffs
+ lookfornls
+ if [ $updated = 1 ] ; then
+  killold
+  rebuildindex
+ fi
+}
+
+main

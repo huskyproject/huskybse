@@ -1,0 +1,161 @@
+#!/bin/bash
+. /etc/profile
+
+export HOUR WEEK FREEMINUTE
+
+function BBS()
+{
+  # not needed (use Spawn)
+  echo -n
+}
+
+function ExtMail()
+{
+  # not needed (use Spawn)
+  echo -n
+}
+
+function Error()
+{
+  echo FATAL ERROR! Shutting down.
+  echo BT \#$1: FATAL ERROR! Shutting down. >> /husky/log/bink${1}.log
+  doexit=1
+}
+
+function F1()
+{
+  # does nothing
+  echo -n
+}
+
+function F2()
+{
+  # does nothing
+  echo -n
+}
+
+function F3()
+{
+  # does nothing
+  echo -n
+}
+
+function F4()
+{
+  # does nothing
+  echo -n
+}
+
+function F5()
+{
+  # does nothing
+  echo -n
+}
+
+function F6()
+{
+  # does nothing
+  echo -n
+}
+
+function F7()
+{
+  # does nothing
+  echo -n
+}
+
+function F8()
+{
+  # does nothing
+  echo -n
+}
+
+function F9()
+{
+  # wait for key - used for exchanging btxe-executable
+  read
+}
+
+function F10()
+{
+  # does nothing
+  echo -n
+}
+
+function RLog()
+{
+  # Wait 10
+  # if exist %FLAGS%\febusy.0 goto RLog
+  # %FE%\FEUtil2 Post %LOG%\bink%1.log LogJ -From Pflege -To "%SYSOP%" -Subj bink%1.log
+  # %FE%\FEUtil2 Post %LOG%\cost%1.log LogJ -From Pflege -To "%SYSOP%" -Subj cost%1.log
+  # RenamLog %LOG%\bink%1
+  # RenamLog %LOG%\cost%1
+  # Wait 60
+  echo -n
+}
+
+function loop()
+{
+  doexit=0
+
+  while [ $doexit = 0 ] ; do
+
+    cd /husky
+
+    HOUR=`date +%H`
+    WEEK=1
+    if [ `date +%w` = 0 ] ; then WEEK=0 ; fi
+    if [ `date +%w` = 6 ] ; then WEEK=0 ; fi
+    echo HOUR=$HOUR
+    echo WEEK=$WEEK
+
+    FREEMINUTE=0
+    # if [ $HOUR >= 19 ] ; then FREEMINUTE=1 ; fi
+    # if [ $HOUR >= 20 ] ; then FREEMINUTE=1 ; fi
+    # if [ $HOUR >= 21 ] ; then FREEMINUTE=1 ; fi
+    # if [ $HOUR >= 22 ] ; then FREEMINUTE=1 ; fi
+    # if [ $HOUR >= 23 ] ; then FREEMINUTE=1 ; fi
+    FREEMINUTE=0
+    echo FREEMINUTE=$FREEMINUTE
+
+    btxe UnAttended Task=$*
+
+    result=$?
+    case $result in
+    255) Error ;;
+    254) Error ;;
+    192) BBS ;;
+    128) BBS ;;
+    101) RLog ;;
+    100) F10 ;;
+     99) ExtMail ;;
+     96) BBS ;;
+     90) F9 ;;
+     80) F8 ;;
+     70) F7 ;;
+     60) F6 ;;
+     50) F5 ;;
+     48) BBS ;;
+     30) F3 ;;
+     24) BBS ;;
+     20) F2 ;;
+     12) BBS ;;
+      3) BBS ;;
+      1) doexit=1 ;;
+      0) doexit=1 ;;
+      *) echo unknown result code \#$result \! ;;
+    esac
+  done
+
+  echo $0 shut down
+}
+
+if [ .$1 = . ] ; then
+  echo Syntax: $0 \<linenr\>
+  echo Examples: $0 1
+  exit ;
+elif [ $1 = 1 ] ; then loop $* < /dev/tty11 > /dev/tty11 2>&1 ;
+elif [ $1 = 2 ] ; then loop $* < /dev/tty8 > /dev/tty8 2>&1 ; 
+elif [ $1 = 4 ] ; then loop $* < /dev/tty9 > /dev/tty9 2>&1 ;
+fi
+

@@ -1,0 +1,33 @@
+#!/bin/sh
+
+# bakcfg
+
+/husky/scripts/procupd
+
+protick maint
+
+sqpack
+
+protick newfileshatch
+protick toss
+protick pack
+
+ptflg
+
+# FLD
+
+# compile nodelist
+
+if [ -f /husky/work/echotoss.log ] ; then rm /husky/work/echotoss.log ; fi
+hpt scan
+
+if [ -f /husky/work/import.log ] ; then rm /husky/work/import.log ; fi
+hpt link
+# sqpack index
+
+purgeDupes
+
+# virscan
+
+/husky/scripts/toss
+
