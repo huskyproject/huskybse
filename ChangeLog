@@ -1,3 +1,8 @@
+2003-06-20 Friday 09:12  nssoft
+
+	* huskymak.cfg (1.51), huskymak.cfg.bsd (1.11), huskymak.cfg.debian
+	(1.7), huskymak.cfg.sun (1.4): Add USE_HPTZIP option
+
 2003-06-16 Monday 07:31  mche
 
 	* HUSKY.sln (1.6): vcproj Project File added for building txt2pkt
