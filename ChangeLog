@@ -1,3 +1,13 @@
+2002-07-30 Tuesday 17:23  gerrit
+
+	* huskymak.cfg (1.44): Corrected case of PREFIX for DVIDIR in
+	huskymak.
+
+2002-07-30 Tuesday 10:42  gerrit
+
+	* huskymak.cfg (1.43), huskymak.cfg.bsd (1.4): Added DVIDIR as used
+	in hpt/doc/Makefile.
+
 2002-07-29 Monday 17:46  gerrit
 
 	* .cvs2cl (1.1): Added ChangeLog and .cvs2cl for automagically
