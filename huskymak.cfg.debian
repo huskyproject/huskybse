@@ -167,10 +167,10 @@ DYNLIBS=1
 EXENAMEFLAG=-o
 
 # C-compiler: generate warnings
-WARNFLAGS=-Wall
+WARNFLAGS=-Wall -pedantic -Wno-long-long
 
 # C-compiler: optimization
-OPTCFLAGS=-c -s -O3 -fomit-frame-pointer -fstrength-reduce -fPIC -pedantic
+OPTCFLAGS=-c -s -O3 -fomit-frame-pointer -fstrength-reduce -fPIC
 
 ifeq ( $(DYNLIBS), 0 )
     WARNFLAGS+= -static
