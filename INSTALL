@@ -48,7 +48,8 @@ The distribution filenames of the modules are named
 
 for the release versions or 
 
-  MODULENAME-latest.tar.gz     e.g. smapi-latest.tar.gz
+  MODULENAME-yymmdd.tar.gz     e.g. smapi-000521.tar.gz (snapshot from 21st May 2000)
+  MODULENAME-latest.tar.gz     e.g. smapi-000521.tar.gz (current snapshot)
 
 for the daily snapshots. Unless you are a very experienced user, or have
 explicitly been instructed, you should use the release versions. They are
@@ -357,6 +358,9 @@ III.3 Examples
 Not everybody likes to build a config file from scratch using only a keyword
 reference. Therefore, the "huskybse" module contains various example
 configuration files. Have a look at these!
+The "fidoconfig" module contains a script "fidoInst" which asks you some parameter
+of your system and will create a basic config file. This script is tested
+on linux with bash.
 
 
 III.4 Other Documentation
