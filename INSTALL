@@ -53,7 +53,7 @@ for the release versions or
 
 for the daily snapshots. Unless you are a very experienced user, or have
 explicitly been instructed, you should use the release versions. They are
-available at the Husky homepage at http://husky.physcip.uni-stuttgart.de.
+available at the Husky homepage at http://husky.sourceforge.net.
 
 Note that IF you really want to get daily snapshots from
 http://cvs.physcip.uni-stuttgart.de/cvs2, you should fetch all modules that
@@ -391,7 +391,7 @@ TE manual can be build similar to the fidoconfig manual, but you can also
 simply download it in various formats from the Msged TE homepage
 (http://www.physcip.uni-stuttgart.de/tobi/msged).
 
-On the Husky homepage (http://husky.physcip.uni-stuttgart.de), you will also
+On the Husky homepage (http://husky.sourceforge.net), you will also
 find some pointers to FAQ's and other helpful documents.
 
 III.5 Operations Guide
