@@ -145,13 +145,6 @@ UNAME=cyg
 PERL=0
 PERL_DIR=
 
-ifeq (~$(PERL)~, ~1~)
-PERLFLAGS =`$(PERL_DIR)perl -MExtUtils::Embed -e ccopts`
-PERLDEFS  =-DDO_PERL
-PERLLIBS  =`$(PERL_DIR)perl -MExtUtils::Embed -e ldopts`
-PERLOBJ   = perl$(OBJ)
-endif
-
 # ZipInternal packer
 USE_HPTZIP=0
 
@@ -292,6 +285,16 @@ PACKAGEBASE=$(LIBNAME)$(LIBPREFIX)-$(LIBSUFFIX)-$(VERH)
 PACKAGENAME=$(LIBNAME)$(LIBPREFIX)-$(LIBSUFFIX)-$(VERH)$(_ARC)
 
 .PHONY:	distclean clean all static dll programs default
+
+#############################################################################
+# Perl support: compiler options ##
+#############################################################################
+ifeq (~$(PERL)~, ~1~)
+PERLFLAGS += `$(PERL_DIR)perl -MExtUtils::Embed -e ccopts`
+PERLDEFS  += -DDO_PERL
+PERLLIBS  += `$(PERL_DIR)perl -MExtUtils::Embed -e ldopts`
+PERLOBJ   += perl$(_OBJ)
+endif
 
 ## Default make rule ##
 
