@@ -1,18 +1,22 @@
 
-ATTENTION!
+     HUSKY Base Package release notes.
 
-INFORMATION IN THIS FILE IS MORE OR LESS OUTDATED. PLEASE REFER TO THE FILE NAMED "INSTALL" INSTEAD!
+Note.
+This file contents only common information. Please refer to the file named
+"INSTALL" for details.
 
-I completely reorganized the Makefiles. Now there is a Makefile-Config
-"huskymak.cfg" which is used by all packages. You can find a sample in the
-same directory as this text.
+1999-10-14 Sascha Silbe completely reorganized the Makefiles. Now there is
+a Makefile-Config "huskymak.cfg" which is used by all packages. You can find
+a samples for several platforms in the same directory as this text.
 
 I you want to compile the packages, you have to arrange the sources as
 following:
 
-Directory maindir
+Directory husky-maindir
 |
 +-- File huskymak.cfg
+|
++-- Directory huskylib
 |
 +-- Directory smapi
 |
@@ -30,24 +34,24 @@ the Makefiles of each package anymore.
 Target		Description
 -----------------------------------------------------------------------------
 all		compile program(s) and/or library
-install		install the compiled program(s) and/or lib
+install		install the compiled program(s) and/or lib (with C h-files)
 clean		remove files used temporarily for compiling
 distclean	like clean, but also removes programs/libs
 
-Every package contains "Makefile" (which uses huskymak.cfg) and the old
-makefiles (may be useful for systems without GNU make, but expect problems
-as they are poorly maintained).
-A list of all possible (old) Makefiles (not every package supports every
+Every package contains "Makefile" (which uses huskymak.cfg) and the 
+system-specific makefiles (may be useful for systems without GNU make
+but may expect problems as they are poorly maintained).
+A list of all possible Makefiles (not every package supports every
 system) can be found in below.
 
 Include-Files and Libs are now looked for and also installed in
-$INCDIR/fidoconfig, $INCDIR/smapi and $LIBDIR instead of ../smapi and
-../fidoconfig.
+"$INCDIR/huskylib", "$INCDIR/fidoconfig", "$INCDIR/smapi" and "$LIBDIR" instead
+of "../huskylib", "../smapi" and "../fidoconfig".
 
-Please first do "make install" in smapi before you try to compile
-fidoconfig, and do "make install" in fidoconfig before you try to compile
-any of the other programs.
-
+Please first do "make install" in huskylib before you try to compile smapi or
+fidoconfig, and do "make install" in fidoconfig and/or smapi before you try to
+compile any of the other programs. See dependencies list of each package in
+file named "VERSION".
 
 
 OS		Compiler		Makefile
@@ -55,18 +59,22 @@ OS		Compiler		Makefile
 every (but requires GNU make)		Makefile
 Linux		gcc			makefile.lnx
 OS/2		EMX			makefile.emo
+OS/2		EMX			makefile.emx
 OS/2		IBM CSet		makefile.ibo
-OS/2		Watcom			makefile.wco
+OS/2		Watcom C		makefile.wco
 OS/2		High C			makefile.hco
-OS/2		Borland			makefile.bco
+OS/2		Borland C		makefile.bco
 DOS		DJGPP			makefile.djg
-DOS		Borland			makefile.bcd
+DOS		Borland C		makefile.bcd
 DOS		Quick C			makefile.qcd
-DOS		Watcom			makefile.wcd
-DOS 32Bit	Watcom			makefile.wcx
+DOS		Watcom C		makefile.wcd
+DOS 32Bit	Watcom C		makefile.wcx
+Win32   	Cygwin (mingw32)	makefile.cyg
+Win32   	MS Visual C (static)	makefile.mvc
+Win32   	MS Visual C (dll)	makefile.mvcdll
 Win32   	Watcom			makefile.wcw
-Win32		Ming			makefile.mgw
-Win32		Borland			makefile.bcw
+Win32		MinGW32			makefile.mgw
+Win32		Borland C		makefile.bcw
 Win NT		RSX			makefile.rxw
 FreeBSD		gcc			makefile.bsd
 Tru64 Unix	DEC cc			makefile.osf
@@ -75,5 +83,4 @@ AIX		IBM xlC			makefile.aix
 BeOS		cc			makefile.be
 
 --
-Sascha Silbe <Sascha.Silbe@ldknet.org>
-
+This file initially written by Sascha Silbe <Sascha.Silbe@ldknet.org>

@@ -1,29 +1,31 @@
 About Husky Version Numbers and Dependencies
 --------------------------------------------
 
-Husky uses two libraries, "smapi" and "fidoconfig". You must combine Husky
-programs with the matching libraries to produce working code, so you should
-have some understanding of the version numbers:
+Husky uses three libraries: "huskylib", "smapi" and "fidoconfig". You must
+combine Husky programs with the matching libraries to produce working code,
+so you should have some understanding of the version numbers:
 
 Current Husky
 -------------
 
 Current Husky programs have two or three version numbers, and the
-SECOND number is NOT divisible by 2 (1,3,5, ...).
+SECOND number is NOT divisible by 2 (1,3,5, ...), and THIRD number is 0:
 
-fidoconfig 0.13
-msged       6.1.1
-hpt         1.1
+huskylib    0.1
+smapi       2.5
+fidoconfig  1.9
+hpt         1.9.0
 
               ^ second number
 
 Current Husky also advertises a CVS source-code date, like:
 
-hpt 0.9.8/lnx 01-06-01
+hpt 1.9.0/lnx-cur 01-06-01
+                        ^^ year
+                     ^^ month
+                  ^^ day
 
-              ^^ day
-                 ^^ month
-                    ^^ year
+(word "current" shorten to "cur")
 
 Dependency rules are simple hear: Get all software and all libraries with the
 same date! If you upgrade any library or any software, upgrade all libraries
@@ -42,7 +44,7 @@ fidoconfig 0.12.0-stable
 msged      6. 0.3-stable
               ^second number
 
-The third version number is set to 0 and the (optional) suffix to
+The third version number initially set to 0 and the (optional) suffix to
 "-stable" when the stable branch of the software is created. The suffix is
 set to "-release" when a release is made. Directly after that, the third
 number is stepped by one and the suffix re-set to "-stable".
