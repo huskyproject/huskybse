@@ -1,17 +1,19 @@
-include ../huskymak.cfg
+include ../../huskymak.cfg
 
 all: huskyui$(EXE)
 
 ifeq ($(DEBUG), 1)
-  CFLAGS=-Wall -O3 -I$(INCDIR) -ggdb
+  CFLAGS=-I$(INCDIR) $(DEBCFLAGS) $(WARNFLAGS)
+  LFLAGS=$(DEBLFLAGS)
 else
-  CFLAGS=-Wall -O3 -I$(INCDIR) -s
+  CFLAGS=-I$(INCDIR) $(OPTCFLAGS) $(WARNFLAGS)
+  LFLAGS=$(OPTLFLAGS)
 endif
 
 ifeq ($(SHORTNAME), 1)
-  LFLAGS=-L$(LIBDIR) -lncurses -lsmapi -lfidoconf
+  LIBS=-L$(LIBDIR) -lncurses -lsmapi -lfidoconf
 else
-  LFLAGS=-L$(LIBDIR) -lncurses -lsmapi -lfidoconfig
+  LIBS=-L$(LIBDIR) -lncurses -lsmapi -lfidoconfig
 endif
 
 CDEFS=-D$(OSTYPE) $(ADDCDEFS)
@@ -22,7 +24,8 @@ CDEFS=-D$(OSTYPE) $(ADDCDEFS)
 huskyui$(EXE): huskyui$(OBJ) sock$(OBJ) showlog$(OBJ) showoutb$(OBJ)\
   menu$(OBJ) cfg$(OBJ) screen$(OBJ)
 	$(CC) $(LFLAGS) -o huskyui$(EXE) huskyui$(OBJ) sock$(OBJ) \
-	  showlog$(OBJ) showoutb$(OBJ) menu$(OBJ) cfg$(OBJ) screen$(OBJ)
+	  showlog$(OBJ) showoutb$(OBJ) menu$(OBJ) cfg$(OBJ) \
+	  screen$(OBJ) $(LIBS)
 
 clean:
 	-$(RM) *~

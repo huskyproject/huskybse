@@ -3,15 +3,17 @@ include ../../huskymak.cfg
 all: poll$(EXE) request$(EXE) send$(EXE) tolower$(EXE)
 
 ifeq ($(DEBUG), 1)
-  CFLAGS=-O3 -I$(INCDIR) -ggdb
+  CFLAGS=-I$(INCDIR) $(DEBCFLAGS) $(WARNFLAGS)
+  LFLAGS=$(DEBLFLAGS)
 else
-  CFLAGS=-O3 -I$(INCDIR) -s
+  CFLAGS=-I$(INCDIR) $(OPTCFLAGS) $(WARNFLAGS)
+  LFLAGS=$(OPTLFLAGS)
 endif
 
 ifeq ($(SHORTNAME), 1)
-  LFLAGS=-L$(LIBDIR) -lsmapi -lfidoconf
+  LIBS=-L$(LIBDIR) -lsmapi -lfidoconf
 else
-  LFLAGS=-L$(LIBDIR) -lsmapi -lfidoconfig
+  LIBS=-L$(LIBDIR) -lsmapi -lfidoconfig
 endif
 
 CDEFS=-D$(OSTYPE) $(ADDCDEFS)
@@ -21,16 +23,16 @@ CDEFS=-D$(OSTYPE) $(ADDCDEFS)
 	$(CC) $(CFLAGS) $(CDEFS) -c $<
 
 poll$(EXE): poll$(OBJ) general$(OBJ)
-	$(CC) $(LFLAGS) -o poll$(EXE) poll$(OBJ) general$(OBJ)
+	$(CC) $(LFLAGS) -o poll$(EXE) poll$(OBJ) general$(OBJ) $(LIBS)
 
 request$(EXE): request$(OBJ) general$(OBJ)
-	$(CC) $(LFLAGS) -o request$(EXE) request$(OBJ) general$(OBJ)
+	$(CC) $(LFLAGS) -o request$(EXE) request$(OBJ) general$(OBJ) $(LIBS)
 
 send$(EXE): send$(OBJ) general$(OBJ)
-	$(CC) $(LFLAGS) -o send$(EXE) send$(OBJ) general$(OBJ)
+	$(CC) $(LFLAGS) -o send$(EXE) send$(OBJ) general$(OBJ) $(LIBS)
 
 tolower$(EXE): tolower$(OBJ)
-	$(CC) $(LFLAGS) -o tolower$(EXE) tolower$(OBJ)
+	$(CC) $(LFLAGS) -o tolower$(EXE) tolower$(OBJ) $(LIBS)
 
 clean:
 	-$(RM) *~
