@@ -1,0 +1,303 @@
+# Configuration file for ifmail (ifgate+ifcico) package by Eugene Crosser
+# Compile-time default name of this file may be overridden by -I key.
+
+# Lines with the first nonblank character '#' are comments.
+
+# Log file name. Overrides compile-time default.
+logfile		/var/log/ifmail/iflog
+
+# Debug file name. Overrides compile-time default.
+debugfile	/var/log/ifmail/ifdebug
+
+# Debugging verbosity (is overidden by -x key). Default is 0.
+verbose		0
+
+# Main address:
+#address		2:2433/1247@fidonet
+address         2:2432/645
+address         2:2432/646
+address         44:4932/110
+address         44:4932/111
+#address		2:2433/1245.100@fidonet
+
+# AKAs:
+#address		2:5020/6.14@fidonet
+#address		2:5020/23.14@fidonet
+#address		2:5020/49.14@fidonet
+#address		100:5020/23.14@dummynet
+
+# Passwords for nodes. Not checked by iftoss (unless -DPARANOID specified
+# at compile-time), checked by ifcico.
+# Inserted into outgoing mail packets, EMSI and yoohoo packets.
+password        2:2432/600      hghprt
+password        2:2432/605      hghprt
+password        44:4932/100     hghprt
+password        2:2432/215      irkutsk
+password        2:2432/216      irkutsk
+password        2:24/0.999      CDP
+password        2:2490/1906     BEDUINE
+
+; +++ FREEPNT-MARKE +++
+#password	2:5929/23	ASDFG
+
+# Include config extention file (here: file with real passwords).
+# Includes may be nested. If the nesting is cyclic, the program cycles too.
+# You are warned.
+#include		/etc/ifmail/passwds
+
+# System alias file - try to fetch ftn-style aliases from there.
+# If "from" address of a message from FidoNet matches _right_ side
+# of some entry in sysalias file, then the Reply-To: header is created
+# in the RFC message with the name part taken from the left side of the
+# sysalis entry and domain part taken from myfqdn (below). E.g., if a 
+# fidonet message comes from "John Smith of 1:234/567.89@fidonet" and 
+# there is an entry in the sysalias file:
+# "jsmith:	John.Smith@p89.f567.n234.z1.fidonet.org"
+# and fqdn value is "pccross.msk.su", then the resulting message will
+# contain a line: "Reply-To: jsmith@pccross.msk.su".
+#sysalias	/usr/lib/smail/aliases
+
+# This host fully qualified domain name to add to the alias above
+#myfqdn		pccross.msk.su
+
+# If this is specified, beginning of the fidonet message will be scaned
+# for RFC looking headers _only_ if the message is addresses to the name
+# specified.  If not specified, beginning of all message is scaned.  I
+# do not recommend specifying magicname unless you know that parsing
+# headers will really break things.
+magicname	UUCP
+
+# Directory for incoming packets/files:
+inbound		/home/mtt/fido/in
+# Directories for "listed" and "protected" sessions
+listinbound	/home/mtt/fido/in
+protinbound	/home/mtt/fido/in.sec
+
+# Directory for outgoing packets (default domain and zone):
+# other zones will be like "/usr/spool/ifmail/outb.003",
+# other domains will be like "/usr/spool/ifmail/<domain>.<zone>"
+outbound	/home/mtt/fido/out
+
+# If you specify this, outgoing arcmail files will go to `outbound',
+# but be reffered as being in `dosoutbound' in the .flo files
+#dosoutbound    h:\spool\ifmail\outb
+
+# Directory from which the file requests are satisfied
+public		/home/mtt/fido/public
+
+# Directory with executables to satisfy "magic" file requests
+# if requested a file present in this directory, it will be
+# executed and stdout sent to the remote system.  If the file
+# is not executable, it is read line by line and the lines are
+# processed as if they were received file requests (recusively).
+# Execution of commands may compromize security!  You are warned.
+magic		/usr/lib/ifmail/magic
+
+# Primary nodelist (serves "outbound" directory and domain from the
+# first "address" statement). Name expanded with ".NNN" if neccessary.
+nodelist	/home/mtt/fido/nodelist/nodelist
+
+# Secondary nodelists and nodelists for other domains.
+# use directory name from the first "nodelist" statement.
+#		filename	originating address
+#nodelist	pnt5020.ndl	2:5020/0@fidonet
+#nodelist	chatlist	100:0/0@chateaunet
+#nodelist	private.ndl	2:5020/0@fidonet
+
+# domain translations, just context substitution.  Leading dot recommended.
+# May contain '@'-sign too.  First matching used.
+# NOTE: If you specify at least one domtrans line, there will be _NO_
+# default for fidonet <--> fidonet.org.  Don't forget to specify it
+# explicitly as a last line.
+#		FTN side		Internet side
+domtrans	.n5020.z2.fidonet	.fido.pccross.msk.su
+domtrans	.n5030.z2.fidonet	.fido.tctube.spb.su
+domtrans	.fidonet		.fidonet.org
+
+# Automatically updated alias database.  If omitted or inaccessible,
+# ^aREPLYADDR and ^aREPLYTO kludges are generated in fido messages.
+#database	/var/spool/ifmail/ifdbm
+
+# Sequencer file (used to generate unique IDs)
+sequencer	/var/spool/ifmail/seq
+
+# Areas file (format: "AREA newsgroup distribution")
+areas		/etc/ifmail/Areas
+
+# Bad groups prefixes - do not pass to fido if appear in Newsgroups header
+# This is NOT the same as "!news.group" in the cnews "sys" file.
+badgroup	relcom.ads.
+badgroup	relcom.commerce.
+
+# Maximum allowed number of groups in the Newsgroups header, article will
+# not be gated if exeeds.  If zero or omitted - no limit.
+maxgroups	5
+
+# Character translation tables.  The format of the files is as follows:
+#
+# <orig.char> <whitespace> <dest.char>
+#
+# (one character in a line).  <orig.char> and <dest.char> can be specified
+# in one of four notation styles:
+# - character itself in single quotes (e.g. 'a')
+# - decimal number (e.g. 123)
+# - octal number (e.g. 0123)
+# - hexadecimal number (e.g. 0x7f)
+#
+# Crosshatch ('#') denotes start of comment; space, tab and crosshatch
+# characters cannot be specified using the first (character) notation.
+#
+# Internet -> FidoNet (outgoing) character mapping table (a la mapchan)
+# outtab		/usr/local/bin/ifmail/outkoi8alt
+# FidoNet -> Internet (incoming) character mapping table
+# Intab		/usr/local/bin/ifmail/outaltkoi8
+
+# Transport programs for mail and news, used by iftoss
+# for sendmail, $F expands to "from" address, $T - to "to" address.
+sendmail	/usr/lib/sendmail -f $F $T
+rnews		/bin/rnews
+
+# Toss program, used by ifunpack
+iftoss		/usr/lib/ifmail/iftoss
+
+# Unpackers, used by ifunpack. 
+# $F expands to archieve file name
+unzip		/usr/bin/unzip -ojq $F
+unarj		/usr/bin/unarj e $F
+unarc		/usr/bin/unpack $F
+unzoo		/usr/bin/zoo -extract $F
+
+# Packer program, used by ifpack
+# $F expands to archieve file name, $P - to list of packet names
+packer		/usr/bin/zip $F $P
+
+# Maximum arcmail file size, ifpack will start new arcmail file if exceeds
+maxfsize	500000
+
+# Maximum packet size, ifmail/ifnews will start new packet if exeeds.
+# *.?ut files are NOT created if nonzero specified, you must run ifpack
+# to make packets go out.
+maxpsize	30000
+
+# Maximum message size when splitting big messages of usenet origin
+# default is 12300 bytes
+maxmsize 12300
+
+# Flavors that should not be subject to packet size limiting.  These
+# flavors will be put into `ready to send' packets and not packed
+# by ifpack.  Special flavor 'm' means "all netmail".
+nonpacked	cm
+
+# cnews log file and (temporary) database for seen-bys
+newslog		/usr/lib/news/log
+msgidbm		/tmp/ifmsgids
+
+# From this line on, values may be prefixed by a logical expression in
+# round brackets. Operators are: '!', '&', '|', 'Xor'.
+# Possible elements are:
+# - Nodelist flags (like "CM", "MNP", "V32" etc.)
+# - speed <operator> <numeric>
+#         where <operator> is '=', '!=', '<', '>', '<=', '>='
+# - address <wildcard>
+#         where <wildcard> is a (possibly incomplete) fidonet address, 
+#         e.g. "5020/*"
+# - time <interval>[,<interval>,...]
+#         where <interval> is a day spec. with optional time spec., e.g.
+#         Wk2000-0900,Sat1800-0000,Sun
+# - phone <prefix>
+#         e.g. "phone 7-095-"
+
+# Dialing parameters
+# of multiple "ModemPort", "ModemReset", "ModemDial", "ModemHangup" lines, 
+# first matching is used.
+# of multiple "PhoneTrans", "ModemConnect", "ModemError" lines, all matching 
+# are used.
+# In send and expect strings, following substitutions are made:
+# \\	'\' character
+# \r	carriage return (0x0d)
+# \n	new line (0x0a)
+# \t	tab (0x09)
+# \b	backspace (0x08)
+# \s	space (0x20)
+# \NNN	(where N is an octal digit) - character with octal code NNN
+# \d	1 second delay (send strings only)
+# \p	1/4 second pause (send strings only)
+# \T	translated telephone no. (send strings only)
+# \D	untranslated telephone no. (send strings only)
+
+# ModemPort present a blank-separated list of ports with possible speed
+# extention (separated by colon); if speed is prefixed with 'L', it is
+# a "locked" port speed, otherwise it is a maximum speed to be set, while
+# actual speed is taken from the nodelist.  If speed is omitted (or set
+# to zero), previous port speed is not changed.
+#ModemPort	(time Any0000-0900,Sat,Sun) ttyS0
+#ModemPort	cua0:L38400
+ModemPort       ttyI1:64000
+
+# PhoneTrans lines provide rules to change phone prefixes to make local
+# or long-distance calls.  In the example below, my country code is 7,
+# and local dialing area is 095.  From the numbers starting with "7-095-"
+# the prefix is stripped and the 7-digit remainder is dialed.  For
+# the numbers starting with "7-" but not with "7-095-", the country prefix
+# "7-" is stripped and the long-distance dialing prefix "8W" substituted. 
+# For the numbers not matching any of the above, international
+# call is performed: international dialing prefix "8W10" is prepended
+# to the unmodified 11-digit number.  Generally, the syntax is:
+# "PhoneTrans <what-to-strip> / <what-to-substitute-instead>"
+#PhoneTrans	49-211-	/ 
+PhoneTrans      49-5251 /
+PhoneTrans	49-	/	0
+PhoneTrans		/	00
+ModemReset	ATZ\r\n\dat&e05251876291\r\n\d
+#ModemDial	(time Any0800-2200 & address 2:5020/49) AT&M5&N4DP\T\r
+#ModemDial	(address 2:5020/49) AT&M5&N6DP\T\r
+#ModemDial	(speed < 4800) AT&N3DP\T\r
+#ModemDial	        ATDT24\r
+ModemDial		ATD\T\r
+ModemHangup	ATZ\r
+ModemOK		OK
+ModemConnect	CONNECT
+ModemError	BUSY
+ModemError	NO\sCARRIER
+ModemError	NO\sDIAL
+ModemError	RING\r
+ModemError	ERROR
+ModemError      NO\sDIALTONE
+ModemError      NO\sDIAL\sTONE
+
+# Timeouts to wait for "OK" and "CONNECT", cannot be prefixed by logical
+# expression.
+TimeoutReset	10	
+TimeoutConnect	70
+
+# Delay in seconds before every call in "automatic" mode.  Ignored
+# if explicit list of addresses specified in the command string.
+DialDelay       0
+
+# Call options (time, address and nodelist flag dependant)
+# All matching are applied in the order they are specified.
+# Possible options are "[No]Call", "[No]Hold", "[No]PUA", "[No]EMSI",
+# "[No]WaZOO", "[No]Freqs", "[No]Zmodem", "[No]ZedZap", "[No]Janus",
+# "[No]Hydra". Here, WaZOO stands for YooHoo/2U2 handshake, not for
+# the transfer scheme. FTS-0001 handshake and DietIFNA scheme cannot
+# be disallowed (because they are mandatory by standart).  "Hold" 
+# means really hold "hold" type packets and files: do not send them
+# if our system initiated the session, "NoHold" means  send "hold"
+# packets when our system initiated the session. "NoPUA" stands for
+# "No PickUp All", i.e. PUP ("Pick Up Primary").  NoCall means do not
+# perform outbound call.  This flag has no effect on the nodes
+# explicitly specified in the command line.
+# Default options are "everything allowed".
+#options		((!CM) & time Any0700-0200) Nocall
+#options	(time Any0900-2100 & ! address 2:5020/*) Nocall
+
+# EMSI data for this node
+# From this line on values CANNOT be prefixed with logical expression
+# For now, escaping of '}' and ']' unimplemented, try to avoid these
+# characters please!
+Name		hpt HQ	
+Location	Paderborn GER
+SysOp		Matthias Tichy
+Phone		49-5251-608550
+Speed		9600
+Flags		XA,V32B,V42B
