@@ -4,3 +4,9 @@ Sun Jul  2 01:44:36 UTC 2000
 sms:
 - initial release
 
+----- cvs ci ------
+Tue Jul 11 20:19:37 UTC 2000
+sms:
+- using members of group "fido" as users instead of specifying them on the
+  command line
+

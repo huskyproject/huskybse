@@ -1,15 +1,20 @@
 /* nmcopy.c - copies netmails to homedirs */
 
+// obvious
 #define VERSION "1.0"
+// group with all fido-users
+#define GROUPNAME "fido"
+// file/path of area, relative to homedir
+#define NETMAILAREA ".fido/netmail"
 
 #include <errno.h>
 #include <smapi/msgapi.h>
-// #include <smapi/progprot.h>
 #include <fidoconf/fidoconf.h>
 #include <fidoconf/common.h>
 #include <string.h>
 #include <stdlib.h>
 #include <pwd.h>
+#include <grp.h>
 #include <sys/types.h>
 
 #ifndef nfree
@@ -80,6 +85,34 @@ char *getRealname(char *user)
   else return strdup(user);
 }
 
+void getUsers()
+{
+  struct group *gr;
+  unsigned int i;
+
+  gr = getgrnam(GROUPNAME);
+  if (!gr)
+  {
+    printf("Could not get members of group '%s'!\n", GROUPNAME);
+    done();
+    exit(10);
+  }
+
+  for (i = 0; (gr->gr_mem[i]); i++)
+  {
+    numUsers++;
+    users = realloc(users, numUsers * sizeof(char *));
+    users[i] = strdup(gr->gr_mem[i]);
+  }
+  userNames = malloc(numUsers * sizeof(char *));
+  homeDirs = malloc(numUsers * sizeof(char *));
+  for (i = 0; i < numUsers; i++)
+  {
+    userNames[i] = strLower(getRealname(users[i]));
+    homeDirs[i] = getHomeDir(users[i]);
+  }
+}
+
 int scanMsg(HAREA area, unsigned int msgNum)
 {
   HMSG msg, newMsg;
@@ -126,8 +159,8 @@ int scanMsg(HAREA area, unsigned int msgNum)
   if (nameMatch == -1) return 0;
 
   // copy msg
-  userAreaName = malloc(strlen(homeDirs[nameMatch])+15);
-  sprintf(userAreaName, "%s/.fido/netmail", homeDirs[nameMatch]);
+  userAreaName = malloc(strlen(homeDirs[nameMatch])+strlen(NETMAILAREA)+2);
+  sprintf(userAreaName, "%s/%s", homeDirs[nameMatch], NETMAILAREA);
 
   userArea = MsgOpenArea(userAreaName, MSGAREA_NORMAL, MSGTYPE_SQUISH);
   if (!userArea)
@@ -181,35 +214,21 @@ void scanArea(HAREA area)
 
 int main(int argc, char **argv)
 {
-  unsigned int i;
   struct _minf m;
   HAREA area;
 
   printf("nmcopy %s\n", VERSION);
 
-  if (argc < 2)
+  if (argc > 1)
   {
     printf("nmcopy - copy netmails to homedirs\n");
-    printf("Syntax: nmcopy {<user>}\n");
-    printf("Sample: nmcopy sascha caspar\n");
+    printf("Syntax: nmcopy\n");
 
     return 1;
   }
 
-  // get user data
-  for (i = 0; i < (argc - 1); i++)
-  {
-    numUsers++;
-    users = realloc(users, numUsers * sizeof(char *));
-    users[i] = strdup(argv[i + 1]);
-  }
-  userNames = malloc(numUsers * sizeof(char *));
-  homeDirs = malloc(numUsers * sizeof(char *));
-  for (i = 0; i < numUsers; i++)
-  {
-    userNames[i] = strLower(getRealname(users[i]));
-    homeDirs[i] = getHomeDir(users[i]);
-  }
+  // get usernames
+  getUsers();
 
   // read fidoconfig
   config = readConfig(NULL);
