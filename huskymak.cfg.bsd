@@ -171,18 +171,16 @@ WARNFLAGS=-Wall
 # C-compiler: optimization
 OPTCFLAGS=-c -s -O3 -fomit-frame-pointer -fstrength-reduce -fPIC
 
-ifeq ($(OSTYPE), UNIX)
-  ifeq ( $(DYNLIBS), 0 )
+ifeq ( $(DYNLIBS), 0 )
     WARNFLAGS+= -static
     OPTCFLAGS+= -static
-  endif
 endif
 
 # C-compiler: debug
 DEBCFLAGS=-c -ggdb
 
 # C-compiler: additional defines, for features of your OS
-ADDCDEFS=-DHAS_POPEN -DNOSEMAPHORES
+ADDCDEFS=-DHAS_POPEN
 # On Solaris, Msged only works with the curses interface, so use:
 #ADDCDEFS=-DHAS_POPEN -DUSE_CURSES -DNOSEMAPHORES
 # On BeOS, file locking currently does not work, so use:
@@ -230,21 +228,17 @@ MKDIROPT= -m 755 -p
 #############################################################################
 
 # extension of executable (e.g. ".exe")
-EXE=
+_EXE=
 
 # extension of object file
-OBJ=.o
+_OBJ=.o
 
 # extension of (static) libs
-LIB=.a
+_LIB=.a
 
 # extension of compiled pascal units
-TPU=.ppu
+_TPU=.ppu
 
 # directory separator (DOS: "\\", Unix: "/")
 
-ifeq (${OSTYPE}, UNIX)
-  DIRSEP=/
-else
-  DIRSEP=\\
-endif
+DIRSEP=/

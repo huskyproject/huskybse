@@ -180,18 +180,14 @@ WARNFLAGS=-Wall
 OPTCFLAGS=-c -s -O3 -fomit-frame-pointer -fstrength-reduce -fPIC
 
 ifeq ( $(DYNLIBS), 0 )
-  ifeq ($(OSTYPE), UNIX)
     WARNFLAGS+= -static
     OPTCFLAGS+= -static
-  endif
 endif
 
 # C-compiler: debug
 DEBCFLAGS=-c -ggdb
 
-# Due problems with Semaphores, compile without semaphor handling !
-# (many people have this problems)
-ADDCDEFS=-DNOSEMAPHORES
+# C-compiler: additional defines, for features of your OS
 # On Solaris, Msged only works with the curses interface, so use:
 # (does not work on our Solaris)
 #ADDCDEFS+=-DUSE_CURSES
@@ -253,21 +249,17 @@ RMOPT=-f
 #############################################################################
 
 # extension of executable (e.g. ".exe")
-EXE=
+_EXE=
 
 # extension of object file
-OBJ=.o
+_OBJ=.o
 
 # extension of (static) libs
-LIB=.a
+_LIB=.a
 
 # extension of compiled pascal units
-TPU=.ppu
+_TPU=.ppu
 
 # directory separator (DOS-like: "\\", Unix-like: "/")
 
-ifeq (${OSTYPE}, UNIX)
-  DIRSEP=/
-else
-  DIRSEP=\\
-endif
+DIRSEP=/

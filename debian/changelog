@@ -1,3 +1,9 @@
+huskybase (2.0-1) unstable; urgency=low
+
+  * New upstream version for build Husky 2.x packages
+
+ -- Pavel Andreew <pavel@collage.etel.ru>  Wed,  5 Mar 2003 10:17:36 +0500
+
 huskybase (1.0-1) unstable; urgency=low
 
   * Initial Release.
