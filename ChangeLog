@@ -1,3 +1,7 @@
+2003-12-18 Thursday 10:31  mche
+
+	* HUSKY.sln (1.8): project file for building areafix added
+
 2003-10-23 Thursday 12:59  stas_degteff
 
 	* huskymak.cfg.cyg (1.2): Fix perl defines
