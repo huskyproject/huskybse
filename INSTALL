@@ -210,16 +210,16 @@ makefiles.
   ---------------------------------------------------------------------------
 
   makefile.unx     1     Unix      Any (standard "cc" is enough!)
+  makefile.be      1     BeOS      BeOS R5 with gcc
+  makefile.bsd     1     BSD       (tested: FreeBSD) GNU gcc
+  makefile.lnx     1     Linux     GNU gcc (2.7..2.95, 3.x)
   makefile.djg     1     DOS/32    DJ Delorie GNU gcc (DJGPP)
-  makefile.emo     1     OS/2      EMX; OMF static (standalone) binaries
   makefile.cyg     1     Win32     Mingw32 on Cygwin: http://www.cygwin.com
   makefile.mvc     1     Win32     Microsoft Visual C
   makefile.mvcdll  1     Win32     Microsoft Visual C - dll build
 
-  makefile.be      2     BeOS      BeOS R5 with gcc
-  makefile.bsd     2     BSD       (tested: FreeBSD) GNU gcc
+  makefile.emo     2     OS/2      EMX; OMF static (standalone) binaries
   makefile.emx     2     OS/2      EMX; a.out dynamic (EMXRT) binaries
-  makefile.lnx     2     Linux     GNU gcc
   makefile.mgw     2     Win32     Mingw32 or Mingw32/CPD gcc: www.mingw32.org
   makefile.rxw     2     Win32     EMX/RSXNT gcc with -Zwin32
   makefile.sun     2     Solaris   GNU gcc
