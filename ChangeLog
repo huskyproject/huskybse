@@ -1,3 +1,8 @@
+2003-02-06 Thursday 22:31  d_sergienko
+
+	* develop-docs/changelog-writing (1.2): added info about .nocvs2ftp
+	file
+
 2003-02-05 Wednesday 10:54  sfpavel
 
 	* huskymak.cfg.debian (1.1), debian/README.Debian (1.1),
