@@ -53,7 +53,7 @@ Link Matthias Schniedermeyer
 email ms@citd.owl.de
 Aka 2:2432/600
 ourAka 2:2432/645
-Password hghprt
+Password xxxxxxx
 EchoMailFlavour Crash
 AutoAreaCreate on
 AutoAreaCreateDefaults -p 14 -dupeCheck move -dupeHistory 11
@@ -65,7 +65,7 @@ Link Matthias Schniedermeyer
 email ms@citd.owl.de
 Aka 44:4932/100
 ourAka 44:4932/110
-password hghprt
+password ixxxxxxxxxx
 EchoMailFlavour Crash
 AutoAreaCreate on
 AutoAreaCreateDefaults -p 14 -dupeCheck move -dupeHistory 11
@@ -74,7 +74,7 @@ Packer zip
 Link Carsten Ellermann
 Aka 2:2432/215
 ourAka 2:2432/645
-password irkutsk
+password xxxxxxx
 autoAreaCreate on
 AutoAreaCreateDefaults -p 14 -dupeCheck move -dupeHistory 11
 autoFileCreate on
@@ -83,7 +83,7 @@ Link Matthias Tichy
 email mtt@tichy.de
 Aka 2:2432/646
 ourAka 2:2432/645
-Password juhee
+Password xxxxxx
 autoAreaCreate on
 AutoAreaCreateDefaults -p 14 -dupeCheck move -dupeHistory 11
 forwardPkts on
