@@ -112,7 +112,7 @@ MV=mv
 CP=cp
 
 #Make a library file usable. You may leave this empty if it is n/a.
-RANLIB=ar s
+RANLIB=ranlib
 
 # C-style header file to pascal unit converter (shipped with fpc)
 H2PAS=h2pas
