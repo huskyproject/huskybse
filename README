@@ -7,6 +7,11 @@ develop-docs/	Some tips and hints for developers that work on Husky source.
 sms/		Setup at Sascha Silbe's system
 mtt/            Setup at Matthias Tichy's system
 
+tools, nmcopy und huskyui
+		Some tools that might be helpful, but are not officially
+		supported.
+
+
 
 
 
