@@ -1,7 +1,7 @@
-all: make-tools make-huskyui
-clean: clean-tools clean-huskyui
-distclean: distclean-tools distclean-huskyui
-install: install-tools install-huskyui
+all: make-tools make-huskyui make-nmcopy
+clean: clean-tools clean-huskyui clean-nmcopy
+distclean: distclean-tools distclean-huskyui distclean-nmcopy
+install: install-tools install-huskyui install-nmcopy
 
 make-tools:
 	$(MAKE) -C tools
@@ -26,4 +26,16 @@ distclean-huskyui:
 
 install-huskyui:
 	$(MAKE) -C huskyui install
+
+make-nmcopy:
+	$(MAKE) -C nmcopy
+
+clean-nmcopy:
+	$(MAKE) -C nmcopy clean
+
+distclean-nmcopy:
+	$(MAKE) -C nmcopy distclean
+
+install-nmcopy:
+	$(MAKE) -C nmcopy install
 
