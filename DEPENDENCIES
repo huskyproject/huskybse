@@ -45,7 +45,7 @@ msged      6. 0.3-stable
 The third version number is set to 0 and the (optional) suffix to
 "-stable" when the stable branch of the software is created. The suffix is
 set to "-release" when a release is made. Directly after that, the third
-number is stepped by one and the suffix re-set to "-stable". 
+number is stepped by one and the suffix re-set to "-stable".
 
 Dependencies are as follows: Each stable branch of a software requires
 another stable branch. For example, any version of "msged 6.0" can be
@@ -74,7 +74,7 @@ and you have a smapi 2.0.1-release.
 
 Starting with smapi 2.0 and fidoconfig 0.12, Husky properly supports shared
 object versioning on Linux and other gcc-based Unix systems. This means: When
-you install smapi 2.0 and compile hpt 1.0, you will get 
+you install smapi 2.0 and compile hpt 1.0, you will get
 
 libsmapi.so -> libsmapi.so.2.0
 libsmapi.so.2.0 -> libsmapi.so.2.0.1
@@ -107,3 +107,23 @@ that library. Just switching the "libsmapi.so" symlink is not enough because
 for compiling, you need not only proper .so files, but also the matching
 proper include files. And in contrast to .so files, there can always be only
 one set of include files for a library.
+
+Combining Msged 6.0, Smapi 2.0, Smapi 1.6.4 and Hpt 0.9.7-stable
+----------------------------------------------------------------
+
+As of now, from the new Husky stable branch we have only released Huskybse
+0.2, Smapi 2.0 and Msged 6.0.  There are no stable releases of hpt and
+Fidoconfig that can be used with Smapi 2.0.  So, if you don't want to
+use Msged 6.0, you must combine older stable versions of Husky
+(e.g.  Hpt 0.9.7 with Fidoconfig 0.10 and Smapi 1.6.4) with newer ones (e.g.
+Msged 6.0 with Smapi 2.0). Here is how to do it:
+
+a) Compile and Install Smapi 1.6.4, Fidoconfig 0.10 and Hpt 0.9.7 as usual.
+b) Compile and Install Smapi 2.0
+c) Compile and Install Msged 6.0
+d) Compile and Install Smapi 1.6.4
+
+Now, both your old Hpt 0.9.7 and your new Msged 6.0 will work.  If you want
+to recompile Msged (e.g. a newer version like Msged 6.0.1), you must repeat
+stebs b), c) and d).
+
