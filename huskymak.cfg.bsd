@@ -1,32 +1,30 @@
 # Config-Makefile for Husky-packages
-# You must modify this file according to your needs.
+# Modified for FreeBSD 4.* by Stas Degteff (2:5080/102@FIDOnet, g@grumbler.org)
 
 ##############################################################################
 #PART 1: DIRECTORIES AND FILENAMES
 #You always need to change these to match your preferences
 ##############################################################################
 
-# Prefix for all directories
-# Set to your homedir if you have no root privelegies
-PREFIX=/usr/local
+prefix=/usr/local
 
 # Where libraries (both .a and .so files) should be placed
 # You should take care that this directory is listed in the LD_LIBRARY_PATH
 # environment variable (if necessary, modify your /etc/profile file).
-LIBDIR=$(PREFIX)/lib
+LIBDIR=${prefix}/lib
 
 # Where the programs should be placed.
-BINDIR=$(PREFIX)/bin
+BINDIR=${prefix}/bin
 
 # Where manual pages should be placed.
-MANDIR=$(PREFIX)/man
+MANDIR=${prefix}/man/man
 
 # Where include files should be placed (don't worry, no files will be over-
 # written, Husky will use it's own subdirectories below this directory):
-INCDIR=$(PREFIX)/include
+INCDIR=${prefix}/include
 
 # The fidoconfig config file will be in this DIRECTORY:
-CFGDIR=$(PREFIX)/etc/fido
+CFGDIR=${prefix}/etc/fido
 
 # IF you have a working texinfo installation (consisting of the "makeinfo"
 # and "install-info" program), you should uncomment and adapt this 
@@ -35,11 +33,11 @@ CFGDIR=$(PREFIX)/etc/fido
 # will not be compiled, and you won't know how to use the software ;-).
 # You should take care that this directory is listed in the INFOPATH 
 # environment variable (if necessary, modify your /etc/profile file).
-# INFODIR=/usr/local/info
+INFODIR=${prefix}/info
 
 # The same as above, but for HTML documentation. This requires a working
 # "texi2html" program.
-#HTMLDIR=$(PREFIX)/lib/husky
+HTMLDIR=${prefix}/share/doc/husky
 
 # Name of the config file of MSGED TE:
 MSGEDCFG=\"$(CFGDIR)/msged.cfg\"
@@ -61,18 +59,15 @@ MSGEDCFG=\"$(CFGDIR)/msged.cfg\"
 # C-Compiler
 CC=gcc
 
-# C++-Compiler
-CXX=g++
-
 #Msged needs access to a termcap library. Define it's name here.
 #On Linux, termcap is integrated into ncurses:
-TERMCAP=ncurses
+#TERMCAP=ncurses
 #On FreeBSD or commerical Unices, you may try on of the following:
-#TERMCAP=termcap
+TERMCAP=termcap
 #TERMCAP=terminfo
 
 # C++-Compiler
-GPP=g++
+CXX=g++
 
 # Pascal-Compiler (the compiler is optional, but the value of this
 # variable must be defined even if you don't have a Pascal compiler).
@@ -84,8 +79,7 @@ AR=ar
 # how to build shared libraries
 # use gcc on Linux and FreeBSD
 # use ld on BeOS and also try ld if gcc does not work for you
-# only "gcc" will put so version numbers into the shared object 
-# On Solaris use "-G" as additional linkerflag !!!!!!!
+# only "gcc" will but so version numbers into the shared object 
 # MKSHARED=ld
 MKSHARED=gcc 
 
@@ -104,7 +98,8 @@ INSTALL=install
 LN=ln
 
 # create directory
-MKDIR=mkdir
+#MKDIR=mkdir
+MKDIR= install -d
 
 # update dynamic library cache
 # If your operating system does not need this, you may comment out this line.
@@ -131,8 +126,8 @@ H2PAS=h2pas
 OSTYPE=UNIX
 
 # short name of operating system (used for PID lines etc.)
-UNAME=LNX
-#UNAME=BSD
+#UNAME=LNX
+UNAME=BSD
 #UNAME=OS2
 #UNAME=BEOS
 
@@ -142,8 +137,6 @@ DEBUG=0
 # 8.3 names - NOTE: This switch is obsolete and probably does not work!
 SHORTNAMES=0
 
-# Perl support
-PERL=0
 
 # The DYNLIBS switch controls if dynamic or static linkage is used.
 # This is tricky. If you set DYNLIBS=1, dynamic libraries (.so files)
@@ -158,7 +151,7 @@ PERL=0
 # "-static" to the OPTCFLAGS and WARNCFLAGS variables (above) in order 
 # to avoid linkage with old .so files that may be  floating around
 # (see 'ifeq ( $(DYNLIBS), 0 )' conditions)
-#
+# 
 DYNLIBS=1
 
 # C-compiler: specify name of executable
@@ -170,8 +163,8 @@ WARNFLAGS=-Wall
 # C-compiler: optimization
 OPTCFLAGS=-c -s -O3 -fomit-frame-pointer -fstrength-reduce -fPIC
 
-ifeq ( $(DYNLIBS), 0 )
-  ifeq ($(OSTYPE), UNIX)
+ifeq ($(OSTYPE), UNIX)
+  ifeq ( $(DYNLIBS), 0 )
     WARNFLAGS+= -static
     OPTCFLAGS+= -static
   endif
@@ -180,16 +173,12 @@ endif
 # C-compiler: debug
 DEBCFLAGS=-c -ggdb
 
-# Due problems with Semaphores, compile without semaphor handling !
-# (many people have this problems)
-ADDCDEFS=-DNOSEMAPHORES
+# C-compiler: additional defines, for features of your OS
+ADDCDEFS=-DHAS_POPEN
 # On Solaris, Msged only works with the curses interface, so use:
-#ADDCDEFS+=-DUSE_CURSES
-# Some FS and some OS don't support filelocking. Try alternative locking
-# *** THIS IS BETA-CODE *** report problems or success  to FIDOSOFT.HUSKY ***
-#ADDCDEFS+=-DALTLOCKING
-# If your are not under UNIX, EMX or DJGPP and have popen() uncomment this:
-#ADDCDEFS+=-DHAVE_POPEN
+#ADDCDEFS=-DHAS_POPEN -DUSE_CURSES
+# On BeOS, file locking currently does not work, so use:
+# ADDCDEFS=-DHAS_POPEN -DNO_LOCKING
 
 # Pascal-Compiler: optimization
 OPTPFLAGS=
@@ -207,14 +196,7 @@ OPTLFLAGS=-s
 DEBLFLAGS=-g
 
 # options for installing programs
-OPTIBOPT=-c -s
-DEBIBOPT=-c
-
-ifeq ($(DEBUG), 1)
-  IBOPT = $(DEBIBOPT)
-else
-  IBOPT = $(OPTIBOPT)
-endif
+IBOPT=-c -s
 
 # options for installing libs
 ILOPT=-c
@@ -232,11 +214,8 @@ LNOPT=-sf
 AR_R = r
 
 # options for creating directories
-MKDIROPT=-p
-
-# options for removing files (e.g. for clean, distclean, uninstall)
-RMOPT=-f
-
+#MKDIROPT=-p
+MKDIROPT= -m 755 -p
 
 #############################################################################
 # file extensions
@@ -255,5 +234,10 @@ LIB=.a
 TPU=.ppu
 
 # directory separator (DOS: "\", Unix: "/")
-DIRSEP=/
+
+ifeq (${OSTYPE}, UNIX)
+  DIRSEP=/
+else
+  DIRSEP=\\
+endif
 
