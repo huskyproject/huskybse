@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
-#include <fidoconfig/fidoconfig.h>
+#include <fidoconf/fidoconf.h>
 #include <ctype.h>
 
 char *buffer;

@@ -1,6 +1,6 @@
 /* cfg.h - read config */
-#include <fidoconfig/fidoconfig.h>
-#include <fidoconfig/common.h>
+#include <fidoconf/fidoconf.h>
+#include <fidoconf/common.h>
 
 typedef struct _tCfg
 {
