@@ -246,8 +246,11 @@ _EXE=
 # extension of object file
 _OBJ=.o
 
-# extension of (static) libs
+# extension of static libs
 _LIB=.a
+
+# extension of dynamic libs
+_DLL=.so
 
 # extension of compiled pascal units
 _TPU=.ppu
