@@ -1,0 +1,45 @@
+include ../../huskymak.cfg
+
+all: poll$(EXE) request$(EXE) send$(EXE)
+
+ifeq ($(DEBUG), 1)
+  CFLAGS=-O3 -I../../smapi -I$(INCDIR) -ggdb
+else
+  CFLAGS=-O3 -I../../smapi -I$(INCDIR) -s
+endif
+
+ifeq ($(SHORTNAME), 1)
+  LFLAGS=-L$(LIBDIR) -lsmapi -lfidoconf
+else
+  LFLAGS=-L$(LIBDIR) -lsmapi -lfidoconfig
+endif
+
+CDEFS=-D$(OSTYPE) $(ADDCDEFS)
+
+
+.c$(OBJ):
+	$(CC) $(CFLAGS) $(CDEFS) -c $<
+
+poll$(EXE): poll$(OBJ) general$(OBJ)
+	$(CC) $(LFLAGS) -o poll$(EXE) poll$(OBJ) general$(OBJ)
+
+request$(EXE): request$(OBJ) general$(OBJ)
+	$(CC) $(LFLAGS) -o request$(EXE) request$(OBJ) general$(OBJ)
+
+send$(EXE): send$(OBJ) general$(OBJ)
+	$(CC) $(LFLAGS) -o send$(EXE) send$(OBJ) general$(OBJ)
+
+clean:
+	-$(RM) *~
+	-$(RM) *$(OBJ)
+
+distclean: clean
+	-$(RM) poll$(EXE)
+	-$(RM) request$(EXE)
+	-$(RM) send$(EXE)
+
+install:
+	$(INSTALL) $(IBOPT) poll$(EXE) $(BINDIR)
+	$(INSTALL) $(IBOPT) request$(EXE) $(BINDIR)
+	$(INSTALL) $(IBOPT) send$(EXE) $(BINDIR)
+
