@@ -78,7 +78,8 @@ PACKAGENAME=$(LIBNAME)$(LIBSUFFIX)
 
 ## make directives ##
 
-.PHONY:	distclean clean all static dll programs default
+# rules without dependencies and (possible) actions - prevent warnings
+.PHONY:	distclean clean all static dll programs default doc package
 
 ## Default make rule ##
 
