@@ -1,0 +1,17 @@
+all: make-tools
+clean: clean-tools
+distclean: distclean-tools
+install: install-tools
+
+make-tools:
+	make -C tools -f makefile.husky
+
+clean-tools:
+	make -C tools -f makefile.husky clean
+
+distclean-tools:
+	make -C tools -f makefile.husky distclean
+
+install-tools:
+	make -C tools -f makefile.husky install
+
