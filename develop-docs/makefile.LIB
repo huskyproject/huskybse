@@ -40,7 +40,8 @@ CP	= cp
 MV	= mv
 # install command
 INSTALL	= install
-
+# groff program (man pages formatter, possible use man2html perl script)
+GROFF	= /usr/bin/groff
 
 ## file suffixes ##
 
@@ -62,6 +63,9 @@ _EXP	= .exp
 _ARC	= .zip
 # documentation file (".info", ".html", ".div", ...)
 _HTML	= .html
+# text file
+_TXT	= .txt
+
 
 ## program options ##
 
@@ -84,7 +88,7 @@ ARFLAGS	= rs
 # options for $(RM) program
 RMFLAGS	= -f
 # options for archiver
-ARCFLAGS= -9 -j
+ARCFLAGS= -9 -r
 # create directory command options
 MKDIROPT= -p
 # remove directory command options
@@ -92,9 +96,11 @@ RMDIROPT= -rf
 # install command options
 INSTOPT	= -c
 # copy command options
-CPOPT	=
+CPOPT	= -f
 # move command options
-MVOPT	=
+MVOPT	= -uf
+# groff program option (this example doing format man page to html page)
+GROFFOPT= -mman -Thtml
 
 
 ## Library filename elements ##
@@ -170,35 +176,59 @@ distclean: clean pkgclean
 doc:
 	cd ../doc ; make html
 
-pkg-doc: pkg-dir
+pkg-doc-dir:
 	-$(MKDIR) $(MKDIROPT) $(PACKAGEBASE)/doc
+
+pkg-doc: pkg-doc-dir
 	$(CP) $(CPOPT) ../doc/*$(_HTML) $(PACKAGEBASE)/doc
+
+pkg-man: pkg-doc-dir
+	for f in ../man/*.1 ; \
+	 do $(GROFF) $(GROFFOPT) $$f > $(PACKAGEBASE)/doc/`basename $$f`$(_HTML) ; done
+
+pkg-man-alt:
+	-$(MKDIR) $(MKDIROPT) $(PACKAGEBASE)/man/man1
+	$(CP) $(CPOPT) ../man/*.1 $(PACKAGEBASE)/man/man1
+	-$(MKDIR) $(MKDIROPT) $(PACKAGEBASE)/man/man5
+	$(CP) $(CPOPT) ../man/*.5 $(PACKAGEBASE)/man/man5
+	-$(MKDIR) $(MKDIROPT) $(PACKAGEBASE)/man/man8
+	$(CP) $(CPOPT) ../man/*.8 $(PACKAGEBASE)/man/man8
 	
 pkg-dir:
 	-$(MKDIR) $(MKDIROPT) $(PACKAGEBASE)
 
-$(HEADERS):
-	$(CP) $(CPOPT) $@ $(PACKAGEBASE)/$(LIBNAME)
+pkg-h-dir:
+	-$(MKDIR) $(MKDIROPT) $(PACKAGEBASE)/$(LIBNAME)
+
+$(HEADERS): pkg-h-dir
+	$(CP) $(CPOPT) $(H_DIR)$@ $(PACKAGEBASE)/$(LIBNAME)/$@
 
 pkg-h: $(HEADERS)
 
-package: static programs doc copy-h pkg-doc
-        @echo XXXXX library v.$(VER) for `uname -s` platform > $(PACKAGEBASE)/file_id.diz
-	@echo (Part of HUSKY Fidonet Software Project) >> $(PACKAGEBASE)/file_id.diz
+pkg-readme: pkg-dir
+	@echo XXXXX library v.$(VER) for `uname -s` platform > $(PACKAGEBASE)/file_id.diz
+	@echo "(Part of HUSKY Fidonet Software Project)" >> $(PACKAGEBASE)/file_id.diz
 	@echo See http://husky.sourceforge.net and/or >> $(PACKAGEBASE)/file_id.diz
 	@echo http://sourceforge.net/projects/husky >> $(PACKAGEBASE)/file_id.diz
-	$(MKDIR) $(MKDIROPT) $(PACKAGEBASE)
-	$(CP) $(CPOPT) $(TARGETLIB) $(PROGRAMS) ../VERSION ../README $(PACKAGEBASE)
 	$(CP) $(CPOPT) ../COPYING ../cvsdate.h ../INSTALL ../LICENSE $(PACKAGEBASE)
-	$(CP) $(CPOPT) ../HISTORY ../ChangeLog  $(PACKAGEBASE)
-	$(MKDIR) $(MKDIROPT) $(PACKAGEBASE)/$(LIBNAME)
-	$(CP) $(CPOPT) ../$(H_DIR)/*.h $(PACKAGEBASE)/$(LIBNAME)
+	$(CP) $(CPOPT) ../HISTORY ../ChangeLog ../VERSION ../README  $(PACKAGEBASE)
+
+pkg-bin-dir:
+	-$(MKDIR) $(MKDIROPT) $(PACKAGEBASE)/bin
+
+pkg-bin: pkg-bin-dir
+	$(CP) $(CPOPT) $(TARGETLIB) $(TARGETDLL) $(PROGRAMS) $(PACKAGEBASE)/bin
+
+package: static dll programs doc pkg-dir pkg-h pkg-doc pkg-man pkg-readme pkg-bin
 	$(ARCHIVER) $(ARCFLAGS) $(PACKAGENAME) $(PACKAGEBASE)/*
 
 pkgclean:
 	-$(RM) $(RMOPT) $(PACKAGENAME)
-	-$(RM) $(RMOPT) $(PACKAGEBASE)/file_id.diz
 	-$(RM) $(RMOPT) $(PACKAGEBASE)/$(LIBNAME)/*
 	-$(RMDIR) $(RMDIROPT) $(PACKAGEBASE)/$(LIBNAME)
+	-$(RM) $(RMOPT) $(PACKAGEBASE)/doc/*
+	-$(RMDIR) $(RMDIROPT) $(PACKAGEBASE)/doc
+	-$(RM) $(RMOPT) $(PACKAGEBASE)/man/*
+	-$(RMDIR) $(RMDIROPT) $(PACKAGEBASE)/man
 	-$(RM) $(RMOPT) $(PACKAGEBASE)/*
 	-$(RMDIR) $(RMDIROPT) $(PACKAGEBASE)
