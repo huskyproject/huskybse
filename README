@@ -6,3 +6,8 @@ develop-docs	Some tips and hints for developers modifying packages of the
 		Husky-project
 sms		Setup at Sascha Silbe's system
 
+
+File		Description
+systems.lst	A list of all supported operating system/compiler-combinations
+		and their makefiles
+

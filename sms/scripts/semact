@@ -17,6 +17,7 @@ function scan ()
   echo `date +%d.%m.%Y\ %T` /husky/scripts/toss
   rm ${SemDir}/btmail.in
   /husky/scripts/toss
+  echo `date +%d.%m.%Y\ %T` finished
   fi
 
  if [ -f ${SemDir}/scan.now ] ; then
@@ -24,13 +25,15 @@ function scan ()
   echo `date +%d.%m.%Y\ %T` /husky/scripts/scan
   rm ${SemDir}/scan.now
   /husky/scripts/scan
+  echo `date +%d.%m.%Y\ %T` finished
   fi
 
  if [ -f ${SemDir}/14day.now ] ; then
   # two-weekly maintenance
-  echo `date +%d.%m.%Y\ %T` /husky/scripts/maint
+  echo `date +%d.%m.%Y\ %T` /husky/scripts/14day
   rm ${SemDir}/14day.now
   /husky/scripts/14day
+  echo `date +%d.%m.%Y\ %T` finished
   fi
 
  if [ -f ${SemDir}/week.now ] ; then
@@ -38,6 +41,7 @@ function scan ()
   echo `date +%d.%m.%Y\ %T` /husky/scripts/week
   rm ${SemDir}/week.now
   /husky/scripts/week
+  echo `date +%d.%m.%Y\ %T` finished
   fi
 
  if [ -f ${SemDir}/month.now ] ; then
@@ -45,6 +49,7 @@ function scan ()
   echo `date +%d.%m.%Y\ %T` /husky/scripts/month
   rm ${SemDir}/month.now
   /husky/scripts/month
+  echo `date +%d.%m.%Y\ %T` finished
   fi
 
  if [ -f ${SemDir}/maint.now ] ; then
@@ -52,20 +57,27 @@ function scan ()
   echo `date +%d.%m.%Y\ %T` /husky/scripts/maint
   rm ${SemDir}/maint.now
   /husky/scripts/maint 
+  echo `date +%d.%m.%Y\ %T` finished
   fi
 }
 
+function main()
+{
 . /etc/profile > /dev/null 2>&1
 
-# loop till exit-semaphore is found
-until [ -f ${SemDir}/semact.exit ] ; do
- scan >> /husky/log/semact.log 2>&1
- sleep 1
- done 
+  echo `date +%d.%m.%Y\ %T` semact started
 
-# remove exit-semaphore
-rm ${SemDir}/semact.exit
+  # loop till exit-semaphore is found
+  until [ -f ${SemDir}/semact.exit ] ; do
+    scan
+    sleep 1
+  done
+ 
+  # remove exit-semaphore
+  rm ${SemDir}/semact.exit
 
-# ByeBye
-exit 0
+  echo `date +%d.%m.%Y\ %T` semact shut down
+}
+
+main  2>&1 | tee -a /husky/log/semact.log > /dev/tty12
 

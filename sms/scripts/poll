@@ -17,3 +17,4 @@ if [ "$2" = "hold" ] ; then flavour=hlo ; fi
 touch ${base}.${flavour}
 if [ -f ${base}.sts ] ; then rm ${base}.sts ; fi
 
+if [ -f ${base}.\$\$0 ] ; then rm ${base}.\$\$0 ; fi
