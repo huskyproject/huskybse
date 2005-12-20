@@ -258,6 +258,7 @@ _HTML	= .html
 # extension of text file
 _TXT	= .txt
 
+DIRSEP=/
 
 #############################################################################
 # Library filename elements
