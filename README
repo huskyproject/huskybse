@@ -4,7 +4,3 @@ This package contains some files common to all packages of the Husky-project.
 File/Directory	Description
 INSTALL         How to compile, install and use the Husky software. READ THIS!
 develop-docs/	Some tips and hints for developers that work on Husky source.
-
-
-
-

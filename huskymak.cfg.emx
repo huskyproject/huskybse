@@ -152,15 +152,6 @@ PERLLIBS  =`$(PERL_DIR)perl -MExtUtils::Embed -e ldopts`
 PERLOBJ   = perl$(OBJ)
 endif
 
-# ZipInternal packer
-USE_HPTZIP=0
-
-ifeq (~$(USE_HPTZIP)~, ~1~)
-LIBS	+= ../../hptzip/make/$(LIBPREFIX)hptzip$(LIBSUFFIX)$(_LIB)
-CINCL	+= -I../../hptzip
-CDEFS	+= -DUSE_HPTZIP
-endif
-
 # C-compiler: specify name of executable
 EXENAMEFLAG= -o 
 

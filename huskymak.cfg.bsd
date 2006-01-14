@@ -149,9 +149,6 @@ SHORTNAMES=0
 # Perl support
 PERL=0
 
-# ZipInternal packer
-USE_HPTZIP=0
-
 # The DYNLIBS switch controls if dynamic or static linkage is used.
 # This is tricky. If you set DYNLIBS=1, dynamic libraries (.so files)
 # will be generated and used. This will only work if you are running "gcc"
@@ -234,19 +231,19 @@ MKDIROPT= -m 755 -p
 #############################################################################
 
 # extension of executable (e.g. ".exe")
-_EXE=
+EXE=
 
 # extension of object file
-_OBJ=.o
+OBJ=.o
 
 # extension of (static) libs
-_LIB=.a
+LIB=.a
 
 # extension of dynamic libs
-_DLL=.so
+DLL=.so
 
 # extension of compiled pascal units
-_TPU=.ppu
+TPU=.ppu
 
 # directory separator (DOS: "\\", Unix: "/")
 

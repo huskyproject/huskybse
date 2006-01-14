@@ -35,7 +35,6 @@ will at least have to download the following modules:
 
   huskybse      Husky Base, contains instructions, a template compilation
                 configuration file, and sample configs.
-  huskylib      Common declarations and functions for Husky programs
   smapi         The Squish Message API library.
   fidoconf      The Fidoconfig library.
 
@@ -273,9 +272,6 @@ the directories for the other projects.
 Now that you have chosen the proper makefile, build smapi and fidoconfig like
 this (let's assume you have chosen makefile.unx):
 
-  cd ~/husky/huskylib
-  make -f makefile.unx clean
-  make -f makefile.unx
   cd ~/husky/smapi
   make -f makefile.unx clean
   make -f makefile.unx
@@ -291,9 +287,6 @@ You can then directly proceed to build any program like this:
 This also works with Non-UNIX systems, e.g.:
 
   C:
-  CD \HUSKY\HUSKYLIB
-  imake -f makefile.ibo clean
-  imake -f makefile.ibo
   CD \HUSKY\SMAPI
   imake -f makefile.ibo clean
   imake -f makefile.ibo
