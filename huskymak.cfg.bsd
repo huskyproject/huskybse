@@ -183,11 +183,11 @@ endif
 DEBCFLAGS=-c -ggdb
 
 # C-compiler: additional defines, for features of your OS
-ADDCDEFS=-DHAS_POPEN
+ADDCDEFS=
 # On Solaris, Msged only works with the curses interface, so use:
-#ADDCDEFS=-DHAS_POPEN -DUSE_CURSES -DNOSEMAPHORES
+#ADDCDEFS= -DUSE_CURSES -DNOSEMAPHORES
 # On BeOS, file locking currently does not work, so use:
-# ADDCDEFS=-DHAS_POPEN -DNO_LOCKING -DNOSEMAPHORES
+# ADDCDEFS= -DNO_LOCKING -DNOSEMAPHORES
 
 # Pascal-Compiler: optimization
 OPTPFLAGS=
