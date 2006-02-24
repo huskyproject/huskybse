@@ -208,13 +208,13 @@ DEBLFLAGS=-g
 IBOPT=-c -s -o fido -g dialer -m 6555
 
 # options for installing libs
-ILOPT=-c -s -m 0555
+ILOPT=-c -s -m 0444
 
 # options for installing man-pages
-IMOPT=-c -m 0555
+IMOPT=-c -m 0444
 
 # options for installing includes
-IIOPT=-c -m 0555
+IIOPT=-c -m 0444
 
 # options for linking files
 LNOPT=-sf
