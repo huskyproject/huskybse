@@ -18,7 +18,7 @@ int main()
     s_fidoconfig *config;    /* Declare pointer to fidoconfig stricture */
 
     config=readConfig(NULL); /* read config, parse and store it into structure */
-                 /*   ^^^^  Instead <b>NULL</b> may use alternate config file name */
+                 /*   ^^^^  Instead NULL may use alternate config file location */
 
     printf("Name: %s\n", config->name); /* Use values from config structure */
 

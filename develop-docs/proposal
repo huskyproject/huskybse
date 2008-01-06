@@ -40,7 +40,7 @@ the main configuration file should be searched in:
      the autoareacreate feature the writing process must have write-access
      to the configfile.
 
-All symbols are _not_ case-sensitiv.
+All symbols are _not_ case-sensitive.
 
 The primary config-file may include further files.
 

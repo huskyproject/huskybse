@@ -177,7 +177,7 @@ Here are some rules for creating a release.
 
 - For release point please set tag like 'hpt-1_0_1-release': module hpt, major
   version number '1', minor version number '0', patch level '1' (first release
-  in branch 1_1-stable). For second release in this branch can be used tag
+  in branch 1_0-stable). For second release in this branch can be used tag
   hpt-1_0_2-release.
 - Also please change version information printed by program and create/update
   VERSION file, placed into root level of module directory. VERSION file must
@@ -235,7 +235,7 @@ project hpt".  Suppose I store the current checkout of hpt in
   [E:\home\husky\stable\hpt]cvs ci
 
 A final word:  This short introduction does not relieve you from the
-necessity to read the CVS manual.  It contains a chapter called "branching
+necessity to read the CVS manual.  It contains a chapter called "Branching
 and merging", and you should have read that one before doing anything on
 any Husky stable branch.
 
