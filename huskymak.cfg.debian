@@ -10,7 +10,7 @@
 
 # Prefix for all directories
 # Set to your homedir if you have no root privelegies
-PREFIX=$(DESTDIR)/usr
+PREFIX=/usr
 
 # Where libraries (both .a and .so files) should be placed
 # You should take care that this directory is listed in the LD_LIBRARY_PATH
@@ -28,7 +28,7 @@ MANDIR=$(PREFIX)/share/man
 INCDIR=$(PREFIX)/include
 
 # The fidoconfig config file will be in this DIRECTORY:
-CFGDIR=$(DESTDIR)/etc/husky
+CFGDIR=/etc/husky
 
 # Filename (without path) for the config file (default: config)
 #CFGNAME=config
