@@ -186,19 +186,18 @@ Here are some rules for creating a release.
   2: CVS tag value
   3: dependencies
   Example:
-hpt 1.2.2-stable
-cvs tag: hpt-1_2-stable
-required: fidoconfig 0.14-stable, smapi 2.2-stable
-
+hpt 1.4.1-stable
+cvs tag: husky-1_4-stable, hpt-1_4-stable
+required: fidoconfig 1.4-stable, smapi 2.4-stable
 
 Suppose a developer has informed me that he did a patch to file "scan.c" in
 project hpt".  Suppose I store the current checkout of hpt in
-"e:\home\husky\hpt", and the stable checkout of hpt in
+"e:\home\husky\current\hpt", and the stable checkout of hpt in
 "e:\home\husky\stable\hpt".
 
 - First, look at the log file of scan.c:
 
-  [E:\home\husky\hpt\src] cvs log scan.c
+  [E:\home\husky\current\hpt\src] cvs log scan.c
 
 - From the log file, find out which version number corresponds to the fix
   that you want to migrate. Let's suppose it is 1.103
@@ -208,7 +207,7 @@ project hpt".  Suppose I store the current checkout of hpt in
   from the output of the checkin command ]
 
 - View the contents of the fix:
-  [E:\home\husky\hpt\src] cvs diff -r 1.102 -r 1.103 scan.c | less
+  [E:\home\husky\current\hpt\src] cvs diff -r 1.102 -r 1.103 scan.c | less
 
 - Make double sure that this checkin ONLY contains the fix that the perosn
   mentioned, and not any other side effects.  If it does contian other
@@ -228,7 +227,7 @@ project hpt".  Suppose I store the current checkout of hpt in
   It is important that you use "-j" and NOT "-r". If you get conflicts,
   resolve them.
 
-- Update the Changelog.
+- Update the HISTORY.
 
 - Commit your changes:
 
