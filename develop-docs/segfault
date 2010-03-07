@@ -12,12 +12,12 @@ provide a bug report to the developers that is much more useful than a simply
 Prerequistes
 ------------
 
-Using gdb to debug a segmenetation fault works on all Unix systems where gcc
+Using gdb to debug a segmentation fault works on all Unix systems where gcc
 is available, and on OS/2 if makefile.emx or the Husky build process is
-used. It does not work on Windows, nor on OS/2 if makefile.emo or a non-gcc
-compiler is used. On Unix systems where gcc is not available, a similar
-procedure ususally works with a vendor debugger like dbx, but treating this
-is outside the scope of this document.
+used. It does not work on OS/2 if makefile.emo or a non-gcc compiler is used.
+On Windows gdb may used in Cygwin only. On Unix systems where gcc is not
+available, a similar procedure ususally works with a vendor debugger like
+dbx, but treating this is outside the scope of this document.
 
 In order to use gdb to create a useful bug report you first must recompile
 the Husky source. If you never compiled your Husky software on your own, you
@@ -28,6 +28,7 @@ and have successfully managed to compile and install all software in question
 makefile. The following also does not cover makefile.emx on OS/2 (but it does
 cover Makefile with huskymak.cfg on OS/2), but if you really need to use
 makefile.emx on OS/2, just drop me a mail.
+
 
 Enabling Debugging in Huskymak.cfg
 ----------------------------------
@@ -54,6 +55,7 @@ After you have done so, you can change the DEBUG variable to read
 
 DEBUG=1
 
+
 Compiling and installing debug binaries
 ---------------------------------------
 
@@ -69,6 +71,7 @@ installed non-debugging versions.
 After that, change to the directoy of the program that you want to debug and
 to a "make clean; make; make install". Debugging is also possible without
 installing, but for simplicty I will not cover this in here.
+
 
 Creating a core file
 --------------------
@@ -205,9 +208,6 @@ In case that you still only see questionmarks, you have a really hard
 problem. In that case you probably can't do any more (well, of course if you
 are a C developer you could start single stepping the program by typing
 "break main" bevore "run" and using "s" (step into) and "n" (step over) to
-find out hwere it crashes). Contact us to get further assistance
+find out where it crashes). Contact us to get further assistance
 
 [EOF]
-
-
-
