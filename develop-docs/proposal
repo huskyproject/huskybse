@@ -3,11 +3,11 @@ do not use this document as manual for fidoconfig
 the proposal keeped only for developers
 
 ===============================================================================
-LINUX FIDOSOFT PROJECT
+HUSKY FTN SOFTWARE PROJECT
 Definition of commonly used configuration files
 
 
-Version: 0.15 (990121)
+Version: 0.16 $Revision$
 Status: proposal
 
 
@@ -21,16 +21,37 @@ ifcico configuration description
 
 _Location of configuration files_
 
-the main configuration file should be searched in:
+In multiuser enviroment it is possible two mode of running FTN programs:
+system-wide mode and user-separately mode.
+
+System-wide mode characteristics are:
+- run all programs with one (same) effective user ID;
+- one configuration files for all users is placed in system configuration
+  directory.
+
+User-separately mode characteristics are:
+- individual configuration files for each user is placed into user home
+  directory (each user has different FTN station);
+- run programs with real user ID.
+
+The main configuration file should be searched in:
 
   1. $FIDOCONFIG
-  2. a default path, depending to the used os.
-     e.g. linux: /etc/fido/config
-          freeBSD: /usr/local/etc/fido/config
-          solaris: ????
+  2. A default path, depending to the used os and used mode of running
+     FTN programs.
+    2.1. System-wide mode
+          GNU/Linux: /etc/fido/config
+          Arch Linux: /usr/local/etc/fido/config
+          FreeBSD, OpenBSD, NetBSD: /usr/local/etc/fido/config
+          SunOS (Solaris): ????
           BeOS: ????
           OS/2: c:\fido\config
-          WinNT: c:\fido\config
+          WinNT: %systemdrive%\fido\config
+    2.1. User-separately mode
+          GNU/Linux, all BSD, SunOS: ~/fido/config
+          BeOS: ????
+          OS/2: ????
+          WinNT: %userprofile%\fido\config
 
      c/c++ - programs should include a common config.h-file.
      scripts should evaluate $OSTYPE, $OS or any other environment
@@ -52,12 +73,6 @@ same type allowed, the first line matching the situation is valid.
 If no match is found, a default-value will be used.
 
 
-_Escape-sequences_
-
-"\" is used as escape-sequence. "\" has to be written as "\\".
-
-non-printable characters can be expressed as \<hexValue>
-
 _Comments_
 
 "#" at the start of a line or <whiteSpace>#<whiteSpace> within the 
@@ -71,9 +86,6 @@ _new lines_
 
 Each keyword has to start a new line.
 
-"\" at end of line means that "\" and the following new-line-
-character(s) will be ignored. (concatenating lines)
-
 
 _Recommended structure of config-files_
 
@@ -82,17 +94,19 @@ _Recommended structure of config-files_
 include /etc/fido/address     # own aka's
 include /etc/fido/path        # directories used
 ? include /etc/fido/arealink    # areafix options
-include /etc/fido/msgbase     # list of mail-Areas
+include /etc/fido/msgbase     # list of echo-Areas
 include /etc/fido/filebase    # list of file-Areas
-include /etc/fido/links       # list of users, points,
-                              # up/downlinks
 include /etc/fido/rights      # access-rights for users, 
                               # points, up/downlinks
+include /etc/fido/links       # list of users, points,
+                              # up/downlinks
 include /etc/fido/packer      # packer definitions
 include /etc/fido/nodelist    # nodelist definitions
 include /etc/fido/routing     # routing rules
-include /etc/fido/mailer      # see ifcico-cm3.0
+include /etc/fido/mailer1     # mailer configuration, may
+                              # be separated for different mailers
 include /etc/fido/misc	      # other options
+
 
 _Keyword definitions_
 
@@ -522,7 +536,7 @@ _Keyword definitions_
 
   [CarbonAndQuit]
   # Each message carbons only one time.
-  
+
   # Example:
 
   # CarbonTo		Max Levenkov
@@ -610,7 +624,7 @@ Additional to EBNF:
 
   {
   "line"
-  } 
+  }
 
 means: "line" can be repeated _including the new-line-characters_
 
@@ -751,5 +765,3 @@ my definition of:
   nodelist
   public
 is not identical to ifcico's.
-
-
