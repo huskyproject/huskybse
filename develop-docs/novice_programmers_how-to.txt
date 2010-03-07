@@ -26,9 +26,10 @@ int main()
 
     return 0;
 }
-
-The smapi library need at link program phase (such is the case now, unfortunately)
 ---------------------
+
+The huskybse and possible smapi libraries need at link program phase
+(such is the case now, unfortunately)
 
 The smapi library usage example.
 
@@ -87,3 +88,4 @@ int main()
 
     return 0;
 }
+---------------------
