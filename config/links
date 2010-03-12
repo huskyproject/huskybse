@@ -1,0 +1,236 @@
+##################################################################
+#EN# Nodes
+#RU# Nodes
+
+
+#EN# Links
+#RU# Описания линков
+
+#EN# Define defaults for (up)links
+#RU# Задаём параметры по умолчанию для (ап)линков...
+LinkDefaults begin
+
+#EN# Maximum arcmail size in kb for this link.
+#RU# Максимальный размер бандла (в kb) для линка.
+ArcmailSize              400
+
+#EN# Maximum pkt size in kb for this link.
+#RU# Максимальный размер pkt (в kb) для линка.
+PktSize                  300
+
+# allowEmptyPktPwd <off|secure|on>
+#EN# This statement allows packets with empty password from this link.
+#EN# 'secure' means that any packets from this link that are in protected
+#EN# inbound will be processed.
+#EN# 'on' is like 'secure' but packets that are in unprotected inbound will
+#EN# be processed too. Highly disrecommended.
+#EN# 'off' is default state when packets with empty password will not processed
+#RU# Это установка разрешает обработку пакетов без пароля от этого линка.
+#RU# 'secure' означает, что будут обработаны все пакеты от линка в парольном
+#RU# инбаунде.
+#RU# 'on' - то же самое, но также будут обработаны пакеты из непарольного
+#RU# инбаунда. Очень не рекомендуется.
+#RU# 'off' является значением по умолчанию, пакеты без пароля не будут обрабатываться.
+allowEmptyPktPwd         secure
+
+#EN# Allows address in a header of message to areafix differ from
+#EN# address in a header of packet containing that message.
+#EN# Turn it 'on' only for specific links having problem with it.
+#RU# Обрабатывать сообщения к ареафиксу, где адрес сообщения отличается от адреса
+#RU# пакета, содержащего это сообщение. Включите его в 'on' только для линков,
+#RU# для которых это необходимо.
+allowPktAddrDiffer       off
+
+#EN# Packer for this link. See also 'packer' config file.
+#RU# Архиватор для линка (см. файл конфига "packer").
+Packer                   zip
+
+#EN# 'Level' sets access level for links.
+#EN# It deals with -lr and -lw options in area definition.
+#EN# Bigger level means more rights.
+#EN# Generally levels used by separating areas in several groups like
+#EN#  1 hubs only
+#EN#  2 nodes only
+#EN#  3 all others
+#EN# and giving appropriate level to a link.
+#EN# This mechanism is quite linear, so don't try to implement with it
+#EN# anything more complicated than restricting all point from accesing
+#EN# sysop areas. It won't work. See 'ReadOnly' and 'WriteOnly' statements
+#EN# for more.
+#RU# Параметр 'Level' устанавливает уровень доступа для линка.
+#RU# Это используется совместно с параметрами -lr и -lw в описании эх для контроля
+#RU# доступа линков к эхе.
+#RU# Более высокий уровень дает больший доступ.
+#RU# Обычно уровни доступа используются для разделения эх в группах на несколько
+#RU# категорий. Например:
+#RU#  1 только для хабов
+#RU#  2 только для сисопов
+#RU#  3 все остальные
+#RU# и дает соответствующие права доступа на эху линку.
+#RU# Этот механизм абсолютно линейный, так что не стоит использовать его для
+#RU# чего-нибудь более сложного, чем запрет всем пойнтам доступа в сисопским эхам.
+#RU# А для более детального описания прав доступа, см. параметры 'ReadOnly' и
+#RU# 'WriteOnly'.
+Level                    3000
+
+#EN# Another access control statement.
+#EN# It deals with -g option in area definition.
+#EN# For ordinary link it may be preferable to separate areas from
+#EN# different links to different groups to prevent unwanted loop creation.
+#EN# Also useful to separate fidonet and other ftn areas,
+#EN# local and public areas.
+#EN# See also 'PublicGroup' stetement.
+#RU# Еще один механизм контроля доступа.
+#RU# Используется вместе с параметром -g в описании эхи.
+#RU# Для обычных линков может быть удобнее разделение эх от разных линков по
+#RU# разным группам для предотвращения рассылки эхопочты петлями.
+#RU# Также полезно разделение эх фидонета и эх других ftn-сетей, локальных и
+#RU# общедоступных эх.
+#RU# См. также параметр 'PublicGroup'.
+AccessGrp                A
+
+#EN# Please check config for proper forwardrequest settings.
+#EN# It's useful feature but I'm not an expert in it.
+#RU# Почитайте документацию на предмет настроек форвард-реквестов.
+#RU# Это - полезная штука, но я не знаю это достаточно хорошо.
+ForwardRequests          on
+
+#EN# Both echoareas and fileareas will be created automatically
+#EN# on arriving packets or files from non-existing area.
+#EN# To enable/disable autocreation for fileareas and echoareas
+#EN# separately use AreafixAutoCreate and FilefixAutoCreate.
+#RU# Эхи/фэхи могут быть созданы автоматически по приходу почты/файлов
+#RU# в несуществующие эхи при указании этого параметра.
+#RU# Для включения/выключения автосоздания для эх и фэх по-отдельности
+#RU# используйте параметры AreafixAutoCreate и FilefixAutoCreate соответственно.
+AutoCreate               on
+
+#EN# Name of areafix robot of defined link
+#RU# Имя ареафикса у линка
+areafixName              AreaFix
+
+#EN# This statement sets the flavour which outgoing echomails
+#EN# for link get.
+#RU# Этот параметр задает флейвор, с которым на линка будет паковаться эхопочта.
+EchomailFlavour          Direct
+
+#EN# When this statement is enabled messagebases are created with all
+#EN# dots in its names treated like path separators, e.g. basename for
+#EN# ru.husky will be '[FidoMailDir]\ru\husky'.
+#RU# Когда этот параметр включен, базы будут созданы так, что все точки в имени
+#RU# будут трактоваться как разделители каталогов. Например, база эхи ru.husky
+#RU# будет находиться в '[FidoMailDir]\ru\husky'.
+AutoAreaCreateSubdirs    off
+
+#EN# These are analogous to above but apply to fileareas (filefix).
+#RU# Эти параметры относятся к файлэхам (или к filefix'у), они аналогичны
+#RU# описанным выше.
+filefixName              FileFix
+FileEchoFlavour          Normal
+AutoFileCreateSubdirs    off
+LinkDefaults             end
+
+
+
+
+#EN# Example of uplink definition
+#RU# Пример конфигурации аплинка
+
+#EN# 'Link' statement begins definition and names a link
+#RU# Параметром 'Link' начинается описание линка. Далее пишем его имя:
+Link little green men
+
+#EN# 'Aka' is an ftn address of this link
+#RU# Ftn-адрес линка
+Aka 2:9999/9999
+
+#EN# 'OurAka' is one of addresses of this system which will
+#EN# be used for communication with this link. For example it
+#EN# is used as 'from' address in areafix requests and 'from'
+#EN# address in header of pkt for this link.
+#RU# 'OurAka' - наш aka для этого линка. Например, он используется как адрес
+#RU# отправителя в запросах к ареафиксу, он же записывается в заголовок пакетов
+#RU# к этому линку.
+OurAKA 2:5030/9999
+
+#EN# Main password for this link. See also pktpwd, ticpwd, areafixpwd,
+#EN# filefixpwd, bbspwd and sessionpwd statements.
+#EN# I hope you aren't stupid enough to keep this string unchanged.
+#RU# Основной пароль для линка. См. также параметры pktpwd, ticpwd, areafixpwd,
+#RU# filefixpwd, bbspwd и sessionpwd.
+#RU# Я думаю, вы не оставите эту строку без изменений...
+Password strgpswd
+
+#EN# Same format as EchoAreaDefaults.
+#EN# Is represents options for autocreated echoareas.
+#RU# Формат у этого параметра такой же, как и EchoAreaDefaults.
+#RU# Описывает опции для автоматически создаваемых эх.
+AreafixAutoCreateDefaults -b Jam -g A -a 2:5030/9999 -dupeCheck move -tinysb -lr 1000 -lw 2000
+
+#EN# This statement define a file where description of autocreated areas
+#EN# from this link are written.
+#RU# Этот параметр задает имя файла, где можно найти описания эх у этого линка.
+AreafixAutoCreateFile    [FidoHPTDir]\areasfrom_9999_9999
+
+#EN# These are analogous to above but apply to fileareas.
+#RU# Эти параметры аналогичны описанным выше, но конфигурируют фэхи.
+filefixAutoCreateDefaults -g A
+FilefixAutoCreateFile    [FidoHPTDir]\fileareasfrom_9999_9999
+
+
+
+
+#EN# Points
+#RU# Пойнты...
+
+LinkDefaults begin
+
+ArcmailSize              400
+PktSize                  300
+allowEmptyPktPwd         secure
+allowPktAddrDiffer       off
+Packer                   zip
+
+#EN# Set this to the value less than one for uplinks. Thus you can easily
+#EN# restrict all points from writing to some areas by manually change -lw
+#EN# option in area definition to the value between uplink's Level and points'
+#EN# Level.
+#RU# Поставим уровень доступа меньше, чем у аплинка. Так вы можете легко запретить
+#RU# всем пойнтам писать в некоторые эхи, выставляя параметр -lw в описании этих
+#RU# эх в значение между уровнями доступа линков и пойнтов.
+Level                    2500
+
+#EN# Points have access to areas from uplink and to local areas.
+#RU# Пойнты имеют доступ к эхам от аплинка и к локалкам...
+AccessGrp                A,L
+ForwardRequests          off
+AutoCreate               off
+areafixName              AreaFix
+EchomailFlavour          Normal
+AutoAreaCreateSubdirs    off
+filefixName              FileFix
+FileEchoFlavour          Hold
+AutoFileCreateSubdirs    off
+LinkDefaults             end
+
+
+
+#EN# Example of point definition
+#RU# Пример описания пойнта:
+
+Link Lost Mountaineer 1
+
+Aka 2:5030/9999.1
+OurAKA 2:5030/9999
+Password *****
+
+
+
+Link Lost Mountaineer 2
+
+Aka 2:5030/9999.2
+OurAKA 2:5030/9999
+Password *****
+
+#EN# It's easy, isn' it? :)
+#RU# Это просто, не так ли? :-)

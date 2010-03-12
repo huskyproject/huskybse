@@ -1,0 +1,139 @@
+##################################################################
+#EN# Paths
+#RU# Директории, файлы, пути...
+
+
+
+
+##################################################################
+#EN# Directory structure description
+#RU# Опишем дерево директорий
+
+set FidoSysDir=[FidoBaseDir]\data_sys
+set FidoUsrDir=[FidoBaseDir]\data_usr
+set FidoMailDir=[FidoUsrDir]\echomail
+set FidoFechoDir=[FidoUsrDir]\fileecho
+set FidoLogDir=[FidoSysDir]\log
+
+
+
+
+##################################################################
+#EN# Directories for incoming, outgoing and temporary packets/bundles
+#RU# Каталоги для хранения пришедшей почты, бандлов для линков,
+#RU# временных файлов.
+
+#EN# insecure inbound (recieved via unprotected session)
+#RU# непарольный инбаунд (файлы, полученные по непарольной сессии)
+Inbound         [FidoSysDir]\inbound\inbound.ins\
+
+#EN# secure inbound (recieved via password-protected session)
+#RU# инбаунд (файлы, полученные по парольной сессии)
+ProtInbound     [FidoSysDir]\inbound\inbound.sec\
+
+#EN# local inbound (for packets from local system)
+#RU# локальный инбаунд (для пакетов от нас к нам)
+LocalInbound    [FidoSysDir]\inbound\inbound.loc\
+
+#EN# path for temporary storage of unpacked (from archives) packets
+#RU# директория для хранения распакованных (из архивов) пакетов.
+TempInbound     [FidoSysDir]\inbound\inbound.tmp\
+
+#EN# self explanatory
+#RU# тут хранится почта для линков
+Outbound        [FidoSysDir]\outbound\outbound\
+
+#EN# path for temporary storage of outgoing packets
+#RU# тут храним временные, еще не дописанные пакеты
+TempOutbound    [FidoSysDir]\outbound\outbound.tmp\
+
+
+
+
+##################################################################
+#EN# Logs & stats
+#RU# Логи и статистика
+
+#EN# self explanatory
+#RU# Директория для логов
+LogFileDir      [FidoLogDir]\
+
+#EN# list of echoareas supposed for scanning by the tosser
+#EN# (filled by editor, "hpt post", other tools)
+#RU# Список эх, которые нужно просканировать на наличие новых писем
+#RU# (создается редактором, "hpt post", etc.)
+EchoTossLog     [FidoSysDir]\flag\export.jam
+
+#EN# list of echoareas with messages tossed in
+#RU# Список эх, куда записываются эхи, куда пришли новые письма
+ImportLog       [FidoSysDir]\flag\import.jam
+
+AutoAreaCreateFlag [FidoSysDir]\flag\newarea
+
+#EN# binary statistic file, see adv-stat-hpt.pl
+#RU# Бинарная статистика hpt, см. adv-stat-hpt.pl
+AdvStatisticsFile [FidoLogDir]\hpt-adv.sta
+
+
+
+
+##################################################################
+#EN# htick paths
+#RU# Пути для htick'а
+
+if "[module]"=="htick"
+ AnnounceSpool  [FidoSysDir]\announce
+ SaveTic *      [FidoSysDir]\tics
+endif
+
+
+
+
+##################################################################
+#EN# NLTools
+#RU# NLTools
+
+NodelistDir     [FidoBaseDir]\nodelist\
+
+
+
+
+##################################################################
+#EN# Other stuff
+#RU# Другое
+
+#EN# path for storage of dupe history files (internally used)
+#RU# Путь для хранения дупобазы (нужен для тоссера)
+DupeHistoryDir  [FidoSysDir]\dupes\
+
+#EN# path for message bases
+#RU# Директория с базами сообщений
+MsgBaseDir      [FidoUsrDir]\echomail\
+
+#EN# path for fileareas
+#RU# Путь к базе файлэхоконференций
+FileAreaBaseDir [FidoUsrDir]\fileecho\
+
+#EN# path for passthrough fileareas
+#RU# Директория для хранения файлов passthrough-файлэх.
+PassFileAreaDir [FidoSysDir]\passthrough_fileecho\
+
+#EN# flag file to lock what should not be accesed by multiple husky programs
+#EN# or multiple instances of husky programs simultaneously
+#RU# Флаг, использующийся для предупреждения одновременного запуска
+#RU# нескольких программ проекта
+LockFile        [FidoSysDir]\flag\hpt-lock
+
+#EN# create flag after unpacking netmail msg
+#RU# Флаг, создаваемый после распаковки нетмайлового сообщения
+NetmailFlag     [FidoSysDir]\flag\hpt-mail
+
+#EN# path for current msgid sequence stamp
+#EN# note: this is the name of directory
+#RU# Путь для хранения текущего msgid sequence stamp
+#RU# Это - имя директории.
+SEQDIR          [FidoSysDir]\seq
+
+#EN# Enable power of perl hooks!
+#RU# Файл с перловыми "ловушками".
+#hptPerlFile /etc/husky/filter.pl

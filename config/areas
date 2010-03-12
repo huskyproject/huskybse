@@ -1,0 +1,103 @@
+##################################################################
+#EN# Areas configuration
+#RU# Конфигурация нетмайла и эхоконференций
+
+#EN# First, setup these areas
+#RU# Прежде всего определите эти эхи
+
+#EN# Common format for next statements is
+#RU# Формат параметров, использующихся ниже, таков:
+# *Area <name> <file> [Options]
+#EN# where 'name' is a name of area, 'file' is a filename of messagebase.
+#EN# For thorough explanation of 'Options' parameter please see docs.
+#EN# Several examples will be discussed below.
+#RU# где 'name' - это название aka эхотаг эхи, а 'file' - это полное
+#RU# имя файла-базы.
+#RU# Полное описание параметра 'Options' можно найти в документации.
+#RU# А некоторые примеры мы рассмотрим ниже.
+
+#    -b msgbase =
+#EN# type of messagebase, 'msgbase' can be one of the following
+#EN# strings: Jam, Squish or Msg.
+#RU# тип эхобазы, 'msgbase' может быть Jam, Squish или Msg.
+#    -d "string" =
+#EN# description for the area. It is used in areafix reports.
+#RU# описание эхи. Используется в репортах ареафикса.
+
+#EN# Area for storing badmail:
+#RU# Эха для "плохих" сообщений:
+BadArea     BADZ    [FidoMailDir]\bad -b Jam
+
+#EN# Area for storing dupes:
+#RU# Эха для дупов:
+DupeArea    DUPEZ   [FidoMailDir]\dupe -b Jam
+
+#EN# LocalArea define areas for local usage, they can not have links,
+#EN# but local software and sysop can place there messages, for example
+#EN# carbon copies, reports and statistics.
+#RU# При помощи ключевого слова LocalArea можно определить эхи,
+#RU# использующиеся только в пределах нашего узла, эти эхи не могут
+#RU# иметь линки, но софт и сисоп могут писать/читать там сообщения.
+#RU# Это, к примеру, карбонки, отчеты и статистика.
+
+#EN# Area for CarbonCopy (optional):
+#RU# Эха для карбонок (если они нужны):
+LocalArea YETI.CC [FidoMailDir]\CC -b Jam -d "My personal EchoMail"
+
+#EN# Area for reports & stats:
+#RU# Эха для всякой статистики:
+LocalArea YOUR.INFO [FidoMailDir]\INFO -b Jam -d "Reports"
+
+#EN# Area for netmail:
+#RU# Нетмайл:
+NetmailArea NETMAIL [FidoMailDir]\netmail -b Jam
+
+
+#EN# EchoArea define normal areas with links.
+#RU# Ключевое слово EchoArea определяет нормальные эхи с линками.
+# EchoArea <name> <file> [Options] [linkAKAs] [linkOptions]
+
+#EN# Here is a sample. For more options and explanations see docs.
+#RU# Это - примеры. Более подробное описание смотрите в документации.
+
+#    -g string =
+#EN# 'string' is a group to which echoarea belong.
+#RU# 'string' - это группа, к которой отнесена данная эха.
+#    -a addr =
+#EN# 'addr' is aka to be used.
+#RU# 'addr' - aka, использующийся в этой эхе.
+#    -dupecheck off|move|del =
+#EN# defines what to do with dupes.
+#RU# определяет, что делать с дупами.
+#    -dupehistory number =
+#EN# 'number' is a size dupehistory in days.
+#EN# See also 'AreasMaxDupeAge' if you want to use CommonDupeBase.
+#RU# 'number' - размер дупобазы (точнее, срок хранения там записей), в днях.
+#RU# См. также 'AreasMaxDupeAge', если вы хотите использовать CommonDupeBase.
+#    -lr number =
+#EN# 'number' is access level needed for link to read this area
+#EN# (see 'Level' statement in link's section).
+#RU# 'number' - уровень доступа, который нужен линку для чтения этой эхи
+#RU# (см. параметр 'Level' в описании линков).
+#    -lw number =
+#EN# 'number' is access level needed for link to write this area
+#EN# (see 'Level' statement in link's section).
+#RU# 'number' - уровень доступа, который нужен линку для постинга сообщений
+#RU# (см. параметр 'Level' в описании линков).
+
+#EN# EchoAreaDefaults allows you to set common options for the next 'EchoArea's.
+#RU# Параметр EchoAreaDefaults помогает задать общие параметры для всех
+#RU# эх (EchoArea's), описанных ниже.
+EchoAreaDefaults -b Jam -g A -a 2:5030/9999 -dupecheck move -dupehistory 14 -lr 1000 -lw 2000
+
+#EN# Option in actual area definition have priority over defaults.
+#EN# This is our local area so we set it's group to L
+#RU# Параметр, определяющий эху и перекрывающий значения по умолчанию.
+#RU# Это - наша локалка, так что ставим группу L
+EchoArea YETI.LOCAL          [FidoMailDir]\YETI.LOCAL  -g L 2:5030/9999.1 2:5030/9999.2
+
+#EN# An EchoAreaDefults setting is valid until a next EchoAreaDefaults statement.
+#EN# EchoAreaDefaults can be switched off with an empty definition:
+#RU# Параметр EchoAreaDefaults действует для следующего параметра EchoAreaDefaults.
+#RU# Действие EchoAreaDefaults может быть выключено такой командой:
+EchoAreaDefaults OFF

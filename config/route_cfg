@@ -1,0 +1,32 @@
+##################################################################
+#EN# Route configuration
+#RU# Конфигурируем роутинг нетмайла...
+
+#EN# If no routing is defined in config, HPT will not touch
+#EN# outgoing netmail (only receive)
+#RU# Если в конфиге роутинг не определен, HPT не пакует исходящий нетмайл
+#RU# (только принимает)
+
+# route [<flavour>] <target> <linkWW> [<linkWW> ...]
+#EN# see docs for explanation
+#RU# см. подробности в документации
+
+#EN# don't specify '*' as route destination to prevent send buggy mail like 0:*/*
+#RU# не роутите нетмайл на '*' во избежание глючных писем с адресом
+#RU# назначения типа 0:*/*
+
+#EN# Don't route mail to zone adresses
+#RU# Не роутим нетмайл на независимые ноды уровня зоны
+route no-pack *:0/*
+
+#EN# Normal direct route to my own points
+#RU# А пойнтам мыло отправляем директом
+route normal noroute 2:5030/9999.*
+
+#EN# All other fidonet mail is routed to host (normally you'll have to put here your netmail uplink address)
+#RU# Вся прочая почта в фидонет роутится на аплинка
+route normal host 1:* 2:* 3:* 4:* 5:* 6:*
+
+#EN# Don't route 0:, 32767:, etc.
+#RU# Не пакуем мыло на зоны 0:, 32767: и т.п.
+route no-pack *

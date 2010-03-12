@@ -1,0 +1,77 @@
+##################################################################
+#EN# Robots configuration
+#RU# Конфигурация роботов
+
+
+
+#EN# Process areafix requests on the fly. Boolean.
+#RU# Обрабатывать запросы к ареафиксу "на лету". Логическое.
+AreaFixFromPkt  Yes
+
+#EN# Specifies area used for areafix and filefix scanning.
+#EN# Replies from robots will also be stored here.
+#EN# RobotsArea must be NetmailArea for security purposes!
+#RU# Определяем эху, в которой areafix и filefix будут искать запросы.
+#RU# Ответы от них будут поститься в этой же эхе.
+#RU# Из соображений безопастности RobotsArea должна быть определена
+#RU# как NetmailArea!
+RobotsArea NETMAIL
+
+
+
+
+# robot default|areafix|filefix'
+#EN# 'robot' statement begins robot description.
+#EN# 'default' allows you to set common parameters.
+#RU# параметром 'robot' начинается описание конфига отдельного робота.
+#RU# а параметр 'default' можно использовать для задания общих для всех
+#RU# роботов параметров.
+
+robot default
+#EN# Maximum size for robot's messages in kb.
+#EN# If statement is not defined, messages will be not splitted.
+#RU# Максимальный размер сообщения от робота в килобайтах.
+#RU# Если от не задан, сообщения не будут резаться.
+        msgSize         10
+#EN# Delete requests from links to areafix. Boolean.
+#RU# Удалять запросы от линков к ареафиксу. Логическое.
+        killRequests
+#EN# This statement lists attributes to be set on robot's reports.
+#RU# Этот параметр задает аттрибуты сообщений от роботов.
+#EN#       kill reports
+#RU#       удалить сообщения после отправки
+#       reportsAttr loc pvt k/s npd
+#EN#       kill reports and send directly
+#RU#       послать директом и удалить после этого
+#       reportsAttr loc pvt k/s npd dir
+#EN#       do not kill reports
+#RU#       оставлять в сообщения нетмайл-области
+        reportsAttr loc pvt npd         # do not kill reports
+
+
+
+
+robot Areafix
+#EN# This statement defines help file which is sent to a link
+#EN# on '%help' command.
+#RU# Этот параметр задает хелп-файл, который будет послан линку
+#RU# по запросу '%help'.
+        helpFile        [FidoHPTDir]\areafix.hlp
+#EN# Origin for mail from this robot
+#RU# Ориджин писем от ареафикса
+        robotOrigin     "HPT areafix"
+#EN# FromName for mail from this robot
+#RU# Поле From его писем
+        fromName        "HPT Areafix"
+#EN# This statement specifies the queue file containing your
+#EN# delayed forward-requests.
+#RU# Этот параметр задает файл-очередь для форвард-реквестов.
+        queueFile       [FidoSysDir]\afix_queue
+
+
+
+
+robot Filefix
+        helpFile        [FidoHPTDir]\filefix.hlp
+        robotOrigin     "htick filefix"
+        fromName        "htick Filefix"

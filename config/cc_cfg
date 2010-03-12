@@ -1,0 +1,158 @@
+##################################################################
+#EN# Carbons configuration
+#RU# Конфигурация карбонок
+
+#EN# For detailed description of all available keywords
+#EN# see chapter 3.7 of hpt manual
+#RU# Более детальное описание доступных параметров
+#RU# можно найти в главе 3.7 документации.
+
+#EN# Enable CC for outgoing mail. Default off.
+#RU# Включить механизм карбонок для исходящей почты.
+#RU# По умолчанию - выключено.
+CarbonOut on
+
+#EN# This statement restricts CC to a first matching rule only.
+#EN# By default message can be subject of more than one CC rule.
+#RU# При "включении" этого параметра, проверка условий идет до первого
+#RU# совпадения.
+#RU# По умолчанию сообщение может подпадать под несколько правил
+#RU# одновременно, т.е. карбониться несколько раз.
+#CarbonAndQuit on
+
+#EN# Don't carbon in passthrough areas
+#RU# Не извлекать карбонки из транзитных (passthrough) эх.
+ExcludePassthroughCarbon
+
+#EN# Exclude " * Forward from area " string
+#RU# Не вставлять строчку " * Forward from area " в сообщения из карбонки.
+CarbonExcludeFwdFrom off
+
+#EN# Keep seen-by's and path
+#RU# Не удалять техническую информацию (seen-by и path)
+CarbonKeepSb
+
+
+#EN# Every carbon rule consists of two parts. First is a carbon
+#EN# pattern. Messages are checked against this pattern.
+#EN# Second is an action. The action is executed on messages that
+#EN# match appropriate pattern.
+#RU# Каждое правило состоит из двух частей. Первая - это условие.
+#RU# Сообщения проверяются именно по этому условию.
+#RU# Вторая часть - это действие, которое выполняется, если
+#RU# сообщение соответствует условию.
+#EN# For one pattern there is one and only one action.
+#EN# Yet the pattern itself can be complex, i.e. consists of
+#EN# many actual patterns molded together with logical operators.
+#RU# Для каждого условия может быть выполнено только одно действие.
+#RU# Условие может быть составным, т.е. состоять из множества условий,
+#RU# соединенных между собой логическими операторами.
+
+
+#EN# Let's overview available keywords:
+#RU# Вот список доступных параметров:
+#
+#EN# Patterns:
+#RU# Условия:
+#
+#EN# CarbonAddr: make carbonCopy using from address of msg
+#RU# CarbonAddr: делать carbonCopy, используя адрес сообщения
+#EN# CarbonFrom: make carbonCopy using from-field of msg
+#RU# CarbonFrom: делать carbonCopy, если используя поле From сообщения
+#EN# CarbonFromArea: carbon messages from area
+#RU# CarbonFromArea: карбонить сообщения только из этой эхи
+#EN# CarbonGroups: make carbonbonCopy from this groups
+#RU# CarbonGroups: карбонить сообщения из этих групп
+#EN# CarbonKludge: make carbonCopy using kludge lines of msg
+#RU# CarbonKludge: делать carbonCopy, используя кладжи сообщения
+#EN# CarbonSubj: make carbonCopy using subject-field of msg
+#RU# CarbonSubj: делать carbonCopy, используя тему сообщения
+#EN# CarbonText: make carbonCopy using text-field of msg
+#RU# CarbonText: делать carbonCopy, используя текст сообщения
+#EN# CarbonTo: make carbonCopy using to-field of msg
+#RU# CarbonTo: делать carbonCopy, используя поле To сообщения
+#
+#EN# Logical operator:
+#RU# Логические операторы:
+#
+#EN# CarbonRule <AND|OR|NOT> : how to combine Carbon patterns (NOT = AND NOT)
+#RU# CarbonRule <AND|OR|NOT> : определяем то, как объединять условия в сложное 
+#RU#                           условие (NOT = AND NOT)
+#
+#EN# Actions:
+#RU# Действия:
+#
+#EN# CarbonCopy: specify the area where the carbon copies go into
+#RU# CarbonCopy: параметр, указывающий эху, в которую попадет карбонка
+#EN# CarbonDelete: specify that the carbon msg should be deleted
+#RU# CarbonDelete: параметр, указывающий, что исходное сообщение должно
+#RU#               быть удалено
+#EN# CarbonExtern: specify the external program to pass msg text to
+#RU# CarbonExtern: параметр, указывающий внешнюю программу-обработчик
+#RU#               текста сообщения
+#EN# NetmailExtern: specify the external Program to pass netmail msgs to
+#RU# NetmailExtern: параметр, указывающий внешнюю программу-обработчик
+#RU#                нетмайловых сообщений
+#EN# CarbonMove: specify the area where the carbon msg get moved into
+#RU# CarbonMove: параметр, указывающий эху, куда переместить карбонку
+
+#EN# One additional keyword exists that is not the pattern but also
+#EN# not exactly the action:
+#RU# Существует только один дополнительный параметр, который не является ни
+#RU# условием, ни действием:
+#
+# CarbonReason
+#
+#EN# It precedes action itself and sets string for @REASON kludge that
+#EN# is added for copied or moved messages.
+#RU# Выполнение этого оператора предшествует действию и устанавливает
+#RU# значение кладжа @REASON, который добавляется к сообщениям из карбонки.
+
+#EN# Example:
+#RU# Пример:
+
+# CarbonFrom Overmind
+# CarbonReason smart one, read it
+# CarbonCopy
+
+#EN# How to write complex patterns?
+#RU# Как писать сложные условия?
+
+#EN# For those who are familiar with boolean algebra it is easy.
+#EN# Just keep in mind:
+#RU# Для тех, кто знаком с булевой алгеброй, это легко...
+#RU# Помните:
+#EN# 1) NOT between patterns = AND NOT, if you want OR NOT then write
+#RU# 1) NOT между условиями = AND NOT, если требуется записать OR NOT, пишите:
+
+# CarbonRule OR
+# CarbonRule NOT
+
+#EN# 2) AND and NOT have higher priority than OR
+#RU# 2) AND и NOT имеют больший приоритет, чем OR
+#EN# 3) There is NO BRACES, so if you want to write something
+#EN# like A && (B || C) then write it as A && B || A && C.
+#EN# That's all.
+#RU# 3) Тут _нету скобок_, если надо записать что-либо вроде
+#RU# A && (B || C), пишите это так: A && B || A && C.
+#RU# И это всё.
+
+#EN# If you don't know wtf is boolean algebra then you should
+#EN# search for better teacher than me. :-P
+#RU# Если для Вас "булева алгебра" - два совершенно непонятных слова,
+#RU# поищите более хорошего учителя, чем я. :-P
+
+#EN# If someone can explain it for newbe -- do it.
+#RU# Если Вы можете объяснить это новичкам -- сделайте это.
+
+
+
+
+#EN# Define typical carbon rule that will CC all messages
+#EN# addressed to Yeti except those in areas YETI.*
+#RU# А теперь приведем пример типичного правила, которое будет карбонить
+#RU# сообщения к Yeti кроме тех, которые запощены в YETI.*
+CarbonTo       Yeti
+CarbonRule NOT
+CarbonFromArea YETI.*
+CarbonCopy     YETI.CC

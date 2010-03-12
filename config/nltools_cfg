@@ -1,0 +1,34 @@
+##################################################################
+#EN# NLTools configuration
+#RU# Конфигурация NLTools
+
+#EN# world
+#RU# Мировой нодлист
+nodelist nodelist
+diffupdate [FileAreaBaseDir]\nodediff\nodediff
+
+#EN# zone 2
+#RU# Сегмент второй зоны
+nodelist Z2-LIST
+diffupdate [FileAreaBaseDir]\z2-diff\z2-diff
+
+#EN# region 50
+#RU# Региональный сегмент R50
+nodelist REGION50
+FullUpdate [FileAreaBaseDir]\r50-list\region50
+
+#EN# region 50 points
+#RU# Пойнтлист региона 50
+nodelist R50PNT
+diffupdate [FileAreaBaseDir]\xpntr50diff\r50pnt_d
+
+#EN# network 5030
+#RU# Сегмент сети 5030
+nodelist net5030
+DefaultZone 2
+FullUpdate [FileAreaBaseDir]\spb_nc\net5030
+
+#EN# network 5030 points
+#RU# Пойнтлист сети 5030
+nodelist PNT5030
+DefaultZone 2

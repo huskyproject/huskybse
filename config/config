@@ -1,0 +1,286 @@
+##################################################################
+#EN# Sample Husky configuration file
+#RU# Пример конфигурационного файла для Husky
+
+
+
+##################################################################
+#EN# Main settings
+#RU# Основные установки
+
+#EN# 'version' is one of predefined variables. It is set to husky
+#EN# version like MAJOR.MINOR.PATHLEVEL. We may want to check it
+#EN# first to eliminate problems with incompatible config and binaries.
+#RU# 'version' - одна из предопределенных констант. Она установлена в
+#RU# husky в виде MAJOR.MINOR.PATHLEVEL. Можно проверять эту переменную
+#RU# для установки различных конфигов для разных версий husky (например,
+#RU# если есть проблемы с совместимостью конфига между версиями).
+if "[version]"=="1.9.0"
+
+#EN# The name of the system.
+#EN# It is used as default origin in program-generated mail.
+#RU# Имя системы.
+#RU# По умолчанию, оно вставляется в ориджин в письмах, созданных
+#RU# программами husky.
+Name        August Sky System
+
+#EN# The sysop's name.
+#EN# It is used as 'from' or 'to' name in program-generated mail.
+#RU# Имя сисопа.
+#RU# Вставляется в поля from или to в письмах от роботов. Например, от
+#RU# этого имени идут forward-реквесты к аплинку, а на это имя идут
+#RU# репорты.
+Sysop       Yeti
+
+#EN# Physical location of the system.
+#EN# Actually used only in config converter.
+#RU# Географическое положение системы.
+#RU# Фактически, используется только в конвертерах конфигов.
+Location    Planet Earth, The Solar System, The Milky Way Galaxy
+
+#EN# FTN addresses of the system, 5D compatible.
+#EN# If the system has AKAs then repeat this line for every one of them.
+#RU# FTN-адреса системы, 5D.
+#RU# Все AKA описываются отдельной строкой.
+Address     2:5030/9999@fidonet
+
+#EN# Set origin for program-generated mail.
+#RU# Поставим свой ориджин...
+if "[module]"=="hpt"
+  Origin   High Portable Tosser at my node
+elseif "[module]"=="htick"
+  Origin   High Portable Ticker at my node
+else
+#EN# No 'origin' statement results in usage of default origin
+#RU# Для остальных программ используем стандартный ориджин.
+endif
+
+
+
+
+##################################################################
+#EN# Paths
+#RU# Пути
+
+#EN# 'set' token allow you to set variables that can be referenced
+#EN# later as [variable_name].
+#EN# Let's set main path variables. All paths except the first one
+#EN# are relative so it is easy to move a system.
+#RU# Вы можете установить переменные, вместо которых (если их
+#RU# заключить в квадратные скобки) далее в тексте конфига будут
+#RU# подставляться их значения.
+#RU# Например, после set qwerty=123 все [qwerty] будут заменяться на 123
+#RU# Определим основные директории как переменнные. Все пути кроме
+#RU# первого определены и использованием базовых путей для большей
+#RU# переносимости системы.
+set FidoBaseDir=Q:\FIDO
+set FidoSoftDir=[FidoBaseDir]\bin
+set FidoHPTDir=[FidoSoftDir]\husky
+
+#EN# 'include' token allows us to include separate file into config.
+#EN# Here we use it to include file with all other path-related
+#EN# configuration.
+#RU# С использованием директивы 'include' Вы можете включать другие
+#RU# файлы в конфиг.
+#RU# Сейчас мы включим сюда файл со всеми описаниями путей...
+Include [FidoHPTDir]\path
+
+
+
+
+##################################################################
+#EN# Locking
+#RU# Блокировки
+
+#EN# This statement is about how program will perform when it can't
+#EN# acquire the lock (see LockFile).
+#EN# If it is set to some value > 0, then husky programs will wait
+#EN# and try again a specified number of times with one second interval.
+#EN# If 'advisorylock' isn't set or is set to zero, then program will
+#EN# terminate immediately.
+#RU# Эта часть конфига определяет действия программ при наличии файла
+#RU# блокировки (см LockFile)
+#RU# Если это значение больше 0, программы husky ждут одну секунду и
+#RU# проверяют наличие файла блокировки заданное число раз.
+#RU# Если параметр 'advisorylock' не установлен или установлен в ноль,
+#RU# программа завершает работу.
+AdvisoryLock 10
+
+
+
+##################################################################
+#EN# Log options
+#RU# Настройки логов
+
+#EN# The 'loglevels' statement specifies categories of log messages that
+#EN# are written to the log file.
+#EN# For detaled explanation see the documentation.
+#RU# Параметр 'loglevels' задает группы сообщений, которые
+#RU# записываются в лог.
+#RU# Более детальное описание этих групп можно найти в документации.
+LogLevels   134567890ABCDEFGJKLMNT
+
+#EN# This is preset for full logging. Uncomment this line only
+#EN# if you have trouble with husky programs and need as many
+#EN# information as they can give you.
+#RU# А так можно включить отображение всех сообщений husky. Используйте
+#RU# это только если у Вас есть глюки с программами проекта, и Вы
+#RU# хотите получить большую информацию...
+#LogLevels   0-9A-Za-z
+
+#EN# 'logechotoscreen' enables or disables logging to the screen.
+#EN# It's a bolean statement. No argument, "yes", "on" and "1" are
+#EN# positive equivalents, "no", "off" and "0" are negative equivalents.
+#RU# Параметр 'logechotoscreen' включает/выключает вывод логов на экран.
+#RU# Это - логическая переменная. Отсутствие значения, значения "yes",
+#RU# "on" или "1" включают вывод логов, а "no", "off" или "0" - выключают.
+LogEchoToScreen
+
+#EN# This statement specifies loglevel for screen output.
+#EN# By default it's value is the same as specified in 'loglevels' statement.
+#RU# Этот параметр определяет уровень логов, выводимых на экран.
+#RU# По умолчанию он равен значанию параметра 'loglevels'.
+#ScreenLogLevels 234567890ABCDEFGJKMNT
+
+
+
+##################################################################
+#EN# NLTools configuration
+#RU# Конфигурация NLTools
+
+Include nltools_cfg
+
+
+
+##################################################################
+#EN# Linker configuration
+#RU# Конфигурация линкера
+
+LinkWithImportLog   Kill
+
+
+
+
+##################################################################
+#EN# Packers configuration
+#RU# Параметры архиваторов
+
+Include [FidoHPTDir]\packer_internal
+
+
+
+
+##################################################################
+#EN# Robots configuration
+#RU# Настраиваем роботов...
+
+include [FidoHPTDir]\robots
+
+
+
+
+##################################################################
+#EN# Links
+#RU# Пойнты/боссы/аплинки/даунлинки...
+
+#EN# Links should be after packers definition!
+#RU# Описание линков должно быть после описания архиваторов!
+include [FidoHPTDir]\links
+
+
+
+
+##################################################################
+#EN# Areas
+#RU# Эхоконференции
+
+#EN# Areas should be after links definition!
+#RU# Описание эх долно быть после описания линков!
+include [FidoHPTDir]\areas
+if "[module]"=="htick"
+    Include [FidoHPTDir]\fileareas
+endif
+
+
+
+
+##################################################################
+#EN# Tosser configuration
+#RU# Конфигурация тоссера
+
+#EN# Groups (see documentation) that are available to all links.
+#EN# Use with care.
+#RU# Группы (см. документацию), которые доступны всем линкам.
+#RU# Используйте осторожно.
+#PublicGroup     A,B,C,E,F,G,H,I,J,K,L,N,O,P,Q,R,S,T,U,V,W,X,Y,Z
+
+#EN# The type of dupebase used. See docs.
+#RU# Тип используемой дупобазы (см. документацию).
+# dupeBaseType <TextDupes | HashDupes | HashDupesWMsgId | CommonDupeBase>
+DupeBaseType    HashDupesWMsgId
+
+#EN# Maximum days for storing you hashes in CommonDupeBase.
+#EN# For other dupebase types see -DupeHistory option in EchoArea statement.
+#RU# Максимальный срок хранения записи о сообщении в дупобазе типа CommonDupeBase.
+#RU# Для других типов используйте параметр -DupeHistory в описании эхи.
+#AreasMaxDupeAge 10
+
+#EN# Move bundles for each link to his own directory. Boolean.
+#RU# Помещать бандлы для каждого линка в его директорию. Логический параметр.
+SeparateBundles
+
+#EN# This statement sets naming scheme for created bundles.
+#EN# See docs for description.
+#RU# Алгоритм создания имен для бандлов. Алгоритмы подробно описаны в
+#RU# документации.
+# bundleNameStyle <timeStamp | addrDiff | addrsCRC32 |
+# addrDiffAlways | addrsCRC32Always | Amiga>
+BundleNameStyle addrsCRC32
+
+#EN# Default arcmail size in kb for all links. Default is 500kb.
+#RU# Максимальный размер бандлов для линков. По умолчанию - 500kb.
+DefArcmailSize  300
+
+#EN# Report about autocreation areas goes
+#EN# to netMail
+#RU# Информацию о новых эхах постим в
+#RU# нетмайл:
+ReportTo   netmail
+#EN# or to EchoArea
+#RU# или в техническую эху:
+#ReportTo    YOUR.INFO
+
+
+
+
+##################################################################
+#EN# Htick configuration
+#RU# Конфигурация HTick
+
+if "[module]"=="htick"
+    Include [FidoHPTDir]\htick_cfg
+endif
+
+
+
+
+##################################################################
+#EN# Carbon copy configuration
+#RU# Описание правил карбонок
+
+#EN# Carbon copy should be placed after areas definition!
+#RU# Правила карбонок должны быть описаны после описания эх!
+Include cc_cfg
+
+
+
+
+##################################################################
+#EN# Routing configuration
+#RU# Описание роутинга нетмайла
+
+#EN# Routing should be placed after links definition!
+#RU# Правила роутинга должны быть описаны после описания линков!
+Include route_cfg
+
+endif
