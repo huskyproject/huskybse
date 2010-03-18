@@ -1,0 +1,249 @@
+# Config-Makefile for Husky-packages
+# You must modify this file according to your needs.
+
+## common options ##
+
+# Build with debug info, link with debug version of CRT
+DEBUG=0
+DEBUG_TREE=0
+
+# Enable optimization
+OPTIMIZATION=0
+
+# Build libraries as dlls. Buils static libs otherwise
+DYNLIBS=1
+
+# Perl support
+USE_PERL=0
+
+# ZipInternal packer
+USE_HPTZIP=1
+
+# Uncomment one of these lines if you want to enable hardlinking
+# on NTFS 4.0 or 5.0
+#NTDEF	= -D_WIN32_WINNT=0 -D_WIN32_WINDOWS=0x0400 -DWINVER=0x0400
+#NTDEF	= -D_WIN32_WINNT=0x0400
+#NTDEF	= -D_WIN32_WINNT=0x0500
+
+## programs ##
+
+# C-Compiler
+CC      = cl
+
+# archiver (for object-files)
+AR      = lib
+
+# linker
+LINK    = link
+
+#
+RANLIB  =
+
+# remove file
+RM      = del
+
+#copy a file
+CP      = copy
+
+# rename a file
+MV       = move
+
+# create directory
+MKDIR    = mkdir
+
+## directories ##
+
+!if $(DEBUG)==1
+TOPDIR=../../Debug/
+!else
+TOPDIR=../../Release/
+!endif
+
+!if [if not exist $(TOPDIR:/=\) $(MKDIR) $(TOPDIR:/=\)] == 0
+OBJOUT=$(TOPDIR)obj/
+BINOUT=$(TOPDIR)bin/
+LIBOUT=$(TOPDIR)lib/
+
+!if [if not exist $(OBJOUT:/=\) $(MKDIR) $(OBJOUT:/=\)] != 0
+OBJOUT=.
+!endif
+!if [if not exist $(BINOUT:/=\) $(MKDIR) $(BINOUT:/=\)] != 0
+BINOUT=$(TOPDIR)
+!endif
+!if [if not exist $(LIBOUT:/=\) $(MKDIR) $(LIBOUT:/=\)] != 0
+LIBOUT=$(TOPDIR)
+!endif
+
+!else
+OBJOUT=.
+BINOUT=.
+LIBOUT=.
+!endif
+
+## file suffixes ##
+_C      = .c
+_OBJ    = .obj
+_LIB    = .lib
+_EXE    = .exe
+_DLL    = .dll
+_EXP    = .exp
+_ILK    = .ilk
+_PDB    = .pdb
+
+## Library filename elements ##
+
+# Prefix to construct static library name
+LIBPREFIX=
+# Prefix to construct dll name
+DLLPREFIX=
+# Suffix to construct library name
+LIBSUFFIX=mvc
+# Suffix to construct dll name
+DLLSUFFIX=mvc
+
+!if $(DEBUG)==1
+LIBSUFFIX=$(LIBSUFFIX)d
+DLLSUFFIX=$(DLLSUFFIX)d
+!endif
+
+IMPLIBPREFIX=imp_$(DLLPREFIX)
+
+#############################################################################
+# program options
+#############################################################################
+
+# type of operating system (UNIX,MSDOS,OS2,WINNT)
+# for BeOS, use UNIX!
+OSTYPE=WINNT
+
+# short name of operating system (used for PID lines etc.)
+UNAME=WIN32
+#UNAME=LNX
+#UNAME=BSD
+#UNAME=OS2
+#UNAME=BEOS
+
+# C-compiler: specify name of executable
+EXENAMEOPT= -Fe
+# C-compiler: specify name of object file
+OBJNAMEOPT= -Fo
+# LIB: specify output file name
+LIBNAMEOPT= /out:
+# LINK: specify output file name
+LINKNAMEOPT= /OUT:
+LINKPDBOPT= /PDB:
+
+# C-compiler: options for compile only (link is off)
+OBJOPT  = -c
+
+# C-compiler: generate warnings
+WARNFLAGS=-Wall
+
+
+!if $(USE_PERL)==1
+PERL_DIR = C:\Perl
+PERLV    = 510
+PERLL    = delayimp.lib $(PERL_DIR)\lib\core\perl$(PERLV).lib
+PERLI    = -I$(PERL_DIR)\lib\core
+PERLD    = -DDO_PERL -DWIN32 -DNO_STRICT -DHAVE_DES_FCRYPT -DPERL_IMPLICIT_CONTEXT -DPERL_IMPLICIT_SYS -DPERL_MSVCRT_READFIX
+PERLDLL  = /delayload:perl$(PERLV).dll
+PERLOBJ  = perl$(_OBJ)
+!else
+PERLOBJ  = dummy$(_OBJ)
+PERLI    =
+PERLD    =
+PERLDLL  =
+!endif
+
+
+!if $(USE_HPTZIP) == 1
+
+!if $(DYNLIBS)==1
+HPTZIPL = $(LIBOUT)/$(IMPLIBPREFIX)hptzip$(DLLSUFFIX)$(_LIB)
+!else
+HPTZIPL = $(LIBOUT)/$(LIBPREFIX)hptzip$(LIBSUFFIX)$(_LIB)
+!endif
+
+# path to "hptzip/hptzip.h"
+HPTZIPI = -I../../hptzip
+
+HPTZIPD = -DUSE_HPTZIP
+!endif
+
+# C-compiler: defines
+CDEFS =-D__NT__ -D_CONSOLE $(HPTZIPD) $(PERLD) $(NTDEF)
+
+!if $(DYNLIBS)==1
+CDEFS = $(CDEFS) -D_MAKE_DLL
+!endif
+
+!if $(DEBUG)==1
+DEBCDEFS =-D_DEBUG -DDEBUG -D_CRTDBG_MAP_ALLOC -D_CRT_SECURE_NO_DEPRECATE -D_CRT_SECURE_NO_WARNINGS
+!else
+DEBCDEFS =-DNDEBUG -D_CRT_SECURE_NO_DEPRECATE -D_CRT_SECURE_NO_WARNINGS
+!endif
+
+CFLAGS =-nologo
+
+# C-compiler: debug
+!if $(DEBUG)==1
+
+# -Wall produces screenfulls of useless warnings about win header files unless the following warnings are omitted:
+# c4255 == 'function' : no function prototype given: converting '()' to '(void)'
+# c4668 == 'symbol' is not defined as a preprocessor macro, replacing with '0' for 'directives'
+# c4820 == padding added into a struct
+# other superfluous warnings:
+# c4100 == unreferenced formal parameter
+# c4005 == macro redefinition (crtdbg.h <=> msvc.h)
+# c4826 == Conversion from 'const void *' to 'void *' is sign-extended. I have no clue what it means, but basetsd.h triggered it.
+DEBCFLAGS=/nologo /MDd /Zi /GS /Wall /wd4668 /wd4255 /wd4820 /wd4100 /wd4005 /wd4826
+!else
+DEBCFLAGS=/nologo /MD /W2
+!endif
+
+# C-compiler: optimization
+!if $(OPTIMIZATION)==1
+OPTCFLAGS=/O2 /Oi-
+!else
+OPTCFLAGS=/Od
+!endif
+
+CFLAGS =$(CFLAGS) $(DEBCFLAGS) $(OPTFLAGS) $(CDEFS) $(DEBCDEFS)
+
+
+LFLAGS=/NOLOGO /LIBPATH:$(LIBOUT)
+
+# object linker: optimization
+!if $(OPTIMIZATION)==1
+OPTLFLAGS=/OPT:REF
+!else
+OPTLFLAGS=/OPT:NOREF
+!endif
+
+# object linker: debug
+!if $(DEBUG)==1
+DEBLFLAGS=/DEBUG
+!else
+DEBLFLAGS=
+!endif
+
+COMMONLIBS=
+
+# Common linker options
+LFLAGS=$(LFLAGS) $(OPTLFLAGS) $(DEBLFLAGS) $(COMMONLIBS)
+
+# Linker options passed via compiler command-line
+CLFLAGS =/link $(LFLAGS)
+
+# Linker options for building dll
+LDLLFLAGS=$(LFLAGS) /DLL
+
+# options for removing files (e.g. for clean, distclean, uninstall)
+RMOPT =
+
+# archiver options
+ARFLAGS = /nologo
+
+# options for creating directories
+MKDIROPT=-p
+
