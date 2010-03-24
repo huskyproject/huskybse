@@ -80,6 +80,12 @@ BINOUT=.
 LIBOUT=.
 !endif
 
+## macroses for makefile.inc ##
+O=$(OBJOUT)
+B=$(BINOUT)
+L=$(LIBOUT)
+H=$(H_DIR)
+
 ## file suffixes ##
 _C      = .c
 _OBJ    = .obj
