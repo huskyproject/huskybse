@@ -13,6 +13,11 @@ OPTIMIZATION=0
 # Build libraries as dlls. Buils static libs otherwise
 DYNLIBS=1
 
+# Link CRT statically
+# It is useful for building binaries for distribution but it will generate big executables
+# Don't use with DYNLIBS=1 without testing first
+STATICCRT = 0
+
 # Perl support
 USE_PERL=0
 
@@ -60,12 +65,13 @@ TOPDIR=../../Release/
 !endif
 
 !if [if not exist $(TOPDIR:/=\) $(MKDIR) $(TOPDIR:/=\)] == 0
-OBJOUT=$(TOPDIR)obj/
+OBJOUT2=$(TOPDIR)obj/
 BINOUT=$(TOPDIR)bin/
 LIBOUT=$(TOPDIR)lib/
 
-!if [if not exist $(OBJOUT:/=\) $(MKDIR) $(OBJOUT:/=\)] != 0
-OBJOUT=.
+!if [if not exist $(OBJOUT2:/=\) $(MKDIR) $(OBJOUT2:/=\)] != 0
+OBJOUT2=
+OBJOUT=
 !endif
 !if [if not exist $(BINOUT:/=\) $(MKDIR) $(BINOUT:/=\)] != 0
 BINOUT=$(TOPDIR)
@@ -75,10 +81,23 @@ LIBOUT=$(TOPDIR)
 !endif
 
 !else
-OBJOUT=.
-BINOUT=.
-LIBOUT=.
+OBJOUT=
+BINOUT=
+LIBOUT=
 !endif
+
+!if "$(OBJOUT2)" != "" && "$(LIBNAME)" != ""
+
+OBJOUT1=$(OBJOUT2)$(LIBNAME)/
+
+!if [if not exist $(OBJOUT1:/=\) $(MKDIR) $(OBJOUT1:/=\)] == 0
+OBJOUT=$(OBJOUT1)
+!else
+OBJOUT=$(OBJOUT2)
+!endif
+
+!endif
+
 
 ## macroses for makefile.inc ##
 O=$(OBJOUT)
@@ -113,6 +132,14 @@ DLLSUFFIX=$(DLLSUFFIX)d
 !endif
 
 IMPLIBPREFIX=imp_$(DLLPREFIX)
+
+## Some common constructed filenames ##
+PROGRAMSILK=$(PROGRAMS:.exe=.ilk)
+PROGRAMSPDB=$(PROGRAMS:.exe=.pdb)
+
+IMPLIBNAME=$(LIBOUT)$(IMPLIBPREFIX)$(LIBNAME)$(DLLSUFFIX)
+DLLNAME=$(BINOUT)$(DLLPREFIX)$(LIBNAME)$(DLLSUFFIX)
+DLLIMPORTLIB=$(IMPLIBNAME)$(_LIB)
 
 #############################################################################
 # program options
@@ -174,6 +201,25 @@ HPTZIPL = $(LIBOUT)/$(LIBPREFIX)hptzip$(LIBSUFFIX)$(_LIB)
 HPTZIPI = -I../../hptzip
 
 HPTZIPD = -DUSE_HPTZIP
+
+ZLIBH	= ../../hptzip/zlib-win32
+# or set it to directory with zlib sources
+#ZLIBH	= 
+
+!if $(DEBUG) == 1
+# You can set both to the same value if no debug version exist or if
+# no zlib debug is needed.
+# ZLIBL can point to static library or import library for dll.
+# This choice does not depend on DYNLIBS value. Do keep in mind though 
+# that official zlib1.dll is linked against msvcrt.dll and it is recommended 
+# to link any app using it against same dll, which is not possible
+# 'out of the box' for MSVC2003 and newer. Therefore linking zlib statically
+# seems to be preferable, especially if you build hptzip itself as dll.
+ZLIBL   = ../../hptzip/zlib-win32/zlib.lib
+!else
+ZLIBL   = ../../hptzip/zlib-win32/zlib.lib
+!endif
+
 !endif
 
 # C-compiler: defines
@@ -202,9 +248,33 @@ CFLAGS =-nologo
 # c4100 == unreferenced formal parameter
 # c4005 == macro redefinition (crtdbg.h <=> msvc.h)
 # c4826 == Conversion from 'const void *' to 'void *' is sign-extended. I have no clue what it means, but basetsd.h triggered it.
-DEBCFLAGS=/nologo /MDd /Zi /GS /Wall /wd4668 /wd4255 /wd4820 /wd4100 /wd4005 /wd4826
+DEBCFLAGS=/nologo /Zi /GS /Wall /wd4668 /wd4255 /wd4820 /wd4100 /wd4005 /wd4826
+
 !else
-DEBCFLAGS=/nologo /MD /W2
+
+DEBCFLAGS=/nologo /W2
+
+!endif
+
+# It is not recommended to build dlls with static linkage against crt
+# as it may cause problems with resource management.
+# Check if it will actually work if you like.
+!if $(STATICCRT)==1 && $(DYNLIBS)==0
+# use /ML for mvc before 2005
+!if $(DEBUG)==1
+CFLAGS =$(CFLAGS) /MTd
+!else
+CFLAGS =$(CFLAGS) /MT
+!endif
+
+!else
+
+!if $(DEBUG)==1
+CFLAGS =$(CFLAGS) /MDd
+!else
+CFLAGS =$(CFLAGS) /MD
+!endif
+
 !endif
 
 # C-compiler: optimization
