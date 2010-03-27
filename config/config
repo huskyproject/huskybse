@@ -62,7 +62,7 @@ endif
 #EN# Paths
 #RU# Пути
 
-#EN# 'set' token allow you to set variables that can be referenced
+#EN# 'set' token allows you to set variables that can be referenced
 #EN# later as [variable_name].
 #EN# Let's set main path variables. All paths except the first one
 #EN# are relative so it is easy to move a system.
@@ -137,7 +137,7 @@ LogLevels   134567890ABCDEFGJKLMNT
 LogEchoToScreen
 
 #EN# This statement specifies loglevel for screen output.
-#EN# By default it's value is the same as specified in 'loglevels' statement.
+#EN# By default its value is the same as specified in 'loglevels' statement.
 #RU# Этот параметр определяет уровень логов, выводимых на экран.
 #RU# По умолчанию он равен значанию параметра 'loglevels'.
 #ScreenLogLevels 234567890ABCDEFGJKMNT
