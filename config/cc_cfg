@@ -132,9 +132,11 @@ CarbonKeepSb
 #RU# 2) AND и NOT имеют больший приоритет, чем OR
 #EN# 3) There is NO BRACES, so if you want to write something
 #EN# like A && (B || C) then write it as A && B || A && C.
-#EN# That's all.
+#EN# Note also that A && NOT (B || C) is equivalent to A && NOT B && NOT C.
+##EN# That's all.
 #RU# 3) Тут _нету скобок_, если надо записать что-либо вроде
 #RU# A && (B || C), пишите это так: A && B || A && C.
+#RU# Заметьте при этом, что A && NOT (B || C) эквивалентно A && NOT B && NOT C.
 #RU# И это всё.
 
 #EN# If you don't know wtf is boolean algebra then you should
