@@ -1,0 +1,8 @@
+msvcr70d.dll
+msvcr70.dll
+msvcr71d.dll
+msvcr71.dll
+msvcr80d.dll
+msvcr80.dll
+perl58.dll
+perl510.dll

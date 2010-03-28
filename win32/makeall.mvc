@@ -1,0 +1,185 @@
+# $Id$
+# This makefile will help you build everything you want in proper
+# sequence with single 'nmake' command.
+# It is not very smart though and won't be of much help if you get massive
+# update and rely on makefile to rebuild everything needed.
+#
+# Do 'nmake distclean' first if unsure!!
+
+#!include huskymak.cfg
+
+# comment this if your build won't need hptzip
+HPTZIP = .hptzip
+
+BASE3 = .huskylib .smapi .fidoconfig
+
+# this is what happens when you just run 'nmake'
+default: .huskylib .smapi .fidoconfig .areafix $(HPTZIP) .hpt .hptkill .hptutil .hptsqfix .hpucode .sqpack .htick .nltools .bsopack .areastat
+
+.huskylib:
+        cd huskylib\make
+        nmake -nologo -f makefile.mvc all
+        cd ..\..
+
+.smapi: .huskylib
+        cd smapi\make
+        nmake -nologo -f makefile.mvc all
+        cd ..\..
+
+.fidoconfig: .huskylib .smapi
+        cd fidoconf\make
+        nmake -nologo -f makefile.mvc all
+        cd ..\..
+
+.areafix: $(BASE3)
+        cd areafix\make
+        nmake -nologo -f makefile.mvc all
+        cd ..\..
+
+.hptzip:
+        cd hptzip\make
+        nmake -nologo -f makefile.mvc all
+        cd ..\..
+
+.hpt: $(BASE3) .areafix $(HPTZIP)
+        cd hpt\make
+        nmake -nologo -f makefile.mvc all
+        cd ..\..
+
+.htick: $(BASE3) .areafix $(HPTZIP)
+        cd htick\win32
+        nmake -nologo -f makefile.mvc all
+        cd ..\..
+
+.hptkill: $(BASE3)
+        cd hptkill\make
+        nmake -nologo -f makefile.mvc all
+        cd ..\..
+
+.hptutil: $(BASE3)
+        cd hptutil\make
+        nmake -nologo -f makefile.mvc all
+        cd ..\..
+
+.hpucode: $(BASE3)
+        cd hpucode\make
+        nmake -nologo -f makefile.mvc all
+        cd ..\..
+
+.sqpack: $(BASE3)
+        cd sqpack\make
+        nmake -nologo -f makefile.mvc all
+        cd ..\..
+
+.nltools: $(BASE3) $(HPTZIP)
+        cd nltools\make
+        nmake -nologo -f makefile.mvc all
+        cd ..\..
+
+.bsopack: .huskylib .fidoconfig $(HPTZIP)
+        cd bsopack\make
+        nmake -nologo -f makefile.mvc all
+        cd ..\..
+
+.areastat: .huskylib .smapi
+        cd areastat\make
+        nmake -nologo -f makefile.mvc all
+        cd ..\..
+
+.hptsqfix: $(BASE3)
+        cd hptsqfix\make
+        nmake -nologo -f makefile.mvc all
+        cd ..\..
+
+# all targets mentioned here will be passed on to nmakes in all subdirectories.
+# this will work nicely for building binaries too, so keep commands sorted to build
+# dependences before dependents (i.e. libraries before programs).
+all clean distclean:
+        cd huskylib\make
+        nmake -nologo -f makefile.mvc $@
+        cd ..\..\smapi\make
+        nmake -nologo -f makefile.mvc $@
+        cd ..\..\fidoconf\make
+        nmake -nologo -f makefile.mvc $@
+        cd ..\..\areafix\make
+        nmake -nologo -f makefile.mvc $@
+        cd ..\..\hptzip\make
+        nmake -nologo -f makefile.mvc $@
+        cd ..\..\hpt\make
+        nmake -nologo -f makefile.mvc $@
+        cd ..\..\htick\win32
+        nmake -nologo -f makefile.mvc $@
+        cd ..\..\hptkill\make
+        nmake -nologo -f makefile.mvc $@
+        cd ..\..\hptutil\make
+        nmake -nologo -f makefile.mvc $@
+        cd ..\..\hptsqfix\make
+        nmake -nologo -f makefile.mvc $@
+        cd ..\..\hpucode\make
+        nmake -nologo -f makefile.mvc $@
+        cd ..\..\sqpack\make
+        nmake -nologo -f makefile.mvc $@
+        cd ..\..\nltools\make
+        nmake -nologo -f makefile.mvc $@
+        cd ..\..\bsopack\make
+        nmake -nologo -f makefile.mvc $@
+        cd ..\..\areastat\make
+        nmake -nologo -f makefile.mvc $@
+        cd ..\..
+
+# this should not concern you unless you build with msvc2005 and newer and want
+# to hide generated manifests inside binaries
+embedmanifestd:
+        cd Debug\bin
+        -for %%f in (*.exe.manifest) do (mt.exe -manifest %%f -outputresource:%%~nf;1)
+        -for %%f in (*.dll.manifest) do (mt.exe -manifest %%f -outputresource:%%~nf;2)
+        -del *.manifest
+        cd ..\..
+embedmanifestr:
+        cd Release\bin
+        -for %%f in (*.exe.manifest) do (mt.exe -manifest %%f -outputresource:%%~nf;1)
+        -for %%f in (*.dll.manifest) do (mt.exe -manifest %%f -outputresource:%%~nf;2)
+        -del *.manifest
+        cd ..\..
+
+# ah, well. probably releaser will be able to utilize this
+# rebase is a right thing to do!
+# bind is good too, but strictly speaking it should be done on target system
+# I'm not sure that it won't give unnecessary effects if target system will have 
+# different libraries than a system on which bind was done.
+pack: embedmanifestr
+        cd Release\bin
+        -..\..\rebase.cmd ..\..\leave.txt ..\..\group.txt
+        -rem ..\..\bind.cmd
+        -md5sum *>..\husky-1_9-w_perl510-2010mmdd.md5
+        -rem md5sum *>..\husky-1_9-2010mmdd.md5
+        -rar.exe a -s -m5 -ag-YYYYMMDD ..\husky-1_9-w_perl510 *
+        -rem rar.exe a -s -m5 -ag-YYYYMMDD ..\husky-1_9 *
+        @echo don\'t forget to rename files
+
+# these may be useful for developers after appropriate hacking
+cvscl:
+        cd huskylib
+        sh ..\cvs2cl.sh
+
+# you won't believe me, but windows want manifests to have rights to execute too.
+# and cygwin has no clue :-D
+massinstall:
+        -cp -uv Debug/bin/*.exe X:/ftn/husky/test-system/bin/husky/
+        -cp -uv Debug/bin/*.dll X:/ftn/husky/test-system/bin/husky/
+        -cp -uv Debug/bin/*.manifest X:/ftn/husky/test-system/bin/husky/
+        -chmod +x X:/ftn/husky/test-system/bin/husky/*.manifest
+
+.help:
+        @echo '*************************************************************'
+        @echo '* Invoking nmake with no target will build all modules.'
+		@echo ' '
+		@echo '* Invoking nmake with name of module prepended by dot'
+		@echo '(i.e. nmake .hpt) will build this named module with'
+		@echo 'every module it depends on. Possible targets:'
+        @echo '.huskylib .smapi .fidoconfig .areafix .hptzip'
+        @echo '.hpt .hptkill .hptutil .hptsqfix .hpucode'
+        @echo '.sqpack .htick .nltools .bsopack .areastat'
+		@echo ' '
+        @echo '* Invoking nmake with these targets -- clean, distclean, all'
+		@echo 'will run nmake for every module with the same targets.'
