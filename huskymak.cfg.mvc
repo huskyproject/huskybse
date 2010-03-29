@@ -30,29 +30,72 @@ USE_HPTZIP=1
 #NTDEF	= -D_WIN32_WINNT=0x0400
 #NTDEF	= -D_WIN32_WINNT=0x0500
 
+!if $(USE_PERL)==1
+PERL_DIR = C:\Perl
+PERLV    = 510
+PERLL    = delayimp.lib $(PERL_DIR)\lib\core\perl$(PERLV).lib
+PERLI    = -I$(PERL_DIR)\lib\core
+PERLD    = -DDO_PERL -DWIN32 -DNO_STRICT -DHAVE_DES_FCRYPT -DPERL_IMPLICIT_CONTEXT -DPERL_IMPLICIT_SYS -DPERL_MSVCRT_READFIX
+PERLDLL  = /delayload:perl$(PERLV).dll
+PERLOBJ  = perl$(_OBJ)
+!else
+PERLOBJ  = dummy$(_OBJ)
+PERLI    =
+PERLD    =
+PERLDLL  =
+!endif
+
+
+!if $(USE_HPTZIP) == 1
+
+!if $(DYNLIBS)==1
+HPTZIPL = $(LIBOUT)/$(IMPLIBPREFIX)hptzip$(DLLSUFFIX)$(_LIB)
+!else
+HPTZIPL = $(LIBOUT)/$(LIBPREFIX)hptzip$(LIBSUFFIX)$(_LIB)
+!endif
+
+# path to "hptzip/hptzip.h"
+HPTZIPI = -I../../hptzip
+
+HPTZIPD = -DUSE_HPTZIP
+
+ZLIBH	= ../../hptzip/zlib-win32
+# or set it to directory with zlib sources
+#ZLIBH	= 
+
+!if $(DEBUG) == 1
+# You can set both to the same value if no debug version exist or if
+# no zlib debug is needed.
+# ZLIBL can point to static library or import library for dll.
+# This choice does not depend on DYNLIBS value. Do keep in mind though 
+# that official zlib1.dll is linked against msvcrt.dll and it is recommended 
+# to link any app using it against same dll, which is not possible
+# 'out of the box' for MSVC2003 and newer. Therefore linking zlib statically
+# seems to be preferable, especially if you build hptzip itself as dll.
+ZLIBL   = ../../hptzip/zlib-win32/zlib.lib
+!else
+ZLIBL   = ../../hptzip/zlib-win32/zlib.lib
+!endif
+
+!endif
+
+
 ## programs ##
 
 # C-Compiler
 CC      = cl
-
 # archiver (for object-files)
 AR      = lib
-
 # linker
 LINK    = link
-
 #
 RANLIB  =
-
 # remove file
 RM      = del
-
 #copy a file
 CP      = copy
-
 # rename a file
 MV       = move
-
 # create directory
 MKDIR    = mkdir
 
@@ -171,56 +214,6 @@ OBJOPT  = -c
 
 # C-compiler: generate warnings
 WARNFLAGS=-Wall
-
-
-!if $(USE_PERL)==1
-PERL_DIR = C:\Perl
-PERLV    = 510
-PERLL    = delayimp.lib $(PERL_DIR)\lib\core\perl$(PERLV).lib
-PERLI    = -I$(PERL_DIR)\lib\core
-PERLD    = -DDO_PERL -DWIN32 -DNO_STRICT -DHAVE_DES_FCRYPT -DPERL_IMPLICIT_CONTEXT -DPERL_IMPLICIT_SYS -DPERL_MSVCRT_READFIX
-PERLDLL  = /delayload:perl$(PERLV).dll
-PERLOBJ  = perl$(_OBJ)
-!else
-PERLOBJ  = dummy$(_OBJ)
-PERLI    =
-PERLD    =
-PERLDLL  =
-!endif
-
-
-!if $(USE_HPTZIP) == 1
-
-!if $(DYNLIBS)==1
-HPTZIPL = $(LIBOUT)/$(IMPLIBPREFIX)hptzip$(DLLSUFFIX)$(_LIB)
-!else
-HPTZIPL = $(LIBOUT)/$(LIBPREFIX)hptzip$(LIBSUFFIX)$(_LIB)
-!endif
-
-# path to "hptzip/hptzip.h"
-HPTZIPI = -I../../hptzip
-
-HPTZIPD = -DUSE_HPTZIP
-
-ZLIBH	= ../../hptzip/zlib-win32
-# or set it to directory with zlib sources
-#ZLIBH	= 
-
-!if $(DEBUG) == 1
-# You can set both to the same value if no debug version exist or if
-# no zlib debug is needed.
-# ZLIBL can point to static library or import library for dll.
-# This choice does not depend on DYNLIBS value. Do keep in mind though 
-# that official zlib1.dll is linked against msvcrt.dll and it is recommended 
-# to link any app using it against same dll, which is not possible
-# 'out of the box' for MSVC2003 and newer. Therefore linking zlib statically
-# seems to be preferable, especially if you build hptzip itself as dll.
-ZLIBL   = ../../hptzip/zlib-win32/zlib.lib
-!else
-ZLIBL   = ../../hptzip/zlib-win32/zlib.lib
-!endif
-
-!endif
 
 # C-compiler: defines
 CDEFS =-D__NT__ -D_CONSOLE $(HPTZIPD) $(PERLD) $(NTDEF)
