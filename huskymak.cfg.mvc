@@ -100,12 +100,13 @@ MV       = move
 MKDIR    = mkdir
 
 ## directories ##
-
 !if $(DEBUG)==1
 TOPDIR=../../Debug/
 !else
 TOPDIR=../../Release/
 !endif
+
+!ifndef JUSTDEFINES
 
 !if [if not exist $(TOPDIR:/=\) $(MKDIR) $(TOPDIR:/=\)] == 0
 OBJOUT2=$(TOPDIR)obj/
@@ -141,6 +142,7 @@ OBJOUT=$(OBJOUT2)
 
 !endif
 
+!endif
 
 ## macroses for makefile.inc ##
 O=$(OBJOUT)
