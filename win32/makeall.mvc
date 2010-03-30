@@ -6,10 +6,12 @@
 #
 # Do 'nmake distclean' first if unsure!!
 
-#!include huskymak.cfg
+JUSTDEFINES=1
+!include huskymak.cfg
 
-# comment this if your build won't need hptzip
+!if $(USE_HPTZIP)==1
 HPTZIP = .hptzip
+!endif
 
 BASE3 = .huskylib .smapi .fidoconfig
 
