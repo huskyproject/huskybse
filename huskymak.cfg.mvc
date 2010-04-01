@@ -37,9 +37,9 @@ PERLL    = delayimp.lib $(PERL_DIR)\lib\core\perl$(PERLV).lib
 PERLI    = -I$(PERL_DIR)\lib\core
 PERLD    = -DDO_PERL -DWIN32 -DNO_STRICT -DHAVE_DES_FCRYPT -DPERL_IMPLICIT_CONTEXT -DPERL_IMPLICIT_SYS -DPERL_MSVCRT_READFIX
 PERLDLL  = /delayload:perl$(PERLV).dll
-PERLOBJ  = perl$(_OBJ)
+PERLOBJ  = $(O)perl$(_OBJ)
 !else
-PERLOBJ  = dummy$(_OBJ)
+PERLOBJ  = 
 PERLI    =
 PERLD    =
 PERLDLL  =
