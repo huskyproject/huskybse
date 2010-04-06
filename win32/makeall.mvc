@@ -16,7 +16,7 @@ HPTZIP = .hptzip
 BASE3 = .huskylib .smapi .fidoconfig
 
 # this is what happens when you just run 'nmake'
-default: .huskylib .smapi .fidoconfig .areafix $(HPTZIP) .hpt .hptkill .hptutil .hptsqfix .hpucode .sqpack .htick .nltools .bsopack .areastat
+default: .huskylib .smapi .fidoconfig .areafix $(HPTZIP) .hpt .hptkill .hptutil .hptsqfix .hpucode .sqpack .htick .nltools .bsopack .areastat .msged
 
 .huskylib:
         cd huskylib\make
@@ -93,6 +93,11 @@ default: .huskylib .smapi .fidoconfig .areafix $(HPTZIP) .hpt .hptkill .hptutil 
         nmake -nologo -f makefile.mvc all
         cd ..\..
 
+.msged: $(BASE3)
+	cd msged\make
+	nmake -nologo -f makefile.mvc all
+	cd ..\..
+
 # all targets mentioned here will be passed on to nmakes in all subdirectories.
 # this will work nicely for building binaries too, so keep commands sorted to build
 # dependences before dependents (i.e. libraries before programs).
@@ -127,6 +132,8 @@ all clean distclean:
         nmake -nologo -f makefile.mvc $@
         cd ..\..\areastat\make
         nmake -nologo -f makefile.mvc $@
+	cd ..\..\msged\make
+	nmake -nologo -f makefile.mvc $@
         cd ..\..
 
 # this should not concern you unless you build with msvc2005 and newer and want
@@ -182,6 +189,7 @@ massinstall:
         @echo '.huskylib .smapi .fidoconfig .areafix .hptzip'
         @echo '.hpt .hptkill .hptutil .hptsqfix .hpucode'
         @echo '.sqpack .htick .nltools .bsopack .areastat'
+	@echo '.msged'
 		@echo ' '
         @echo '* Invoking nmake with these targets -- clean, distclean, all'
 		@echo 'will run nmake for every module with the same targets.'
