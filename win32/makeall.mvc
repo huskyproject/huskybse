@@ -98,10 +98,10 @@ default: .huskylib .smapi .fidoconfig .areafix $(HPTZIP) .hpt .hptkill .hptutil 
 	nmake -nologo -f makefile.mvc all
 	cd ..\..
 
- .fidoroute:
-         cd hpt\fidoroute
-         nmake -nologo -f makefile.mvc all
-         cd ..\..
+.fidoroute:
+	cd hpt\fidoroute
+	nmake -nologo -f makefile.mvc all
+	cd ..\..
 
 # all targets mentioned here will be passed on to nmakes in all subdirectories.
 # this will work nicely for building binaries too, so keep commands sorted to build
