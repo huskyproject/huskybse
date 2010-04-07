@@ -16,7 +16,7 @@ HPTZIP = .hptzip
 BASE3 = .huskylib .smapi .fidoconfig
 
 # this is what happens when you just run 'nmake'
-default: .huskylib .smapi .fidoconfig .areafix $(HPTZIP) .hpt .hptkill .hptutil .hptsqfix .hpucode .sqpack .htick .nltools .bsopack .areastat .msged
+default: .huskylib .smapi .fidoconfig .areafix $(HPTZIP) .hpt .hptkill .hptutil .hptsqfix .hpucode .sqpack .htick .nltools .bsopack .areastat .msged .fidoroute
 
 .huskylib:
         cd huskylib\make
@@ -98,6 +98,11 @@ default: .huskylib .smapi .fidoconfig .areafix $(HPTZIP) .hpt .hptkill .hptutil 
 	nmake -nologo -f makefile.mvc all
 	cd ..\..
 
+ .fidoroute:
+         cd hpt\fidoroute
+         nmake -nologo -f makefile.mvc all
+         cd ..\..
+
 # all targets mentioned here will be passed on to nmakes in all subdirectories.
 # this will work nicely for building binaries too, so keep commands sorted to build
 # dependences before dependents (i.e. libraries before programs).
@@ -134,6 +139,8 @@ all clean distclean:
         nmake -nologo -f makefile.mvc $@
 	cd ..\..\msged\make
 	nmake -nologo -f makefile.mvc $@
+	cd ..\..\hpt\fidoroute
+	nmake -nologo -f makefile.mvc $@
         cd ..\..
 
 # this should not concern you unless you build with msvc2005 and newer and want
@@ -154,7 +161,7 @@ embedmanifestr:
 # ah, well. probably releaser will be able to utilize this
 # rebase is a right thing to do!
 # bind is good too, but strictly speaking it should be done on target system
-# I'm not sure that it won't give unnecessary effects if target system will have 
+# I'm not sure that it won't give unnecessary effects if target system will have
 # different libraries than a system on which bind was done.
 pack: embedmanifestr
         cd Release\bin
@@ -182,14 +189,14 @@ massinstall:
 .help:
         @echo '*************************************************************'
         @echo '* Invoking nmake with no target will build all modules.'
-		@echo ' '
-		@echo '* Invoking nmake with name of module prepended by dot'
-		@echo '(i.e. nmake .hpt) will build this named module with'
-		@echo 'every module it depends on. Possible targets:'
+	@echo ' '
+	@echo '* Invoking nmake with name of module prepended by dot'
+	@echo '(i.e. nmake .hpt) will build this named module with'
+	@echo 'every module it depends on. Possible targets:'
         @echo '.huskylib .smapi .fidoconfig .areafix .hptzip'
         @echo '.hpt .hptkill .hptutil .hptsqfix .hpucode'
         @echo '.sqpack .htick .nltools .bsopack .areastat'
-	@echo '.msged'
-		@echo ' '
+	@echo '.msged .fidoroute'
+	@echo ' '
         @echo '* Invoking nmake with these targets -- clean, distclean, all'
-		@echo 'will run nmake for every module with the same targets.'
+	@echo 'will run nmake for every module with the same targets.'
