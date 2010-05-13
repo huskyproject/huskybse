@@ -111,9 +111,9 @@ RMDIR	= rm
 RMDIROPT= -rf
 
 # install command
-INSTALL	= install
+INSTALL = install
 # install command options
-INSTOPT	= -c
+INSTOPT = -c
 
 # copy command
 CP	= cp
@@ -162,22 +162,22 @@ CDEFS	+= -DUSE_HPTZIP
 endif
 
 # C-compiler: specify name of executable
-EXENAMEFLAG= -o 
+EXENAMEFLAG= -o
 
 # C-compiler defines
 CDEFS	=
 
 # C-compiler: generate warnings
-WARNFLAGS= -Wno-long-long -Wall 
+WARNFLAGS= -Wno-long-long -Wall
 
 # C-compiler: common  options
-CFLAGS	= $(WARNFLAGS) $(DEBCFLAGS) -O3 -fomit-frame-pointer -fstrength-reduce -Zcrtdll
+CFLAGS	= $(WARNFLAGS) $(DEBCFLAGS) $(STRIP) -O3 -fomit-frame-pointer -fstrength-reduce -Zcrtdll
 
 # C-compiler: optimization
 OPTCFLAGS= -c
 
 # options for build dll
-DLLOPT  = -shared
+DLLOPT	= -shared
 
 # The DYNLIBS switch controls if dynamic or static linkage is used.
 # This is tricky. If you set DYNLIBS=1, dynamic libraries (.so files)
@@ -291,7 +291,7 @@ TARGETDLL = $(DLLPREFIX)$(LIBNAME)$(DLLSUFFIX)$(_DLL)
 PACKAGEBASE=$(LIBNAME)$(LIBPREFIX)-$(LIBSUFFIX)-$(VERH)
 PACKAGENAME=$(LIBNAME)$(LIBPREFIX)-$(LIBSUFFIX)-$(VERH)$(_ARC)
 
-.PHONY:	distclean clean all static dll programs default
+.PHONY: distclean clean all static dll programs default
 
 ## Default make rule ##
 
