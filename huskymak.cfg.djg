@@ -174,7 +174,7 @@ CDEFS	=
 WARNFLAGS= -Wno-long-long -Wall -fomit-frame-pointer -fstrength-reduce -mcpu=i486
 
 # C-compiler: common  options
-CFLAGS	= $(WARNFLAGS) $(DEBCFLAGS) -O3
+CFLAGS	= $(WARNFLAGS) $(DEBCFLAGS) $(STRIP) -O3
 
 # C-compiler: optimization
 OPTCFLAGS= -c
