@@ -1,0 +1,140 @@
+# $Id$
+# Config-Makefile for Husky-packages: mingw build
+
+# ZipInternal packer
+USE_HPTZIP=0
+
+# Perl support
+USE_PERL = 0
+PERLV	 = 510
+PERL_DIR = ../../../Perl$(PERLV)
+
+# Uncomment this for strip all simbols from binaries to reduce file sizes
+STRIP  = -s
+
+# Make debuginfo
+DEBUG=0
+
+# Build libraries as dlls. Buils static libs otherwise
+DYNLIBS=1
+
+
+##############################################################################
+ifeq (~$(DEBUG)~, ~1~)
+# C-compiler: debug
+DEBCFLAGS= -g -pedantic
+# object linker: debug
+DEBLFLAGS= -g
+endif
+##############################################################################
+
+##############################################################################
+# Programs
+##############################################################################
+
+# C-Compiler
+CC	= gcc
+
+# archiver (for object-files)
+AR	= ar
+# options for $(AR) program
+ARFLAGS = r
+
+# library indexer
+RANLIB	= ranlib
+
+# linker program
+LINK	= ld
+
+# ZipInternal packer
+ifeq (~$(USE_HPTZIP)~, ~1~)
+LIBS	+= ../../hptzip/make/$(LIBPREFIX)hptzip$(LIBSUFFIX)$(_LIB)
+CINCL	+= -I../../hptzip
+CDEFS	+= -DUSE_HPTZIP
+endif
+
+# C-compiler: specify name of executable
+EXENAMEFLAG= -o
+
+# C-compiler defines
+CDEFS	=
+
+# C-compiler: generate warnings
+WARNFLAGS= -Wno-long-long -Wall
+
+# The DYNLIBS switch controls if dynamic or static linkage is used.
+# This is tricky. If you set DYNLIBS=1, dynamic libraries (.so files)
+# will be generated and used. This will only work if you are running "gcc"
+# on Linux, FreeBSD or another real Unix operating system.
+
+# On other systems, you must set DYNLIBS=0. Even on Linux, you might
+# want to do this if you are sick of shared library version mismatch
+# problems.
+
+# If you set DYNLIBS=0, but have Unix/Linux, you might want to add
+# "-static" to the OPTCFLAGS and WARNCFLAGS variables (above) in order
+# to avoid linkage with old .so files that may be floating around
+# (see 'ifeq ( $(DYNLIBS), 0 )' conditions)
+#
+
+ifeq (~$(DYNLIBS)~, ~0~)
+WARNFLAGS+= -static
+OPTCFLAGS+= -static
+endif
+
+# C-compiler: common options
+CFLAGS	= $(WARNFLAGS) $(DEBCFLAGS) $(STRIP) -mno-cygwin -O3
+
+# options for compile only (link is off)
+OBJOPT	= -c
+
+# options for build dll
+DLLOPT	= -shared -Wl,--out-implib,$(TARGETLIB)
+
+#############################################################################
+# file extensions
+#############################################################################
+
+# extension of source file
+_C	= .c
+
+# extension of object file
+_OBJ	= .o
+
+# extension of executable (e.g. ".exe")
+_EXE	= .exe
+
+# extension of static libs
+_LIB	= .a
+
+# extension of dynamic libs
+_DLL	= .dll
+
+#############################################################################
+# Library filename elements
+#############################################################################
+
+# Prefix to construct static library name
+LIBPREFIX=lib
+# Prefix to construct dll name
+DLLPREFIX=
+# Suffix to construct library name
+LIBSUFFIX=mgw
+# Suffix to construct dll name
+DLLSUFFIX=mgw
+
+#############################################################################
+# Library names ##
+#############################################################################
+TARGETLIB = $(LIBPREFIX)$(LIBNAME)$(LIBSUFFIX)$(_LIB)
+TARGETDLL = $(DLLPREFIX)$(LIBNAME)$(DLLSUFFIX)$(_DLL)
+
+#############################################################################
+# Perl support: compiler options ##
+#############################################################################
+ifeq (~$(PERL)~, ~1~)
+PERLFLAGS += `$(PERL_DIR)perl -MExtUtils::Embed -e ccopts`
+PERLDEFS  += -DDO_PERL
+PERLLIBS  += `$(PERL_DIR)perl -MExtUtils::Embed -e ldopts`
+PERLOBJ   += perl$(_OBJ)
+endif
