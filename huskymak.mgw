@@ -7,7 +7,7 @@ USE_HPTZIP=0
 # Perl support
 USE_PERL = 0
 PERLV	 = 510
-PERL_DIR = ../../../Perl$(PERLV)
+PERL_DIR = /perl
 
 # Uncomment this for strip all simbols from binaries to reduce file sizes
 STRIP  = -s
