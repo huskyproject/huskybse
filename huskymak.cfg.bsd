@@ -205,7 +205,7 @@ OPTLFLAGS=-s
 DEBLFLAGS=-g
 
 # options for installing programs
-IBOPT=-c -s -o fido -g dialer -m 6555
+IBOPT=-c -s -m 6555
 
 # options for installing libs
 ILOPT=-c -s -m 0444
