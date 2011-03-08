@@ -11,7 +11,11 @@ DEBUG_TREE=0
 OPTIMIZATION=0
 
 # Build libraries as dlls. Buils static libs otherwise
+!if "$(DYNLIBS)"=="1"
 DYNLIBS=1
+!else
+DYNLIBS=0
+!endif
 
 # Link CRT statically
 # It is useful for building binaries for distribution but it will generate big executables
