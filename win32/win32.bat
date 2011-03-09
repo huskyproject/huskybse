@@ -1,5 +1,6 @@
-@copy /-Y ..\huskymak.cfg.mvc ..\..\huskymak.cfg
-@copy /-Y makeall.mvc ..\..\makefile
+@echo off
+if NOT EXIST ..\..\huskymak.cfg.mvc copy /-Y ..\huskymak.cfg.mvc ..\..\
+if NOT EXIST ..\..\makefile         copy /-Y makeall.mvc ..\..\makefile
 @copy /-Y rebase.cmd ..\..\
 @copy /-Y bind.cmd  ..\..\
 @copy /-Y leave.txt ..\..\
