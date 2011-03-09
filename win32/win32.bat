@@ -1,5 +1,7 @@
 @echo off
+if EXIST ..\..\huskymak.cfg.mvc echo Don't write huskymak.cfg.mvc: file exist!
 if NOT EXIST ..\..\huskymak.cfg.mvc copy /-Y ..\huskymak.cfg.mvc ..\..\
+if NOT EXIST ..\..\makefile     echo Don't write makefile: file exist!
 if NOT EXIST ..\..\makefile         copy /-Y makeall.mvc ..\..\makefile
 @copy /-Y rebase.cmd ..\..\
 @copy /-Y bind.cmd  ..\..\

@@ -6,6 +6,12 @@
 #
 # Do 'nmake distclean' first if unsure!!
 
+!if "$(LOGFILE)"==""
+LOGFILE = nmake-log.txt
+!endif
+
+LOGFILE_OPTIONS = >>$(LOGFILE) 2>&1
+
 JUSTDEFINES=1
 !include huskymak.cfg.mvc
 
@@ -14,95 +20,122 @@ HPTZIP = .hptzip
 !endif
 
 BASE3 = .huskylib .smapi .fidoconfig
+
 NMAKE_OPTIONS = -nologo MAKEFILE_HUSKYMAK=../../huskymak.cfg.mvc
+!if "$(DYNLIBS)"=="1"
+NMAKE_OPTIONS = $(NMAKE_OPTIONS) DYNLIBS=1
+!endif
 
 
 # this is what happens when you just run 'nmake'
-default: .huskylib .smapi .fidoconfig .areafix $(HPTZIP) .hpt .hptkill .hptutil .hptsqfix .hpucode .sqpack .htick .nltools .bsopack .areastat .msged .fidoroute
+default: .initlog .huskylib .smapi .fidoconfig .areafix $(HPTZIP) .hpt .hptkill .hptutil .hptsqfix .hpucode .sqpack .htick .nltools .bsopack .areastat .msged .fidoroute
 
+.initlog:
+	@cd . $(LOGFILE_OPTIONS)
+	echo ==== Compilation start ==== $(LOGFILE_OPTIONS)
+	@date /t $(LOGFILE_OPTIONS)
+	@time /t $(LOGFILE_OPTIONS)
+	@echo "                         " $(LOGFILE_OPTIONS)
 .huskylib:
         cd huskylib\make
-        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
+        @echo *** huskylib\make $(LOGFILE_OPTIONS)
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all $(LOGFILE_OPTIONS)
         cd ..\..
 
 .smapi: .huskylib
         cd smapi\make
-        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
+        @echo *** smapi\make $(LOGFILE_OPTIONS)
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all $(LOGFILE_OPTIONS)
         cd ..\..
 
 .fidoconfig: .huskylib .smapi
         cd fidoconf\make
-        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
+        @echo *** fidoconf\make $(LOGFILE_OPTIONS)
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all $(LOGFILE_OPTIONS)
         cd ..\..
 
 .areafix: $(BASE3)
         cd areafix\make
-        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
+        @echo *** areafix\make $(LOGFILE_OPTIONS)
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all $(LOGFILE_OPTIONS)
         cd ..\..
 
 .hptzip:
         cd hptzip\make
-        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
+        @echo *** hptzip\make $(LOGFILE_OPTIONS)
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all $(LOGFILE_OPTIONS)
         cd ..\..
 
 .hpt: $(BASE3) .areafix $(HPTZIP)
         cd hpt\make
-        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
+        @echo *** hpt\make $(LOGFILE_OPTIONS)
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all $(LOGFILE_OPTIONS)
         cd ..\..
 
 .htick: $(BASE3) .areafix $(HPTZIP)
         cd htick\win32
-        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
+        @echo *** htick\win32 $(LOGFILE_OPTIONS)
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all $(LOGFILE_OPTIONS)
         cd ..\..
 
 .hptkill: $(BASE3)
         cd hptkill\make
-        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
+        @echo *** hptkill\make $(LOGFILE_OPTIONS)
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all $(LOGFILE_OPTIONS)
         cd ..\..
 
 .hptutil: $(BASE3)
         cd hptutil\make
-        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
+        @echo *** hptutil\make $(LOGFILE_OPTIONS)
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all $(LOGFILE_OPTIONS)
         cd ..\..
 
 .hpucode: $(BASE3)
         cd hpucode\make
-        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
+        @echo *** hpucode\make $(LOGFILE_OPTIONS)
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all $(LOGFILE_OPTIONS)
         cd ..\..
 
 .sqpack: $(BASE3)
         cd sqpack\make
-        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
+        @echo *** sqpack\make $(LOGFILE_OPTIONS)
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all $(LOGFILE_OPTIONS)
         cd ..\..
 
 .nltools: $(BASE3) $(HPTZIP)
         cd nltools\make
-        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
+        @echo *** nltools\make $(LOGFILE_OPTIONS)
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all $(LOGFILE_OPTIONS)
         cd ..\..
 
 .bsopack: .huskylib .fidoconfig $(HPTZIP)
         cd bsopack\make
-        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
+        @echo *** bsopack\make $(LOGFILE_OPTIONS)
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all $(LOGFILE_OPTIONS)
         cd ..\..
 
 .areastat: .huskylib .smapi
         cd areastat\make
-        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
+        @echo *** areastat\make $(LOGFILE_OPTIONS)
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all $(LOGFILE_OPTIONS)
         cd ..\..
 
 .hptsqfix: $(BASE3)
         cd hptsqfix\make
-        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
+        @echo *** hptsqfix\make $(LOGFILE_OPTIONS)
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all $(LOGFILE_OPTIONS)
         cd ..\..
 
 .msged: $(BASE3)
 	cd msged\make
-        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
+	@echo *** msged\make $(LOGFILE_OPTIONS)
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all $(LOGFILE_OPTIONS)
 	cd ..\..
 
 .fidoroute:
 	cd hpt\fidoroute
-        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
+	@echo *** hpt\fidoroute $(LOGFILE_OPTIONS)
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all $(LOGFILE_OPTIONS)
 	cd ..\..
 
 # all targets mentioned here will be passed on to nmakes in all subdirectories.
@@ -110,39 +143,39 @@ default: .huskylib .smapi .fidoconfig .areafix $(HPTZIP) .hpt .hptkill .hptutil 
 # dependences before dependents (i.e. libraries before programs).
 all clean distclean:
         cd huskylib\make
-        nmake -nologo -f makefile.mvc $@
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) $@
         cd ..\..\smapi\make
-        nmake -nologo -f makefile.mvc $@
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) $@
         cd ..\..\fidoconf\make
-        nmake -nologo -f makefile.mvc $@
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) $@
         cd ..\..\areafix\make
-        nmake -nologo -f makefile.mvc $@
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) $@
         cd ..\..\hptzip\make
-        nmake -nologo -f makefile.mvc $@
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) $@
         cd ..\..\hpt\make
-        nmake -nologo -f makefile.mvc $@
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) $@
         cd ..\..\htick\win32
-        nmake -nologo -f makefile.mvc $@
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) $@
         cd ..\..\hptkill\make
-        nmake -nologo -f makefile.mvc $@
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) $@
         cd ..\..\hptutil\make
-        nmake -nologo -f makefile.mvc $@
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) $@
         cd ..\..\hptsqfix\make
-        nmake -nologo -f makefile.mvc $@
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) $@
         cd ..\..\hpucode\make
-        nmake -nologo -f makefile.mvc $@
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) $@
         cd ..\..\sqpack\make
-        nmake -nologo -f makefile.mvc $@
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) $@
         cd ..\..\nltools\make
-        nmake -nologo -f makefile.mvc $@
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) $@
         cd ..\..\bsopack\make
-        nmake -nologo -f makefile.mvc $@
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) $@
         cd ..\..\areastat\make
-        nmake -nologo -f makefile.mvc $@
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) $@
 	cd ..\..\msged\make
-	nmake -nologo -f makefile.mvc $@
+	nmake -f makefile.mvc $(NMAKE_OPTIONS) $@
 	cd ..\..\hpt\fidoroute
-	nmake -nologo -f makefile.mvc $@
+	nmake -f makefile.mvc $(NMAKE_OPTIONS) $@
         cd ..\..
 
 # this should not concern you unless you build with msvc2005 and newer and want
