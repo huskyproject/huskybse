@@ -7,100 +7,102 @@
 # Do 'nmake distclean' first if unsure!!
 
 JUSTDEFINES=1
-!include huskymak.cfg
+!include huskymak.cfg.mvc
 
 !if $(USE_HPTZIP)==1
 HPTZIP = .hptzip
 !endif
 
 BASE3 = .huskylib .smapi .fidoconfig
+NMAKE_OPTIONS = -nologo MAKEFILE_HUSKYMAK=../../huskymak.cfg.mvc
+
 
 # this is what happens when you just run 'nmake'
 default: .huskylib .smapi .fidoconfig .areafix $(HPTZIP) .hpt .hptkill .hptutil .hptsqfix .hpucode .sqpack .htick .nltools .bsopack .areastat .msged .fidoroute
 
 .huskylib:
         cd huskylib\make
-        nmake -nologo -f makefile.mvc all
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
         cd ..\..
 
 .smapi: .huskylib
         cd smapi\make
-        nmake -nologo -f makefile.mvc all
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
         cd ..\..
 
 .fidoconfig: .huskylib .smapi
         cd fidoconf\make
-        nmake -nologo -f makefile.mvc all
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
         cd ..\..
 
 .areafix: $(BASE3)
         cd areafix\make
-        nmake -nologo -f makefile.mvc all
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
         cd ..\..
 
 .hptzip:
         cd hptzip\make
-        nmake -nologo -f makefile.mvc all
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
         cd ..\..
 
 .hpt: $(BASE3) .areafix $(HPTZIP)
         cd hpt\make
-        nmake -nologo -f makefile.mvc all
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
         cd ..\..
 
 .htick: $(BASE3) .areafix $(HPTZIP)
         cd htick\win32
-        nmake -nologo -f makefile.mvc all
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
         cd ..\..
 
 .hptkill: $(BASE3)
         cd hptkill\make
-        nmake -nologo -f makefile.mvc all
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
         cd ..\..
 
 .hptutil: $(BASE3)
         cd hptutil\make
-        nmake -nologo -f makefile.mvc all
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
         cd ..\..
 
 .hpucode: $(BASE3)
         cd hpucode\make
-        nmake -nologo -f makefile.mvc all
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
         cd ..\..
 
 .sqpack: $(BASE3)
         cd sqpack\make
-        nmake -nologo -f makefile.mvc all
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
         cd ..\..
 
 .nltools: $(BASE3) $(HPTZIP)
         cd nltools\make
-        nmake -nologo -f makefile.mvc all
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
         cd ..\..
 
 .bsopack: .huskylib .fidoconfig $(HPTZIP)
         cd bsopack\make
-        nmake -nologo -f makefile.mvc all
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
         cd ..\..
 
 .areastat: .huskylib .smapi
         cd areastat\make
-        nmake -nologo -f makefile.mvc all
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
         cd ..\..
 
 .hptsqfix: $(BASE3)
         cd hptsqfix\make
-        nmake -nologo -f makefile.mvc all
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
         cd ..\..
 
 .msged: $(BASE3)
 	cd msged\make
-	nmake -nologo -f makefile.mvc all
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
 	cd ..\..
 
 .fidoroute:
 	cd hpt\fidoroute
-	nmake -nologo -f makefile.mvc all
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) all
 	cd ..\..
 
 # all targets mentioned here will be passed on to nmakes in all subdirectories.
