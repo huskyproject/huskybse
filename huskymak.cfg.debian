@@ -28,7 +28,8 @@ MANDIR=$(PREFIX)/share/man
 INCDIR=$(PREFIX)/include
 
 # The fidoconfig config file will be in this DIRECTORY:
-CFGDIR=/etc/husky
+#CFGDIR=/etc/husky
+CFGDIR=~/fido/etc/husky
 
 # Filename (without path) for the config file (default: config)
 #CFGNAME=config
