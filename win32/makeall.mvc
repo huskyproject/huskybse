@@ -10,7 +10,7 @@
 LOGFILE = nmake-log.txt
 !endif
 
-LOGFILE_OPTIONS = >>$(LOGFILE) 2>&1
+LOGFILE_OPTIONS = >>..\..\$(LOGFILE) 2>&1
 
 JUSTDEFINES=1
 !include huskymak.cfg.mvc
@@ -31,11 +31,12 @@ NMAKE_OPTIONS = $(NMAKE_OPTIONS) DYNLIBS=1
 default: .initlog .huskylib .smapi .fidoconfig .areafix $(HPTZIP) .hpt .hptkill .hptutil .hptsqfix .hpucode .sqpack .htick .nltools .bsopack .areastat .msged .fidoroute
 
 .initlog:
-	@cd . $(LOGFILE_OPTIONS)
-	echo ==== Compilation start ==== $(LOGFILE_OPTIONS)
-	@date /t $(LOGFILE_OPTIONS)
-	@time /t $(LOGFILE_OPTIONS)
-	@echo "                         " $(LOGFILE_OPTIONS)
+        @cd huskylib\make
+        echo ==== Compilation start ==== $(LOGFILE_OPTIONS)
+        @date /t $(LOGFILE_OPTIONS)
+        @time /t $(LOGFILE_OPTIONS)
+        @echo "                         " $(LOGFILE_OPTIONS)
+        @cd ..\..
 .huskylib:
         cd huskylib\make
         @echo *** huskylib\make $(LOGFILE_OPTIONS)
@@ -127,16 +128,16 @@ default: .initlog .huskylib .smapi .fidoconfig .areafix $(HPTZIP) .hpt .hptkill 
         cd ..\..
 
 .msged: $(BASE3)
-	cd msged\make
-	@echo *** msged\make $(LOGFILE_OPTIONS)
+        cd msged\make
+        @echo *** msged\make $(LOGFILE_OPTIONS)
         nmake -f makefile.mvc $(NMAKE_OPTIONS) all $(LOGFILE_OPTIONS)
-	cd ..\..
+        cd ..\..
 
 .fidoroute:
-	cd hpt\fidoroute
-	@echo *** hpt\fidoroute $(LOGFILE_OPTIONS)
+        cd fidoroute\make
+        @echo *** fidoroute\make $(LOGFILE_OPTIONS)
         nmake -f makefile.mvc $(NMAKE_OPTIONS) all $(LOGFILE_OPTIONS)
-	cd ..\..
+        cd ..\..
 
 # all targets mentioned here will be passed on to nmakes in all subdirectories.
 # this will work nicely for building binaries too, so keep commands sorted to build
@@ -172,10 +173,10 @@ all clean distclean:
         nmake -f makefile.mvc $(NMAKE_OPTIONS) $@
         cd ..\..\areastat\make
         nmake -f makefile.mvc $(NMAKE_OPTIONS) $@
-	cd ..\..\msged\make
-	nmake -f makefile.mvc $(NMAKE_OPTIONS) $@
-	cd ..\..\hpt\fidoroute
-	nmake -f makefile.mvc $(NMAKE_OPTIONS) $@
+        cd ..\..\msged\make
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) $@
+        cd ..\..\fidoroute\make
+        nmake -f makefile.mvc $(NMAKE_OPTIONS) $@
         cd ..\..
 
 # this should not concern you unless you build with msvc2005 and newer and want
@@ -224,14 +225,14 @@ massinstall:
 .help:
         @echo '*************************************************************'
         @echo '* Invoking nmake with no target will build all modules.'
-	@echo ' '
-	@echo '* Invoking nmake with name of module prepended by dot'
-	@echo '(i.e. nmake .hpt) will build this named module with'
-	@echo 'every module it depends on. Possible targets:'
+        @echo ' '
+        @echo '* Invoking nmake with name of module prepended by dot'
+        @echo '(i.e. nmake .hpt) will build this named module with'
+        @echo 'every module it depends on. Possible targets:'
         @echo '.huskylib .smapi .fidoconfig .areafix .hptzip'
         @echo '.hpt .hptkill .hptutil .hptsqfix .hpucode'
         @echo '.sqpack .htick .nltools .bsopack .areastat'
-	@echo '.msged .fidoroute'
-	@echo ' '
+        @echo '.msged .fidoroute'
+        @echo ' '
         @echo '* Invoking nmake with these targets -- clean, distclean, all'
-	@echo 'will run nmake for every module with the same targets.'
+        @echo 'will run nmake for every module with the same targets.'
