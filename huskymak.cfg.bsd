@@ -1,7 +1,35 @@
 # Config-Makefile for Husky-packages
+#
 # Modified for FreeBSD 4.* by Stas Degteff (2:5080/102@FIDOnet, g@grumbler.org)
 # Modified for FreeBSD 12.* by Andrew Clarke (3:633/267, mail@ozzmosis.com)
-# Requires the print/texinfo pkg to be installed (for makeinfo)
+#
+# Requires the devel/gmake and print/texinfo packages to be installed, for
+# gmake and makeinfo respectively.
+#
+# Build with 'gmake', eg.
+#
+#  cp huskymak.cfg.bsd ../huskymak.cfg
+#  cd ../huskylib
+#  gmake clean
+#  gmake
+#  gmake install
+#  cd ../smapi
+#  gmake clean
+#  gmake
+#  gmake install
+#
+#  etc.
+#
+# Instead of modifying PREFIX in this file you can use "gmake PREFIX=" to
+# override the installation path. This is useful when installing as
+# non-root, eg.
+#
+#  cd ../huskylib
+#  gmake PREFIX=$HOME/opt/husky clean
+#  gmake PREFIX=$HOME/opt/husky
+#  gmake PREFIX=$HOME/opt/husky install
+#
+#  etc.
 
 ##############################################################################
 #PART 1: DIRECTORIES AND FILENAMES
