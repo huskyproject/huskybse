@@ -143,7 +143,7 @@ MKDIR=mkdir
 
 # update dynamic library cache
 # If your operating system does not need this, you may comment out this line.
-LDCONFIG=/sbin/ldconfig
+#LDCONFIG=/sbin/ldconfig
 
 # rename a file
 MV=mv
