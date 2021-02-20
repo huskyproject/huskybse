@@ -215,7 +215,7 @@ ifeq ( $(DYNLIBS), 0 )
 endif
 
 # C-compiler: debug
-DEBCFLAGS=-c -ggdb
+DEBCFLAGS=-g -c -O3 -fomit-frame-pointer -fPIC
 
 # C-compiler: additional defines, for features of your OS
 ADDCDEFS=-DHAS_POPEN
