@@ -240,16 +240,23 @@ OPTLFLAGS=-s
 DEBLFLAGS=-g
 
 # options for installing programs
-IBOPT=-c -s -m 6555
+IBOPT=-c -m 6555
 
 # options for installing libs
-ILOPT=-c -s -m 0444
+ILOPT=-c -m 0444
 
 # options for installing man-pages
 IMOPT=-c -m 0444
 
 # options for installing includes
 IIOPT=-c -m 0444
+
+# only strip binaries and libs when DEBUG=0
+
+ifeq ( $(DEBUG), 0 )
+    IBOPT+=-s
+    ILOPT+=-s
+endif
 
 # options for linking files
 LNOPT=-sf
