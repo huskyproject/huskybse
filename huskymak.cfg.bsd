@@ -1,50 +1,80 @@
 # Config-Makefile for Husky-packages
+#
 # Modified for FreeBSD 4.* by Stas Degteff (2:5080/102@FIDOnet, g@grumbler.org)
+# Modified for FreeBSD 12.* by Andrew Clarke (3:633/267, mail@ozzmosis.com)
+#
+# Requires the devel/gmake and print/texinfo packages to be installed, for
+# gmake and makeinfo respectively.
+#
+# Build with 'gmake', eg.
+#
+#  cp huskymak.cfg.bsd ../huskymak.cfg
+#  cd ../huskylib
+#  gmake clean
+#  gmake
+#  gmake install
+#  cd ../smapi
+#  gmake clean
+#  gmake
+#  gmake install
+#
+#  etc.
+#
+# Instead of modifying PREFIX in this file you can use "gmake PREFIX=" to
+# override the installation path. This is useful when installing as
+# non-root, eg.
+#
+#  cd ../huskylib
+#  gmake PREFIX=$HOME/opt/husky clean
+#  gmake PREFIX=$HOME/opt/husky
+#  gmake PREFIX=$HOME/opt/husky install
+#
+#  etc.
 
 ##############################################################################
 #PART 1: DIRECTORIES AND FILENAMES
 #You always need to change these to match your preferences
 ##############################################################################
 
-prefix=/usr/local
+PREFIX=/usr/local
 
 # Where libraries (both .a and .so files) should be placed
 # You should take care that this directory is listed in the LD_LIBRARY_PATH
 # environment variable (if necessary, modify your /etc/profile file).
-LIBDIR=${prefix}/lib
+LIBDIR=${PREFIX}/lib
 
 # Where the programs should be placed.
-BINDIR=${prefix}/bin
+BINDIR=${PREFIX}/bin
 
 # Where manual pages should be placed.
-MANDIR=${prefix}/man
+MANDIR=${PREFIX}/man
 
 # Where include files should be placed (don't worry, no files will be over-
 # written, Husky will use it's own subdirectories below this directory):
-INCDIR=${prefix}/include
+INCDIR=${PREFIX}/include
 
 # The fidoconfig config file will be in this DIRECTORY:
-CFGDIR=${prefix}/etc/fido
+CFGDIR=${PREFIX}/etc/fido
 
 # Filename (without path) for the config file (default: config)
 #CFGNAME=config
 
 # IF you have a working texinfo installation (consisting of the "makeinfo"
-# and "install-info" program), you should uncomment and adapt this
+# and "install-info" programs), you should uncomment and adapt this
 # line - it will cause GNU info documentation to be built and installed
-# into the given directory. If you leave the comment out, the doucmentation
+# into the given directory. If you leave the comment out, the documentation
 # will not be compiled, and you won't know how to use the software ;-).
 # You should take care that this directory is listed in the INFOPATH
 # environment variable (if necessary, modify your /etc/profile file).
-INFODIR=${prefix}/info
+#INFODIR=${PREFIX}/info
 
 # The same as above, but for DVI documentation. This requires a working
 # "texi2dvi" program.
-# DVIDIR=${prefix}/share/doc/husky
+# DVIDIR=${PREFIX}/share/doc/husky
 
 # The same as above, but for HTML documentation. This requires a working
 # "texi2html" program.
-HTMLDIR=${prefix}/share/doc/husky
+HTMLDIR=${PREFIX}/share/doc/husky
 
 # Name of the config file of MSGED TE:
 MSGEDCFG=\"$(CFGDIR)/msged.cfg\"
@@ -64,19 +94,20 @@ MSGEDCFG=\"$(CFGDIR)/msged.cfg\"
 ##############################################################################
 
 # C-Compiler
-CC=gcc
+CC=clang
 
-#Msged needs access to a termcap library. Define it's name here.
+#Msged needs access to a termcap library. Define its name here.
 #On Linux, termcap is integrated into ncurses:
 #TERMCAP=ncurses
-#On FreeBSD or commerical Unices, you may try on of the following:
-TERMCAP=termcap
+#On FreeBSD or commerical Unices, you may try one of the following:
+TERMCAP=ncurses
+#TERMCAP=termcap
 #TERMCAP=terminfo
 
 # C++-Compiler
 # (always define both - you never know which one is needed)
-CXX=g++
-GPP=g++
+CXX=clang++
+GPP=clang++
 
 # Pascal-Compiler (the compiler is optional, but the value of this
 # variable must be defined even if you don't have a Pascal compiler).
@@ -88,7 +119,7 @@ AR=ar
 # how to build shared libraries
 # use gcc on Linux and FreeBSD
 # use ld on BeOS and also try ld if gcc does not work for you
-# only "gcc" will but so version numbers into the shared object
+# only "gcc" will put so version numbers into the shared object
 # MKSHARED=ld
 MKSHARED=gcc
 
@@ -107,12 +138,12 @@ INSTALL=install
 LN=ln
 
 # create directory
-#MKDIR=mkdir
-MKDIR= install -d
+MKDIR=mkdir
+#MKDIR= install -d
 
 # update dynamic library cache
 # If your operating system does not need this, you may comment out this line.
-LDCONFIG=/sbin/ldconfig
+#LDCONFIG=/sbin/ldconfig
 
 # rename a file
 MV=mv
@@ -121,7 +152,8 @@ MV=mv
 CP=cp
 
 #Make a library file usable. You may leave this empty if it is n/a.
-RANLIB=ranlib
+#RANLIB=ranlib
+RANLIB=ar s
 
 # C-style header file to pascal unit converter (shipped with fpc)
 H2PAS=h2pas
@@ -175,7 +207,7 @@ EXENAMEFLAG=-o
 WARNFLAGS=-Wall
 
 # C-compiler: optimization
-OPTCFLAGS=-c -s -O3 -fomit-frame-pointer -fstrength-reduce -fPIC
+OPTCFLAGS=-c -O3 -fomit-frame-pointer -fPIC
 
 ifeq ( $(DYNLIBS), 0 )
     WARNFLAGS+= -static
@@ -183,7 +215,7 @@ ifeq ( $(DYNLIBS), 0 )
 endif
 
 # C-compiler: debug
-DEBCFLAGS=-c -ggdb
+DEBCFLAGS=-g -c -O3 -fomit-frame-pointer -fPIC
 
 # C-compiler: additional defines, for features of your OS
 ADDCDEFS=-DHAS_POPEN
@@ -208,16 +240,23 @@ OPTLFLAGS=-s
 DEBLFLAGS=-g
 
 # options for installing programs
-IBOPT=-c -s -m 6555
+IBOPT=-c -m 6555
 
 # options for installing libs
-ILOPT=-c -s -m 0444
+ILOPT=-c -m 0444
 
 # options for installing man-pages
 IMOPT=-c -m 0444
 
 # options for installing includes
 IIOPT=-c -m 0444
+
+# only strip binaries and libs when DEBUG=0
+
+ifeq ( $(DEBUG), 0 )
+    IBOPT+=-s
+    ILOPT+=-s
+endif
 
 # options for linking files
 LNOPT=-sf
