@@ -171,7 +171,7 @@ EXENAMEFLAG= -o
 CDEFS	=
 
 # C-compiler: generate warnings
-WARNFLAGS= -Wno-long-long -Wall -fomit-frame-pointer -fstrength-reduce
+WARNFLAGS= -Wno-long-long -Wno-variadic-macros -Wall -fomit-frame-pointer -fstrength-reduce
 
 # C-compiler: common  options
 CFLAGS	= $(WARNFLAGS) $(DEBCFLAGS) $(STRIP) -O3

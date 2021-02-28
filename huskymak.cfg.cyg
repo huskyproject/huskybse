@@ -161,7 +161,7 @@ EXENAMEFLAG= -o
 CDEFS	=
 
 # C-compiler: generate warnings
-WARNFLAGS= -Wno-long-long -Wall
+WARNFLAGS= -Wno-long-long -Wno-variadic-macros -Wall
 
 # C-compiler: common  options
 CFLAGS	= $(WARNFLAGS) $(DEBCFLAGS) -mno-cygwin -O3

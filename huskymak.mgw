@@ -60,7 +60,7 @@ EXENAMEFLAG= -o
 CDEFS	=
 
 # C-compiler: generate warnings
-WARNFLAGS= -Wno-long-long -Wall
+WARNFLAGS= -Wno-long-long -Wno-variadic-macros -Wall
 
 # The DYNLIBS switch controls if dynamic or static linkage is used.
 # This is tricky. If you set DYNLIBS=1, dynamic libraries (.so files)
