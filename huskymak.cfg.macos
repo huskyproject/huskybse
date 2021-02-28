@@ -1,7 +1,7 @@
 # Config-Makefile for Husky-packages
 #
 # For MacOS X 10.x (Darwin).
-# Tested with OS X 10.13 High Sierra.
+# Tested with OS X 10.13 High Sierra and 10.15 Catalina.
 #
 # Requires Apple Xcode to build.
 #
@@ -244,7 +244,7 @@ ADDPDEFS=
 OPTLFLAGS=-dynamic -dylib -lSystem
 
 # object linker: debug
-DEBLFLAGS=-dynamic -dylib -lSystem -g
+DEBLFLAGS=-dynamic -dylib -lSystem
 
 # options for installing programs
 IBOPT=-c -m 6555
