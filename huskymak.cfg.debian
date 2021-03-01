@@ -35,11 +35,11 @@ CFGDIR=~/fido/etc/husky
 #CFGNAME=config
 
 # IF you have a working texinfo installation (consisting of the "makeinfo"
-# and "install-info" program), you should uncomment and adapt this 
+# and "install-info" program), you should uncomment and adapt this
 # line - it will cause GNU info documentation to be built and installed
 # into the given directory. If you leave the comment out, the doucmentation
 # will not be compiled, and you won't know how to use the software ;-).
-# You should take care that this directory is listed in the INFOPATH 
+# You should take care that this directory is listed in the INFOPATH
 # environment variable (if necessary, modify your /etc/profile file).
 INFODIR=$(PREFIX)/share/info
 
@@ -90,10 +90,10 @@ AR=ar
 # how to build shared libraries
 # use gcc on Linux and FreeBSD
 # use ld on BeOS and also try ld if gcc does not work for you
-# only "gcc" will put so version numbers into the shared object 
+# only "gcc" will put so version numbers into the shared object
 # On Solaris use "-G" as additional linkerflag !!!!!!!
 # MKSHARED=ld
-MKSHARED=gcc 
+MKSHARED=gcc
 
 # remove file
 RM=rm
@@ -159,12 +159,12 @@ USE_HPTZIP=0
 # will be generated and used. This will only work if you are running "gcc"
 # on Linux, FreeBSD or another real Unix operating system.
 
-# On other systems, you must set DYNLIBS=0. Even on Linux, you might 
+# On other systems, you must set DYNLIBS=0. Even on Linux, you might
 # want to do this if you are sick of shared library version mismatch
 # problems.
 
 # If you set DYNLIBS=0, but have Unix/Linux, you might want to add add
-# "-static" to the OPTCFLAGS and WARNCFLAGS variables (above) in order 
+# "-static" to the OPTCFLAGS and WARNCFLAGS variables (above) in order
 # to avoid linkage with old .so files that may be  floating around
 # (see 'ifeq ( $(DYNLIBS), 0 )' conditions)
 #
@@ -174,7 +174,7 @@ DYNLIBS=1
 EXENAMEFLAG=-o
 
 # C-compiler: generate warnings
-WARNFLAGS=-Wall -pedantic -Wno-long-long
+WARNFLAGS=-Wall -pedantic -Wno-long-long -Wno-variadic-macros
 
 # C-compiler: optimization
 OPTCFLAGS=-c -s -O3 -fomit-frame-pointer -fstrength-reduce -fPIC
