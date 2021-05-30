@@ -1,8 +1,6 @@
 Husky Installation Instructions
 ===============================
 
-$Header$
-
 This file covers all basic questions that you might have if you are new to
 the Husky software. Please read those sections that are of interest to you
 carefully.
@@ -32,26 +30,26 @@ I. Overview
 The Husky Fidonet software package is split into different "modules". A
 module is a library or a program. In order to compile any Husky program, you
 will at least have to download the following modules:
-
+```
   huskybse      Husky Base, contains instructions, a template compilation
                 configuration file, and sample configs.
   huskylib      Common declarations and functions for Husky programs
   smapi         The Squish Message API library.
   fidoconf      The Fidoconfig library.
-
+```
 In addition, you need the programs that you want to use, like "hpt" (the
 tosser), "htick" (the ticker), "msged" (the mail editor), and others. For a
 full list of available modules, refer to the husky homepage.
 
 The distribution filenames of the modules are named
-
+```
   MODULENAME-VERSION.tar.gz    e.g. smapi-1.6.4-stable.tar.gz
-
+```
 for the release versions or
-
+```
   MODULENAME-yymmdd.tar.gz     e.g. smapi-000521.tar.gz (snapshot from 21st May 2000)
   MODULENAME-latest.tar.gz     e.g. smapi-latest.tar.gz (current snapshot)
-
+```
 for the daily snapshots. Unless you are a very experienced user, or have
 explicitly been instructed, you should use the release versions. They are
 available at the Husky homepage at http://husky.sourceforge.net.
@@ -67,14 +65,14 @@ II. Compiling the Source Code
 
 Download all the modules that you want to use, and untar them in a common
 directory. E.g:
-
+```
   mkdir ~/husky
   cd ~/husky
   tar xzf ~/download/huskybse-latest.tar.gz
   tar xzf ~/download/smapi-latest.tar.gz
   tar xzf ~/download/fidoconf-latest.tar.gz
   tar xzf ~/download/hpt-latest.tar.gz
-
+```
 Replace -latest with the actual file name extension. This could be "-latest"
 if you download from our CVS site, but it could also be something like
 "-1.2.0-stable", "-1.2.1-release", etc.
@@ -88,7 +86,7 @@ II.1 Compiling and installing with the standard Makefile and huskymak.cfg
 -------------------------------------------------------------------------
 
 
-II.1.1 Overview
+### II.1.1 Overview
 
 This is the standard way of compiling Husky source code on Unix-style
 operating systems. It will also work on OS/2 if you have the EMX compiler and
@@ -114,7 +112,7 @@ software can be compiled. If you don't want to install anything while
 compiling, you should use the Legacy Makefiles (Section II.2)
 
 
-II.1.2 Configuring
+### II.1.2 Configuring
 
 Every Module is supplied with a "Makefile". This is the standard Makefile,
 and will only work with GNU make.
@@ -128,20 +126,20 @@ You don't need to create this file by hand - the huskybse module contains
 template huskymak configuration files. Select one, copy it to the top-level
 directory, and then edit it to adapt it to your needs. The following example
 files are currently provided:
-
+```
   File              Platform
   -------------------------------------------------------------------
   huskymak.cfg      Generic UNIX (will work as is on Linux, contains
                     documentation on what to change for other Unices)
   huskymak.cfg.bsd  FreeBSD (possible OpenBSD and NetBSD)
   huskymak.cfg.sun  SunOS (Solaris), using GNU C & GNU make
-
+```
 So, for example, you would do
-
+```
   cd ~/husky
   cp huskybse/huskymak.cfg ./huskymak.cfg
   emacs huskymak.cfg # or would you rather like vi? ;-)
-
+```
 Note that the "huskybse" subdirectory, like any other subdirectory mentioned
 from now on, might also have a version number as prefix, like
 "huskybse-0.10", depending from where you got the source files from.
@@ -150,10 +148,10 @@ Please read the comments in the template huskymak.cfg and change all values
 according to your needs.
 
 
-II.1.3 Compiling and Installing
+### II.1.3 Compiling and Installing
 
 Now, you can build smapi and fidoconfig (please do it in this order) using
-
+```
   cd ~/husky/smapi
   make clean
   # or use "gmake" if "make" does not invoke GNU make on your system!
@@ -162,18 +160,18 @@ Now, you can build smapi and fidoconfig (please do it in this order) using
   cd ~/husky/fidoconf
   make clean
   make all install
-
+```
 It is important that you a) INSTALL (gmake install) smapi before you try to
 COMIPLE fidoconf, because otherwise the smapi library - which is required for
 building fidoconfig - will not be found, and likewise, that you INSTALL
 fidoconf before you try to COMPILE anything else. For the other modules, you
 don't have to take care about any particular order. You can build and install
 any module using the command sequence
-
+```
   cd ~/husky/MODULENAME
   make clean
   make all install
-
+```
 After you did this with all modules, read on in section III of this document.
 
 
@@ -181,14 +179,13 @@ II.2 Compiling with the Legacy Makefiles
 ----------------------------------------
 
 
-II.2.1 Overview
----------------
+### II.2.1 Overview
 
 Besides the standard "Makefile", most Husky modules deliver additional
 makefiles, named "makefile.XXX", where "XXX" is a platform dependent
 suffix. Those makefiles are called legacy makefiles by us. They differ from
 the standard Makefile in the following ways:
-
+```
   + You don't need to edit huskymak.cfg, the makefiles work for themselves
   + You can compile everything without having to install anything
   + Many non-UNIX systems are supported
@@ -199,14 +196,13 @@ the standard Makefile in the following ways:
     your responsibility to copy the programs that you compiled to the
     proper directories.
   - No support for shared libraries, everything is linked statically.
+```
 
-
-II.2.2 List of platforms supported by the legacy makefiles
-----------------------------------------------------------
+### II.2.2 List of platforms supported by the legacy makefiles
 
 The following is a list of platforms that are supported by legacy
 makefiles.
-
+```
   Makefile         Sup.  Platform  Compiler
   ---------------------------------------------------------------------------
 
@@ -237,7 +233,7 @@ makefiles.
   makefile.osf     3     TRU64     Compaq CC (or DEC Unix with DEC cc)
   makefile.wcd     2     DOS       Watcom C
   makefile.qcd     2     DOS       Quick C / Microsoft MSC 6.0 (req. MASM)
-
+```
 The "Sup." classification has the following meaning:
 
   1  Means this makefile is the primary one used by Husky developers
@@ -259,8 +255,7 @@ you should first try to use "makefile.unx". "makefile.unx" is a very
 troublefree way of building everything!
 
 
-II.2.3 Compiling
-----------------
+### II.2.3 Compiling
 
 First, if your subdirectories contain version number suffixes, you need
 to rename the smapi and fidoconf subdirectories to the base name with
@@ -272,7 +267,7 @@ the directories for the other projects.
 
 Now that you have chosen the proper makefile, build smapi and fidoconfig like
 this (let's assume you have chosen makefile.unx):
-
+```
   cd ~/husky/huskylib
   make -f makefile.unx clean
   make -f makefile.unx
@@ -282,14 +277,14 @@ this (let's assume you have chosen makefile.unx):
   cd ~/husky/fidoconf
   make -f makefile.unx clean
   make -f makefile.unx
-
+```
 You can then directly proceed to build any program like this:
-
+```
   cd ~/husky/MODULENAME
   make -f makefile.unx
-
+```
 This also works with Non-UNIX systems, e.g.:
-
+```
   C:
   CD \HUSKY\HUSKYLIB
   imake -f makefile.ibo clean
@@ -303,10 +298,9 @@ This also works with Non-UNIX systems, e.g.:
   CD \HUSKY\MSGED
   imake -f makefile.ibo clean
   imake -f makefile.ibo
+```
 
-
-II.2.4 Installing
------------------
+### II.2.4 Installing
 
 As already noted, the legacy makefiles usually do not contain an "install"
 target. Therefore, you have to "install" the programs manually if you use
@@ -337,13 +331,13 @@ legacy makefiles (no CFGDIR setting) or because you have downloaded binary
 versions, you should set up an environent variable FIDOCONFIG which should
 contain the path and filename of that config file. E.g., on Unix with
 ksh/bash, you would put something like
-
+```
    FIDOCONFIG=/etc/fido/config; export FIDOCONFIG
-
+```
 to /etc/profile, while you would use
-
+```
    SET FIDOCONFIG=c:\fido\config
-
+```
 for config.sys on OS/2 or autoexec.bat for Win9x. On Windows NT, you would
 use the System Control Panel.
 
@@ -364,23 +358,23 @@ distributions.
 
 You can manually build and view the fidoconfig documentation as follows:
 Change to the documentation subdirectory:
-
+```
   cd ~/husky/fidoconf/doc
-
+```
 Then type this to build the GNU info version:
-
+```
   makeinfo fidoconfig
   info -f ./fidoconfig.info
-
+```
 This requires a working TEXINFO installation on your Unix system. TEXINFO is
 also available for OS/2 and cygwin.
 
 Or, you can try to build the HTML version:
-
+```
   makeinfo --html fidoconfig
 (or texi2html fidoconfig)
   lynx ./fidoconfig_toc.html
-
+```
 
 III.3 Examples
 --------------
