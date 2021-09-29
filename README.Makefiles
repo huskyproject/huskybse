@@ -3,7 +3,7 @@
 
 Note.
 This file contents only common information. Please refer to the file named
-"INSTALL" for details.
+"INSTALL.asciidoc" for details.
 
 1999-10-14 Sascha Silbe completely reorganized the Makefiles. Now there is
 a Makefile-Config "huskymak.cfg" which is used by all packages. You can find
