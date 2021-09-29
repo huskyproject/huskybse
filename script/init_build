@@ -1,0 +1,35 @@
+#!/bin/sh
+#
+# init_build
+#
+
+top_directory=~/husky
+
+die()
+{
+    printf '%s\n' "$1" >&2
+    exit 1
+}
+
+if [ -z `which --skip-alias git` ]
+then
+    die "Please install git"
+fi
+
+# Check that the script is not run by root
+[ "$(id -u)" -eq 0 ] && die "DO NOT run this as root"
+
+mkdir -p $top_directory
+cd $top_directory
+git clone https://github.com/huskyproject/huskybse.git
+
+cp -a huskybse/Makefile Makefile
+cp -a huskybse/huskymak.cfg huskymak.cfg
+cp -a huskybse/huskymak.cfg huskymak.cfg.new
+cp -a huskybse/script/build.sh build.sh
+echo
+echo "########################################################################"
+echo "Now you need to make changes to \"$top_directory/huskymak.cfg\""
+echo "per your requirements and then run \"$top_directory/build.sh\"."
+echo "########################################################################"
+echo

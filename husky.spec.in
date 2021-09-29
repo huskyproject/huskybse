@@ -1,0 +1,829 @@
+
+Name: husky
+Version: %husky_ver_major.%husky_ver_minor.%husky_reldate
+Release: 1
+License: LGPLv2
+Summary: Husky is a set of Fidonet software with common configuration
+Source: %name.tar.gz
+BuildRequires: %compiler
+%if "%USE_HPTZIP" == "1"
+BuildRequires: zlib-devel
+%endif
+%description
+%summary
+
+%if "%DEBUG" != "1"
+    %global debug_package %nil
+%endif
+
+# for generic build; it will be overriden for some distributions
+%global vendor_prefix %nil
+%global vendor_suffix %nil
+%global pkg_group Applications/Communications
+
+# for CentOS, Fedora and RHEL
+%if "%_vendor" == "redhat"
+    %global vendor_suffix %dist
+%endif
+
+# for ALT Linux
+%if "%_vendor" == "alt"
+    %global vendor_prefix %_vendor
+    %global pkg_group Networking/FTN
+%endif
+
+%define huskylib_relnum 1
+%if "%DYNLIBS" == "1"
+%package -n huskylib
+Version: %huskylib_ver_major.%huskylib_ver_minor.%huskylib_reldate
+Release: %{vendor_prefix}%huskylib_relnum%{vendor_suffix}
+%if "%_vendor" != "redhat"
+Group: %pkg_group
+%endif
+Summary: Common dynamic library for the Husky Project applications
+License: LGPLv2
+Provides: libhusky.so = %version-%release
+%description -n huskylib
+%summary
+%endif
+
+%if "%GNMSGID" == "1"
+    %if "%DYNLIBS" != "1"
+        %define huskylib_utils_name huskylib-utils-static
+    %else
+        %define huskylib_utils_name huskylib-utils
+    %endif
+%package -n %huskylib_utils_name
+Version: %huskylib_ver_major.%huskylib_ver_minor.%huskylib_reldate
+Release: %{vendor_prefix}%huskylib_relnum%{vendor_suffix}
+    %if "%_vendor" != "redhat"
+Group: %pkg_group
+    %endif
+Summary: Utilities for huskylib
+Provides: huskylib-utils = %version-%release
+%description -n %huskylib_utils_name
+%summary
+%endif
+
+
+%if "%DYNLIBS" == "1"
+%package -n smapi
+    %define smapi_relnum 6
+Version: %smapi_ver_major.%smapi_ver_minor.%smapi_reldate
+Release: %{vendor_prefix}%smapi_relnum%{vendor_suffix}
+    %if "%_vendor" != "redhat"
+Group: %pkg_group
+    %endif
+Summary: Squish/Jam API dynamic library for the Husky Project applications
+License: LGPLv2
+Provides: libsmapi.so = %version-%release
+%description -n smapi
+%summary
+%endif
+
+%define fidoconf_relnum 1
+%if "%DYNLIBS" == "1"
+%package -n fidoconf
+Version: %fidoconf_ver_major.%fidoconf_ver_minor.%fidoconf_reldate
+Release: %{vendor_prefix}%fidoconf_relnum%{vendor_suffix}
+    %if "%_vendor" != "redhat"
+Group: %pkg_group
+    %endif
+Summary: Common configuration dynamic library for the Husky Project applications
+License: LGPLv2
+Provides: libfidoconfig.so = %version-%release
+%description -n fidoconf
+%summary
+%endif
+
+
+%if "%DYNLIBS" == "1"
+    %define tparser_name tparser
+%else
+    %define tparser_name tparser-static
+%endif
+%package -n %tparser_name
+Version: %fidoconf_ver_major.%fidoconf_ver_minor.%fidoconf_reldate
+Release: %{vendor_prefix}%fidoconf_relnum%{vendor_suffix}
+Summary: A utility for parsing and checking Husky Project configuration files
+License: LGPLv2
+Provides: tparser = %version-%release
+%description -n %tparser_name
+%summary
+
+
+%if "%FIDOCONF_UTIL" == "1"
+    %if "%DYNLIBS" == "1"
+        %define fidoconf_utils_name fidoconf-utils
+    %else
+        %define fidoconf_utils_name fidoconf-utils-static
+    %endif
+%package -n %fidoconf_utils_name
+Version: %fidoconf_ver_major.%fidoconf_ver_minor.%fidoconf_reldate
+Release: %{vendor_prefix}%fidoconf_relnum%{vendor_suffix}
+    %if "%_vendor" != "redhat"
+Group: %pkg_group
+    %endif
+Summary: Optional utilities for fidoconf
+License: LGPLv2
+Provides: fidoconf-utils = %version-%release
+%description -n %fidoconf_utils_name
+%summary
+%endif
+
+%if "%DYNLIBS" == "1"
+    %define areafix_relnum 5
+%package -n areafix
+Version: %areafix_ver_major.%areafix_ver_minor.%areafix_reldate
+Release: %{vendor_prefix}%areafix_relnum%{vendor_suffix}
+    %if "%_vendor" != "redhat"
+Group: %pkg_group
+    %endif
+Summary: Dynamic areafix library for the Husky Project software
+License: LGPLv2
+BuildRequires: perl >= 5.8.8, perl-devel >= 5.8.8
+Provides: libareafix.so = %version-%release
+%description -n areafix
+%summary
+%endif
+
+
+%if "%USE_HPTZIP" == "1"
+%if "%DYNLIBS" == "1"
+    %define hptzip_relnum 1
+%package -n hptzip
+Version: %hptzip_ver_major.%hptzip_ver_minor.%hptzip_reldate
+Release: %{vendor_prefix}%hptzip_relnum%{vendor_suffix}
+    %if "%_vendor" != "redhat"
+Group: %pkg_group
+    %endif
+Summary: Dynamic hptzip library for the Husky Project software
+License: LGPLv2
+BuildRequires: zlib-devel
+Provides: libhptzip.so = %version-%release
+%description -n hptzip
+%summary
+%endif
+%endif
+
+%if "%hpt" == "1"
+%global hpt_relnum 1
+    %if "%DYNLIBS" == "1"
+        %define hpt_name hpt
+    %else
+        %define hpt_name hpt-static
+    %endif
+%package -n %hpt_name
+Version: %hpt_ver_major.%hpt_ver_minor.%hpt_reldate
+Release: %{vendor_prefix}%hpt_relnum%{vendor_suffix}
+    %if "%_vendor" != "redhat"
+Group: %pkg_group
+    %endif
+Summary: HPT is an FTN tosser from the Husky Project
+License: LGPLv2
+    %if "%USE_HPTZIP" == "1"
+BuildRequires: zlib-devel
+        %if "%DYNLIBS" != "1"
+BuildRequires: zlib-static
+        %endif
+    %endif
+    %if "%PERL" == "1"
+        %if "%_vendor" == "redhat"
+BuildRequires: perl(:VERSION) >= 5.8.8, perl-devel >= 5.8.8
+BuildRequires: perl(ExtUtils::Embed)
+Requires: perl(:VERSION) >= 5.8.8
+        %else
+BuildRequires: perl >= 5.8.8, perl-devel >= 5.8.8
+Requires: perl >= 5.8.8
+        %endif
+    %endif
+Provides: hpt = %version-%release
+%description -n %hpt_name
+%summary
+
+
+    %if "%HPT_UTIL" == "1"
+        %if "%DYNLIBS" == "1"
+            %define hpt_utils_name hpt-utils
+        %else
+            %define hpt_utils_name hpt-utils-static
+        %endif
+%package -n %hpt_utils_name
+Version: %hpt_ver_major.%hpt_ver_minor.%hpt_reldate
+Release: %{vendor_prefix}%hpt_relnum%{vendor_suffix}
+        %if "%_vendor" != "redhat"
+Group: %pkg_group
+        %endif
+Summary: Optional utilities for hpt
+License: LGPLv2
+        %if "%USE_HPTZIP" == "1"
+BuildRequires: zlib-devel
+            %if "%DYNLIBS" != "1"
+BuildRequires: zlib-static
+            %endif
+        %endif
+Provides: hpt-utils = %version-%release
+%description -n %hpt_utils_name
+%summary
+    %endif
+%endif
+
+%if "%htick" == "1"
+    %global htick_relnum 1
+    %if "%DYNLIBS" == "1"
+        %define htick_name htick
+    %else
+        %define htick_name htick-static
+    %endif
+%package -n %htick_name
+Version: %htick_ver_major.%htick_ver_minor.%htick_reldate
+Release: %{vendor_prefix}%htick_relnum%{vendor_suffix}
+    %if "%_vendor" != "redhat"
+Group: %pkg_group
+    %endif
+Summary: Htick is an FTN file echo processor from the Husky Project
+License: LGPLv2
+Provides: htick = %version-%release
+%description -n %htick_name
+%summary
+%endif
+
+%if "%hptkill" == "1"
+    %global hptkill_relnum 1
+    %if "%DYNLIBS" == "1"
+        %define hptkill_name hptkill
+    %else
+        %define hptkill_name hptkill-static
+    %endif
+%package -n %hptkill_name
+Version: %hptkill_ver_major.%hptkill_ver_minor.%hptkill_reldate
+Release: %{vendor_prefix}%hptkill_relnum%{vendor_suffix}
+    %if "%_vendor" != "redhat"
+Group: %pkg_group
+    %endif
+Summary: Hptkill is a tool for removing echo areas
+License: LGPLv2
+Provides: hptkill = %version-%release
+%description -n %hptkill_name
+%summary
+%endif
+
+%if "%hptsqfix" == "1"
+    %global hptsqfix_relnum 1
+    %if "%DYNLIBS" == "1"
+        %define hptsqfix_name hptsqfix
+    %else
+        %define hptsqfix_name hptsqfix-static
+    %endif
+%package -n %hptsqfix_name
+Version: %hptsqfix_ver_major.%hptsqfix_ver_minor.%hptsqfix_reldate
+Release: %{vendor_prefix}%hptsqfix_relnum%{vendor_suffix}
+    %if "%_vendor" != "redhat"
+Group: %pkg_group
+    %endif
+Summary: Hptsqfix is a tool for fixing errors in Squish message bases
+License: LGPLv2
+Provides: hptsqfix = %version-%release
+%description -n %hptsqfix_name
+%summary
+%endif
+
+%if "%sqpack" == "1"
+    %global sqpack_relnum 1
+    %if "%DYNLIBS" == "1"
+        %define sqpack_name sqpack
+    %else
+        %define sqpack_name sqpack-static
+    %endif
+%package -n %sqpack_name
+Version: %sqpack_ver_major.%sqpack_ver_minor.%sqpack_reldate
+Release: %{vendor_prefix}%sqpack_relnum%{vendor_suffix}
+    %if "%_vendor" != "redhat"
+Group: %pkg_group
+    %endif
+Summary: sqpack purges squish or jam msgbases taken from fidoconfig
+License: LGPLv2
+Provides: sqpack = %version-%release
+%description -n %sqpack_name
+sqpack takes the information about squish and jam msgbases from fidoconfig
+and purges the msgbases according to the -m and -p statements.
+%endif
+
+%if "%msged" == "1"
+    %global msged_relnum 1
+    %if "%DYNLIBS" == "1"
+        %define msged_name msged
+    %else
+        %define msged_name msged-static
+    %endif
+%package -n %msged_name
+Version: %msged_ver_major.%msged_ver_minor.%msged_reldate
+Release: %{vendor_prefix}%msged_relnum%{vendor_suffix}
+    %if "%_vendor" != "redhat"
+Group: %pkg_group
+    %endif
+Summary: Msged is a Fidonet message reader and editor
+License: LGPLv2
+BuildRequires: ncurses-devel
+Provides: msged = %version-%release
+%description -n %msged_name
+%summary
+%endif
+
+%if "%fidoroute" == "1"
+    %global fidoroute_relnum 1
+    %if "%DYNLIBS" == "1"
+        %define fidoroute_name fidoroute
+    %else
+        %define fidoroute_name fidoroute-static
+    %endif
+%package -n %fidoroute_name
+Version: %fidoroute_ver.%fidoroute_reldate
+Release: %{vendor_prefix}%fidoroute_relnum%{vendor_suffix}
+    %if "%_vendor" != "redhat"
+Group: %pkg_group
+    %endif
+Summary: Fidoroute is a route file generator for a Fidonet node
+License: LGPLv2
+BuildRequires: gcc-c++
+Provides: fidoroute = %version-%release
+%description -n %fidoroute_name
+%summary
+%endif
+
+%if "%util" == "1"
+    %global token_relnum 1
+%package -n  perl-Fidoconfig-Token
+Version: %token_ver.%token_reldate
+Release: %{vendor_prefix}%token_relnum%{vendor_suffix}
+    %if "%_vendor" != "redhat"
+Group: %pkg_group
+    %endif
+Summary: Perl functions for accessing single fidoconfig settings
+License: perl
+BuildArch: noarch
+    %if "%_vendor" == "redhat"
+BuildRequires: perl(:VERSION) >= 5.8.8
+Requires: perl(:VERSION) >= 5.8.8
+    %else
+BuildRequires: perl >= 5.8.8
+Requires: perl >= 5.8.8
+    %endif
+    %if "%_vendor" == "alt"
+BuildRequires: perl(Cwd.pm)
+BuildRequires: perl(Module/Build.pm)
+BuildRequires: perl(Test/More.pm)
+Requires: perl(Carp.pm)
+Requires: perl(Config.pm)
+Requires: perl(File/Spec.pm)
+    %else
+BuildRequires: perl(Cwd)
+BuildRequires: perl(Module::Build)
+BuildRequires: perl(strict)
+BuildRequires: perl(Test::More)
+BuildRequires: perl(warnings)
+Requires: perl(Carp)
+Requires: perl(Config)
+Requires: perl(File::Spec)
+Requires: perl(strict)
+Requires: perl(warnings)
+    %endif
+%description -n perl-Fidoconfig-Token
+Fidoconfig::Token contains Perl functions for accessing single fidoconfig
+settings. Fidoconfig, in turn, is a common configuration of Husky Fidonet
+software. Every line of a Husky configuration starts with some token. The
+rest of the line that follows the token after at least one space or tab is
+the token value.
+%summary
+
+%global rmfiles_relnum 1
+%package -n perl-Husky-Rmfiles
+Version: %rmfiles_ver.%rmfiles_reldate
+Release: %{vendor_prefix}%rmfiles_relnum%{vendor_suffix}
+    %if "%_vendor" != "redhat"
+Group: %pkg_group
+    %endif
+Summary: Delete files from ASO, BSO, fileboxes etc; delete links from fidoconfig
+License: perl
+BuildArch: noarch
+    %if "%_vendor" == "redhat"
+BuildRequires: perl(:VERSION) >= 5.8.8
+Requires: perl(:VERSION) >= 5.8.8
+    %else
+BuildRequires: perl >= 5.8.8
+Requires: perl >= 5.8.8
+    %endif
+    %if "%_vendor" == "alt"
+BuildRequires: perl(Cwd.pm)
+BuildRequires: perl(File/Compare.pm)
+BuildRequires: perl(File/Copy.pm)
+BuildRequires: perl(File/Path.pm)
+BuildRequires: perl(File/Spec/Functions.pm)
+BuildRequires: perl(Module/Build.pm)
+BuildRequires: perl(Test/More.pm)
+Requires: perl(Carp.pm)
+Requires: perl(Config.pm)
+Requires: perl(Fcntl.pm)
+Requires: perl(Fidoconfig/Token.pm)
+Requires: perl(File/Basename.pm)
+Requires: perl(File/Copy.pm)
+Requires: perl(File/Find.pm)
+Requires: perl(File/Spec/Functions.pm)
+Requires: perl(File/Temp.pm)
+Requires: perl(IO/Handle.pm)
+Requires: perl(POSIX.pm)
+    %else
+BuildRequires: perl(Cwd)
+BuildRequires: perl(File::Compare)
+BuildRequires: perl(File::Copy)
+BuildRequires: perl(File::Path)
+BuildRequires: perl(File::Spec::Functions)
+BuildRequires: perl(Module::Build)
+BuildRequires: perl(strict)
+BuildRequires: perl(Test::More)
+BuildRequires: perl(warnings)
+Requires: perl(Carp)
+Requires: perl(Config)
+Requires: perl(Fcntl)
+Requires: perl(Fidoconfig::Token)
+Requires: perl(File::Basename)
+Requires: perl(File::Copy)
+Requires: perl(File::Find)
+Requires: perl(File::Spec::Functions)
+Requires: perl(File::Temp)
+Requires: perl(IO::Handle)
+Requires: perl(POSIX)
+Requires: perl(strict)
+Requires: perl(warnings)
+    %endif
+%description -n perl-Husky-Rmfiles
+Husky::Rmfiles contains Perl functions for deleting files from Amiga Style
+Outbound, BinkleyTerm Style Outbound, fileecho passthrough directory,
+fileboxes, htick busy directory and also deleting links given fidoconfig as
+configuration file(s). Fidoconfig is common configuration of Husky Fidonet
+software. All necessary configuration information is taken from fidoconfig
+using Fidoconfig::Token package.
+%summary
+
+%global util_relnum 1
+%package -n perl-Husky-util
+Version: %util_ver.%util_reldate
+Release: %{vendor_prefix}%util_relnum%{vendor_suffix}
+    %if "%_vendor" != "redhat"
+Group: %pkg_group
+    %endif
+Summary: Perl scripts for Husky Fidonet project
+License: perl
+BuildArch: noarch
+    %if "%_vendor" == "redhat"
+BuildRequires: perl(:VERSION) >= 5.8.8
+Requires: perl(:VERSION) >= 5.8.8
+    %else
+BuildRequires: perl >= 5.8.8
+Requires: perl >= 5.8.8
+    %endif
+    %if "%_vendor" == "alt"
+Requires: perl(Config.pm)
+Requires: perl(Cwd.pm)
+Requires: perl(Fcntl.pm)
+Requires: perl(Fidoconfig/Token.pm)
+Requires: perl(File/Basename.pm)
+Requires: perl(File/Find.pm)
+Requires: perl(File/Spec/Functions.pm)
+Requires: perl(Getopt/Long.pm)
+Requires: perl(Husky/Rmfiles.pm)
+Requires: perl(Pod/Usage.pm)
+    %else
+Requires: perl(Config)
+Requires: perl(Cwd)
+Requires: perl(Fcntl)
+Requires: perl(Fidoconfig::Token)
+Requires: perl(File::Basename)
+Requires: perl(File::Find)
+Requires: perl(File::Spec::Functions)
+Requires: perl(Getopt::Long)
+Requires: perl(Husky::Rmfiles)
+Requires: perl(Pod::Usage)
+Requires: perl(strict)
+Requires: perl(warnings)
+    %endif
+%description -n perl-Husky-util
+Four Perl utilities using functions from Fidoconfig::Token and Husky::Rmfiles
+packages: showold.pl, rmLinkMail.pl, rmLink.pl, fixOutbound.pl.
+showold.pl     - prints out to STDOUT how much netmail, echomail and files
+                 are stored for every link in the outbound and fileboxes and
+                 for how long they are stored;
+rmLinkMail.pl  - remove netmail, echomail and files of a link;
+rmLink.pl      - remove a link;
+fixOutbound.pl - remove from outbound the echomail bundles not referred
+                 by any flow file.
+%summary
+%endif
+
+%if "%DOC" == "1"
+    %global doc_relnum 1
+%package -n husky-doc
+Version: %husky_ver_major.%husky_ver_minor.%doc_reldate
+Release: %{vendor_prefix}%doc_relnum%{vendor_suffix}
+BuildArch: noarch
+    %if "%_vendor" != "redhat"
+Group: %pkg_group
+    %endif
+Summary: Documentation for the Husky Project
+License: LGPLv2
+    %if "%{?INFODIR}"
+BuildRequires: texinfo
+Requires(post): /sbin/install-info
+Requires(preun): /sbin/install-info
+    %endif
+    %if "%{?DOCDIR}"
+        %global __provides_exclude_from ^%{DOCDIR}/.*$
+        %global __requires_exclude_from ^%{DOCDIR}/.*$
+    %endif
+    %if "%{?texi2dvi}" == "1"
+        %if "%_vendor" == "redhat"
+BuildRequires: texinfo-tex
+        %else
+BuildRequires: texi2dvi
+        %endif
+    %endif
+    %if "%{?INFODIR}"
+%post -n husky-doc
+        /sbin/install-info --info-dir=%INFODIR %INFODIR/fidoconfig.info.gz || :
+        %if "%hpt" == "1"
+            /sbin/install-info --info-dir=%INFODIR %INFODIR/hpt.info.gz || :
+        %endif
+        %if "%htick" == "1"
+            /sbin/install-info --info-dir=%INFODIR %INFODIR/htick.info.gz || :
+        %endif
+        %if "%msged" == "1"
+            /sbin/install-info --info-dir=%INFODIR %INFODIR/msged.info.gz || :
+        %endif
+
+%preun -n husky-doc
+        if [ "$1" = 0 ] ; then
+            /sbin/install-info --info-dir=%INFODIR --delete %INFODIR/fidoconfig.info.gz || :
+        fi
+        %if "%hpt" == "1"
+            if [ "$1" = 0 ] ; then
+                /sbin/install-info --info-dir=%INFODIR --delete %INFODIR/hpt.info.gz || :
+            fi
+        %endif
+        %if "%htick" == "1"
+            if [ "$1" = 0 ] ; then
+                /sbin/install-info --info-dir=%INFODIR --delete %INFODIR/htick.info.gz || :
+            fi
+        %endif
+        %if "%msged" == "1"
+            if [ "$1" = 0 ] ; then
+                /sbin/install-info --info-dir=%INFODIR --delete %INFODIR/msged.info.gz || :
+            fi
+        %endif
+    %endif
+%description -n husky-doc
+%summary
+%endif
+
+%prep
+%setup -q -n %name
+
+%build
+%make_build depend
+%make_build
+
+%install
+umask 022
+%make_install
+chmod -R a+rX,u+w,go-w %buildroot
+
+
+%if "%DYNLIBS" == "1"
+%files -n huskylib
+%defattr(-,root,root)
+    %_libdir/*husky*.so.%huskylib_ver_major.%huskylib_ver_minor.%huskylib_reldate
+    %_libdir/*husky*.so.%huskylib_ver_major.%huskylib_ver_minor
+    %_libdir/*husky*.so
+%endif
+
+%if "%GNMSGID" == "1"
+%files -n %huskylib_utils_name
+%defattr(-,root,root)
+    %_bindir/gnmsgid
+    %if "%{?MAN1DIR}"
+        %doc %MAN1DIR/gnmsgid.*
+    %endif
+%endif
+
+%if "%DYNLIBS" == "1"
+%files -n smapi
+%defattr(-,root,root)
+    %_libdir/*smapi*.so.%smapi_ver_major.%smapi_ver_minor.%smapi_reldate
+    %_libdir/*smapi*.so.%smapi_ver_major.%smapi_ver_minor
+    %_libdir/*smapi*.so
+%endif
+
+
+%if "%DYNLIBS" == "1"
+%files -n fidoconf
+%defattr(-,root,root)
+    %_libdir/*fidoconf*.so.%fidoconf_ver_major.%fidoconf_ver_minor.%fidoconf_reldate
+    %_libdir/*fidoconf*.so.%fidoconf_ver_major.%fidoconf_ver_minor
+    %_libdir/*fidoconf*.so
+%endif
+
+
+%files -n %tparser_name
+%defattr(-,root,root)
+%_bindir/tparser
+%if "%{?MAN1DIR}"
+    %doc %MAN1DIR/tparser.*
+%endif
+
+
+%if "%FIDOCONF_UTIL" == "1"
+%files -n %fidoconf_utils_name
+%defattr(-,root,root)
+    %_bindir/linked*
+    %_bindir/fconf2*
+    %_bindir/fecfg2fconf
+    %_bindir/sq2fc.pl
+    %if "%{?MAN1DIR}"
+        %doc %MAN1DIR/fconf2*
+        %doc %MAN1DIR/fecfg2*
+        %doc %MAN1DIR/linked*
+    %endif
+%endif
+
+
+%if "%DYNLIBS" == "1"
+%files -n areafix
+%defattr(-,root,root)
+    %_libdir/*areafix*.so.%areafix_ver_major.%areafix_ver_minor.%areafix_reldate
+    %_libdir/*areafix*.so.%areafix_ver_major.%areafix_ver_minor
+    %_libdir/*areafix*.so
+%endif
+
+%if "%USE_HPTZIP" == "1"
+    %if "%DYNLIBS" == "1"
+%files -n hptzip
+%defattr(-,root,root)
+        %_libdir/*hptzip*.so.%hptzip_ver_major.%hptzip_ver_minor.%hptzip_reldate
+        %_libdir/*hptzip*.so.%hptzip_ver_major.%hptzip_ver_minor
+        %_libdir/*hptzip*.so
+    %endif
+%endif
+
+
+%if "%hpt" == "1"
+%files -n %hpt_name
+%defattr(-,root,root)
+%_bindir/hpt
+    %if "%{?MAN1DIR}"
+        %doc %MAN1DIR/hpt.*
+    %endif
+
+    %if "%HPT_UTIL" == "1"
+%files -n %hpt_utils_name
+%defattr(-,root,root)
+        %_bindir/pktinfo
+        %_bindir/tpkt
+        %_bindir/txt2pkt
+        %_bindir/hptlink
+        %_bindir/hpttree
+        %if "%{?MAN1DIR}"
+            %MAN1DIR/pktinfo*
+            %MAN1DIR/txt2pkt*
+            %MAN1DIR/hptlink*
+            %MAN1DIR/hpttree*
+        %endif
+    %endif
+%endif
+
+
+%if "%htick" == "1"
+%files -n %htick_name
+%defattr(-,root,root)
+    %_bindir/htick
+    %if "%{?MAN1DIR}"
+        %doc %MAN1DIR/htick.*
+    %endif
+%endif
+
+
+%if "%hptkill" == "1"
+%files -n %hptkill_name
+%defattr(-,root,root)
+    %_bindir/hptkill
+    %if "%{?MAN1DIR}"
+        %doc %MAN1DIR/hptkill.*
+    %endif
+%endif
+
+
+%if "%hptsqfix" == "1"
+%files -n %hptsqfix_name
+%defattr(-,root,root)
+    %_bindir/hptsqfix
+    %if "%{?MAN1DIR}"
+        %doc %MAN1DIR/hptsqfix.*
+    %endif
+%endif
+
+
+%if "%sqpack" == "1"
+%files -n %sqpack_name
+%defattr(-,root,root)
+    %_bindir/sqpack
+    %if "%{?MAN1DIR}"
+        %doc %MAN1DIR/sqpack.*
+    %endif
+%endif
+
+
+%if "%msged" == "1"
+%files -n %msged_name
+%defattr(-,root,root)
+    %_bindir/msged
+    %if "%{?DOCDIR}"
+        %config %DOCDIR/msged-%msged_ver_major.%msged_ver_minor.%msged_reldate/sample.*
+        %config %DOCDIR/msged-%msged_ver_major.%msged_ver_minor.%msged_reldate/scheme.*
+        %config %DOCDIR/msged-%msged_ver_major.%msged_ver_minor.%msged_reldate/readmaps.*
+        %config %DOCDIR/msged-%msged_ver_major.%msged_ver_minor.%msged_reldate/writmaps.*
+        %doc %DOCDIR/msged-%msged_ver_major.%msged_ver_minor.%msged_reldate/msghelp.dat
+        %doc %DOCDIR/msged-%msged_ver_major.%msged_ver_minor.%msged_reldate/whatsnew.txt
+    %endif
+%endif
+
+
+%if "%fidoroute" == "1"
+%files -n %fidoroute_name
+%defattr(-,root,root)
+    %_bindir/fidoroute
+    %if "%{?MAN1DIR}"
+        %doc %MAN1DIR/fidoroute.1*
+    %endif
+    %if "%{?MAN5DIR}"
+        %doc %MAN5DIR/fidoroute.conf.5*
+    %endif
+    %if "%{?DOCDIR}"
+        %doc %DOCDIR/fidoroute_*
+    %endif
+%endif
+
+
+%if "%util" == "1"
+%files -n perl-Fidoconfig-Token
+%defattr(-,root,root)
+    %PERLDATADIR/Fidoconfig/Token.pm
+    %if "%{?MAN3DIR}"
+        %doc %MAN3DIR/Fidoconfig::Token.3*
+    %endif
+%exclude %_libdir/perl5/*
+
+%files -n perl-Husky-Rmfiles
+%defattr(-,root,root)
+    %PERLDATADIR/Husky/Rmfiles.pm
+    %if "%{?MAN3DIR}"
+        %doc %MAN3DIR/Husky::Rmfiles.3*
+    %endif
+    %exclude %_libdir/perl5/*
+
+%files -n perl-Husky-util
+%defattr(-,root,root)
+    %_bindir/fixOutbound.pl
+    %_bindir/rmLink.pl
+    %_bindir/rmLinkMail.pl
+    %_bindir/showold.pl
+    %if "%{?MAN1DIR}"
+        %doc %MAN1DIR/fixOutbound.pl.1*
+        %doc %MAN1DIR/rmLink.pl.1*
+        %doc %MAN1DIR/rmLinkMail.pl.1*
+    %endif
+%endif
+
+%if "%DOC" == "1"
+%files -n husky-doc
+%defattr(-,root,root)
+    %if "%{?INFODIR}"
+        %doc %INFODIR/*.info.gz
+        %exclude %INFODIR/dir
+    %endif
+    %if "%{?DOCDIR}"
+        %if "%HTML" == "1"
+            %doc %DOCDIR/*.html
+        %endif
+        %if "%TXT" == "1"
+            %doc %DOCDIR/*.txt
+        %endif
+        %if "%PDF" == "1"
+            %doc %DOCDIR/*.pdf
+        %endif
+        %if "%DVI" == "1"
+            %doc %DOCDIR/*.dvi
+        %endif
+    %endif
+%endif
+
+%changelog
+* Mon Aug 02 2021 Michael Dukelsky <dukelsky@users.noreply.github.com>
+- Write the .spec from scratch. For the changes after this date see the git repo

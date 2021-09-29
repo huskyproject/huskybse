@@ -1,0 +1,365 @@
+Installing Husky
+================
+
+Contents
+--------
+
+  1 Introduction
+  2 Installation using universal makefiles
+    2.1 Build configuration with `huskymak.cfg`
+    2.2 Installing Husky on rpm-based Linux distributions
+    2.3 Installing Husky on other UNIX-like operating systems
+  3 Compiling with the Legacy Makefiles
+    3.1 Overview
+    3.2 Getting the sources
+    3.3 List of platforms supported by the legacy makefiles
+    3.4 Compiling
+    3.5 Installing
+
+1 Introduction
+==============
+
+*Husky* is a set of programs for processing incoming messages and files
+according to Fidonet standards. Here's how to install Husky. You can use two
+types of makefiles for installation. Universal makefiles allow installation
+in different operating systems due to the presence of the configuration file
+`huskymak.cfg`. Makefiles of the second type (legacy ones) are intended for
+a specific operating system.
+
+Husky software version numbers consist of three integers separated by dots,
+for example,
+
+  1.9.20210827
+
+Here, the last number is the date when the last change was made to the source
+code of the program. The date consists of a sequentially recorded year, month,
+and day.
+
+2 Installation using universal makefiles
+========================================
+
+This assumes you have version 3.82 or newer of GNU make installed. In
+addition, to build packages of Perl utilities, you need to install
+`Module::Build`. Perhaps the corresponding package in your distribution is
+called `perl-Module-Build`. To configure the build using universal makefiles,
+use the file *huskymak.cfg*.
+
+2.1 Build configuration with `huskymak.cfg`
+------------------------------------------
+
+The configuration file `huskymak.cfg` contains the settings used during the
+build of Husky programs. You may change these settings according to your
+needs. All lines starting with a `#` are comments. The settings look like
+
+  variable=value
+
+There are two types of settings. In the settings of the first type, the
+value is a string of characters. If the setting is commented out, the value
+of the variable is undefined. The second setting type is a switch. Here the
+value can be *0* or *1*. The value of `1` means "on" and `0` means "off".
+For example, if you want to use Perl hooks in `hpt`, set
+
+  PERL=1
+
+Otherwise, set
+
+  PERL=0
+
+If a setting of the second type is commented out, it is equivalent to its
+value of *0*.
+
+2.2 Installing Husky on rpm-based Linux distributions
+-----------------------------------------------------
+
+To build rpm packages, you need to install *mock* in addition to GNU make
+and compilers. Mock uses _chroot_ for the build, which isolates the build
+environment and guarantees reproducibility of the result. If mock is not
+available in your distribution, you must at least install *rpmbuild*. The
+script used for installation will use mock if it is installed, otherwise
+rpmbuild will be used.
+
+To start the installation, do the following:
+
+  wget https://raw.githubusercontent.com/huskyproject/huskybse/master/script/init_rpm_build
+  chmod 0755 init_rpm_build
+  ./init_rpm_build
+
+As a result, the `~/husky_build` directory will be created, and the `husky`
+directory will be in it. Husky sources will be downloaded to this `husky`
+directory. But now we are interested in the file `huskymak.rpm.cfg` lying
+in this directory. This is the very build configuration file that you need
+to view and, possibly, change something in it. Please note that it is
+necessary to edit `huskymak.rpm.cfg`, and not `huskymak.cfg`. You may notice
+that
+
+  DEBUG=1
+
+It is not an error, and it is not necessary to redo it to `DEBUG=0`. Modern
+compilers can combine compilation with debugging and optimization. As a
+result of the build, you will get executable files with the debug symbols
+stripped, and the debugging information will be contained in a separate
+package that you can install if debugging is necessary.
+
+You will perform all the steps described above only once. Now you can start
+the build:
+
+  ~/husky_build/build_rpm
+
+If you have `mock`, you may find the result in the directory
+`~/husky_build/result`. If you have no `mock`, the result is in the directory
+`~/rpmbuild/RPMS`.
+
+If you used the recommended value
+
+  DYNLIBS=0
+
+the names of the received packets will contain the word `static`. It means
+that a partly static build was used, in which the Husky libraries were
+linked statically, and the system libraries were dynamic.
+
+Later, when you find out that changes have been made to the source code, and
+want to build a new version, it will be enough to run again
+
+  ~/husky_build/build_rpm
+
+It will download all changes from GitHub and rebuild all
+packages.
+
+If you want to build packages for another operating system using `mock`, run
+
+  ~/husky_build/build_rpm -r 'CONFIG'
+
+where CONFIG is the chroot configuration. See `build_rpm --help` and mock(1).
+
+
+2.3 Installing Husky on other UNIX-like operating systems
+---------------------------------------------------------
+
+To start the installation, follow these steps:
+
+  wget https://raw.githubusercontent.com/huskyproject/huskybse/master/script/init_build
+  chmod 0755 init_build
+  ./init_build
+
+As a result, the `~/husky` directory will be created. Husky sources will be
+downloaded to this directory in the future. But now we are interested in the
+file `huskymak.cfg` lying in this directory. This is the very build
+configuration file that you need to view and, possibly, change something in it.
+
+These actions need to be performed only once. Now you can start the build:
+
+  ./build.sh
+
+After the build is complete, to install the built programs, run
+
+  sudo make -j install
+
+Here, the `-j` option sets the parallel execution. If you want to uninstall
+the installed programs, run
+
+  sudo make -j uninstall
+
+If you want to delete all the built results, run
+
+  make distclean
+
+But keep in mind that if you deleted all the build results, you will have to
+repeat the entire build next time.
+
+Later, when you find out that changes have been made to the source code, and
+you want to build a new version, it will be enough to run again
+
+  ./build.sh
+
+This will download all changes from GitHub and rebuild all the changed programs.
+
+3 Compiling with the Legacy Makefiles
+=====================================
+
+3.1 Overview
+------------
+
+Besides the standard `Makefile`, most Husky modules deliver additional
+makefiles, named "makefile.XXX", where "XXX" is a platform-dependent suffix.
+We call such makefiles legacy. If we compare legacy makefiles with the
+standard one, here's what can be said for and against legacy makefiles.
+
+
+For:
+
+  - You don't need to edit huskymak.cfg, the makefiles have no additional
+    configuration.
+  - Many non-UNIX systems are supported.
+  - You need neither GNU make nor gcc if not specified otherwise.
+  - Sometimes they give less trouble than the standard Makefile.
+
+Against:
+
+  - You cannot (usually) install anything with these makefiles. It is within
+    your responsibility to copy the programs that you compiled to the proper
+    directories.
+  - No support for shared libraries, everything is linked statically.
+  - Legacy makefiles do not create `cvsdate.h` files containing the last
+    modification date of the source code. You need to create these files
+    yourself.
+
+3.2 Getting the sources
+-----------------------
+
+The Husky Fidonet software project is split into several subprojects. A
+subproject is a library or a program. In order to compile any Husky program, you
+will at least have to download the following subprojects:
+
+  huskybse      Husky Base, contains instructions and sample configs.
+  huskylib      Common declarations and functions for Husky programs
+  smapi         The Squish and Jam Message API library.
+  fidoconf      The Fidoconfig library.
+  areafix       The Areafix library.
+
+In addition, you need the programs that you want to use, like `hpt` (the
+tosser), `htick` (the ticker), `msged` (the mail editor), and others. The
+Areafix library is only needed for `hpt` and `htick`. Since the sources are
+on GitHub, you have to use git to get them. For any subproject here is the
+command to get it:
+
+  git clone https://github.com/huskyproject/subproject.git
+
+Here `subproject` is the name of some subproject. So,
+
+  mkdir ~/husky
+  cd ~/husky
+  git clone https://github.com/huskyproject/huskybse.git
+  git clone https://github.com/huskyproject/huskylib.git
+  git clone https://github.com/huskyproject/smapi.git
+  git clone https://github.com/huskyproject/fidoconf.git
+  git clone https://github.com/huskyproject/areafix.git
+  git clone https://github.com/huskyproject/hpt.git
+  git clone https://github.com/huskyproject/htick.git
+
+The `git clone` command should only be used for the first time. The next
+time you want to build a new version of programs, use `git pull` to update
+the source code:
+
+  pushd SUBPROJECT_NAME
+  git pull
+  popd
+
+After downloading the source code and after each update, you need to
+re-create the `cvsdate.h` files containing the date of the last modification
+of the source code. In all subprojects, except for `hptsqfix`, this file is
+located in the root directory of the subproject, and in `hptsqfix` it is
+located in the `h` subdirectory. The content of the file `cvsdate.h` is as
+follows:
+
+  char cvs_date[]="2021-09-03";
+
+Here `2021-09-03` is an example of the last modification date of the
+subproject source code in ISO 8601 format. Naturally, you will have a
+different date. There should not be any spaces or tabs at the beginning of
+the line. The date of the last modification of the source code of the
+subproject can be obtained with the command
+
+  git log -1 --date=short --format=format:"%cd" h/*.h src/*.c
+
+The names of the directories containing the files `*.h` and `*.c` may differ.
+It is also necessary to consider the dates of the last modification of the
+source code in the subprojects that are dependencies of this one. For example,
+`hpt` depends on `huskylib`, so if `huskylib` was changed after `hpt`, then
+for `hpt` you need to take the date from `huskylib`. The maximum date of the
+last change to the subproject itself and all of its dependencies should be
+taken as the date in `cvsdate.h`.
+
+3.3 List of platforms supported by the legacy makefiles
+-------------------------------------------------------
+
+The following is a list of platforms that are supported by legacy
+makefiles.
+
+  Makefile         Platform  Compiler
+  ---------------------------------------------------------------------
+  makefile.unx     Unix      Any (standard "cc" is enough!)
+  makefile.be      BeOS      BeOS R5 with gcc
+  makefile.bsd     BSD       (tested: FreeBSD) GNU gcc
+  makefile.lnx     Linux     GNU gcc (2.7..2.95, 3.x)
+  makefile.djg     DOS/32    DJ Delorie GNU gcc (DJGPP)
+  makefile.cyg     Win32     Mingw32 on Cygwin: http://www.cygwin.com
+  makefile.mvc     Win32     Microsoft Visual C
+  makefile.mvcdll  Win32     Microsoft Visual C - dll build
+
+  makefile.emo     OS/2      EMX; OMF static (standalone) binaries
+  makefile.emx     OS/2      EMX; a.out dynamic (EMXRT) binaries
+  makefile.mgw     Win32     Mingw32 or Mingw32/CPD gcc: www.mingw32.org
+  makefile.rxw     Win32     EMX/RSXNT gcc with -Zwin32
+  makefile.sun     Solaris   GNU gcc
+  makefile.wco     OS/2      Watcom C
+  makefile.wcw     Win32     Watcom C
+  makefile.wcx     DOS/32    Watcom C with DOS extender
+
+  makefile.aix     AIX       IBM xlC
+  makefile.bcd     DOS       Borland C / Turbo C (requires TASM)
+  makefile.bco     OS/2      Borland C 2.0
+  makefile.bcw     Win32     Borland C
+  makefile.ibo     OS/2      IBM CSet or VACPP
+  makefile.hco     OS/2      Metaware High C
+  makefile.osf     TRU64     Compaq CC (or DEC Unix with DEC cc)
+  makefile.wcd     DOS       Watcom C
+  makefile.qcd     DOS       Quick C / Microsoft MSC 6.0 (req. MASM)
+
+
+As a rule of thumb, if you have any Unix OS with a `make` and a `cc` command,
+you should first try to use `makefile.unx`. `makefile.unx` is a very
+troublefree way of building everything!
+
+3.4 Compiling
+-------------
+
+Now that you have chosen the proper makefile, build the libraries like
+this (let's assume you have chosen makefile.unx):
+
+
+  cd ~/husky/huskylib
+  make -f makefile.unx clean
+  make -f makefile.unx
+  cd ~/husky/smapi
+  make -f makefile.unx clean
+  make -f makefile.unx
+  cd ~/husky/fidoconf
+  make -f makefile.unx clean
+  make -f makefile.unx
+  cd ~/husky/areafix
+  make -f makefile.unx clean
+  make -f makefile.unx
+
+You can then directly proceed to build any subproject like this:
+
+  cd ~/husky/SUBPROJECT_NAME
+  make -f makefile.unx
+
+This also works with Non-UNIX systems, e.g.:
+
+  C:
+  CD \HUSKY\HUSKYLIB
+  imake -f makefile.ibo clean
+  imake -f makefile.ibo
+  CD \HUSKY\SMAPI
+  imake -f makefile.ibo clean
+  imake -f makefile.ibo
+  CD \HUSKY\FIDOCONF
+  imake -f makefile.ibo clean
+  imake -f makefile.ibo
+  CD \HUSKY\MSGED
+  imake -f makefile.ibo clean
+  imake -f makefile.ibo
+
+3.5 Installing
+--------------
+
+As already noted, the legacy makefiles usually do not contain an "install"
+target. Therefore, you have to "install" the programs manually if you use
+legacy makefiles (you don't need to install the libraries, as the programs
+are linked against those statically). For most Husky programs, installing is
+just copying the executables to a directory of your choice. For some others,
+it is more complicated, in particular Msged, where you must also install the
+recoding tables, help files, etc. Please refer to the individual programs'
+documentation for more information.
+

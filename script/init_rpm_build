@@ -1,0 +1,52 @@
+#!/bin/sh
+#
+# init_rpm_build
+#
+
+top_directory=~/husky_build
+
+die()
+{
+    printf '%s\n' "$1" >&2
+    exit 1
+}
+
+n=0
+if [ -z `which --skip-alias git` ]
+then
+    echo Please install git
+    n=1
+fi
+if [ -z `which --skip-alias mock` ]
+then
+    echo Please install mock
+    n=1
+    if [ -z `which --skip-alias rpmbuild` ]
+    then
+        echo Please install rpmbuild if you cannot install mock
+    fi
+fi
+[ "$n" -eq 1 ] && exit 1
+
+# Check that the script is not run by root
+[ "$(id -u)" -eq 0 ] && die "DO NOT run this as root"
+
+mkdir -p $top_directory
+cd $top_directory
+mkdir husky
+cd husky
+git clone https://github.com/huskyproject/huskybse.git
+
+cp -a huskybse/Makefile Makefile
+cp -a huskybse/husky.spec.in husky.spec.in
+cp -a huskybse/huskymak.cfg huskymak.cfg
+cp -a huskybse/huskymak.rpm.cfg huskymak.rpm.cfg
+cp -a huskybse/huskymak.rpm.cfg ../huskymak.rpm.cfg.new
+cp -a huskybse/script/spec_configure ../spec_configure
+cp -a huskybse/script/build_rpm ../build_rpm
+echo
+echo "########################################################################"
+echo "Now you need to make changes to \"$top_directory/husky/huskymak.rpm.cfg\""
+echo "per your requirements and then run \"$top_directory/build_rpm\"."
+echo "########################################################################"
+echo
