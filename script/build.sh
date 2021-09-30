@@ -92,13 +92,13 @@ then
     restart=1
 fi
 
-if [ -n "$(diff ./build huskybse/script/build)" ]
+if [ -n "$(diff ./build.sh huskybse/script/build.sh)" ]
 then
-    cp -a -f huskybse/script/build ./
+    cp -a -f huskybse/script/build.sh ./
     if [ "$restart" -ne 1 ]
     then
     echo
-    echo 'The "build" script has changed. Please restart it.'
+    echo 'The "build.sh" script has changed. Please restart it.'
     echo
     restart=1
     fi
