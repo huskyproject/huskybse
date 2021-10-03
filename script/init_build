@@ -4,6 +4,7 @@
 #
 
 top_directory=~/husky
+VERSION="1.1"
 
 die()
 {
@@ -11,7 +12,8 @@ die()
     exit 1
 }
 
-if [ -z `which --skip-alias git` ]
+if [ "$(uname -s)" = Linux ] && [ -z "$(which --skip-alias git)" ] ||
+   [ "$(uname -s)" = FreeBSD ] && [ -z "$(which git)" ]
 then
     die "Please install git"
 fi
@@ -19,17 +21,92 @@ fi
 # Check that the script is not run by root
 [ "$(id -u)" -eq 0 ] && die "DO NOT run this as root"
 
+show_help()
+{
+    cat <<EOF
+
+Prepare for a build of the Husky sources.
+
+Usage:.
+    init_build [-d|--dir TOP_DIRECTORY] [-v|--version] [-h|-\?|--help]
+Options:
+    -d TOP_DIRECTORY
+    --dir TOP_DIRECTORY
+        Put all Husky sources in TOP_DIRECTORY. It should be an absolute path.
+
+    -v
+    --version
+        Print the script version and exit.
+
+    -h
+    -?
+    --help
+        Print this help and exit.
+EOF
+}
+
+top_directory=~/husky
+help=0
+
+case $1 in
+    -h|-\?|--help)
+        help=1
+        ;;
+    -v|--version)
+        echo "version = $VERSION"
+        exit
+        ;;
+    -d|--dir)
+        if [ "$2" ]
+        then
+            top_directory="$2"
+            [ "${top_directory%"${top_directory#?}"}" != '/' ] && \
+                [ "${top_directory%"${top_directory#??}"}" != '~/' ] && \
+                die 'ERROR: the directory must start with "/" or "~/"'
+            shift
+        else
+            die 'ERROR: "-d" or "--dir" requires a non-empty option argument'
+        fi
+        ;;
+    -*)
+        printf 'WARN: Unknown option (ignored): %s\n' "$1" >&2
+        ;;
+    *)
+        ;;
+esac
+
+if [ $help -eq 1 ]
+then
+    show_help
+    exit
+fi
+
 mkdir -p $top_directory
 cd $top_directory
+
+[ -d "$top_directory/huskybse/.git" ] && cd huskybse && { git pull; cd ..; }  || \
 git clone https://github.com/huskyproject/huskybse.git
 
-cp -a huskybse/Makefile Makefile
-cp -a huskybse/huskymak.cfg huskymak.cfg
-cp -a huskybse/huskymak.cfg huskymak.cfg.new
-cp -a huskybse/script/build.sh build.sh
-echo
-echo "########################################################################"
-echo "Now you need to make changes to \"$top_directory/huskymak.cfg\""
-echo "per your requirements and then run \"$top_directory/build.sh\"."
-echo "########################################################################"
-echo
+cp -f -p huskybse/Makefile Makefile
+cp -f -p huskybse/huskymak.cfg huskymak.cfg.new
+cp -f -p huskybse/script/build.sh build.sh
+if [ -f huskymak.cfg ]
+then
+    mv -f huskymake.cfg huskymak.cfg.old
+    cp -p huskybse/huskymak.cfg huskymak.cfg
+    echo
+    echo "########################################################################"
+    echo "Your huskymak.cfg was renamed to huskymak.cfg.old"
+    echo "Now you need to make changes to \"$top_directory/huskymak.cfg\""
+    echo "per your requirements and then run \"$top_directory/build.sh\"."
+    echo "########################################################################"
+    echo
+else
+    cp -p huskybse/huskymak.cfg huskymak.cfg
+    echo
+    echo "########################################################################"
+    echo "Now you need to make changes to \"$top_directory/huskymak.cfg\""
+    echo "per your requirements and then run \"$top_directory/build.sh\"."
+    echo "########################################################################"
+    echo
+fi

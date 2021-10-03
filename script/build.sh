@@ -1,10 +1,9 @@
-#!/bin/bash
+#!/bin/sh
 #
 # build.sh
 #
 
-VERSION="1.0"
-top_directory=~/husky
+VERSION="1.1"
 
 die()
 {
@@ -61,24 +60,25 @@ fi
 # Check that the script is not run by root
 [ "$(id -u)" -eq 0 ] && die "DO NOT run this as root"
 
-cd $top_directory
+MAKE=make
+[ "$(uname -s)" = FreeBSD ] && MAKE=gmake
 
-make -j update
+${MAKE} -j update
 
 restart=0
 
 if [ -n "$(diff ./Makefile huskybse/Makefile)" ]
 then
-    cp -a -f huskybse/Makefile ./
+    cp -p -f huskybse/Makefile ./
 fi
 
 if [ -n "$(diff ./huskymak.cfg.new huskybse/huskymak.cfg)" ]
 then
-    mv ./huskymak.cfg.new huskymak.cfg.old
-    cp -a huskybse/huskymak.cfg huskymak.cfg.new
+    mv -f ./huskymak.cfg.new huskymak.cfg.old
+    cp -p -f huskybse/huskymak.cfg huskymak.cfg.new
     if [ ! -e ./huskymak.cfg ]
     then
-        cp -a ./huskymak.cfg.new huskymak.cfg
+        cp -p ./huskymak.cfg.new huskymak.cfg
     fi
     echo
     echo "\"huskybse/huskymak.cfg\" has changed"
@@ -94,7 +94,7 @@ fi
 
 if [ -n "$(diff ./build.sh huskybse/script/build.sh)" ]
 then
-    cp -a -f huskybse/script/build.sh ./
+    cp -p -f huskybse/script/build.sh ./
     if [ "$restart" -ne 1 ]
     then
     echo
@@ -106,4 +106,4 @@ fi
 
 [ "$restart" -eq 1 ] && exit
 
-make -j depend && make -j
+${MAKE} -j depend && ${MAKE} -j
