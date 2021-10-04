@@ -3,7 +3,6 @@
 # init_build
 #
 
-top_directory=~/husky
 VERSION="1.1"
 
 die()
