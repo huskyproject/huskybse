@@ -30,10 +30,20 @@ Options:
     -?
     --help
         Print this help and exit.
+
+    -n
+    --no-update
+        Do not update Makefile, huskymak.cfg, build.sh
+
+    -p
+        Prohibit parallel makefile execution
+
 EOF
 }
 
 help=0
+no_update=0
+parallel=-j
 
 case $1 in
     -h|-\?|--help)
@@ -42,6 +52,12 @@ case $1 in
     -v|--version)
         echo "version = $VERSION"
         exit
+        ;;
+    -n|--no-update)
+        no_update=1
+        ;;
+    -p)
+        parallel=
         ;;
     -*)
         printf 'WARN: Unknown option (ignored): %s\n' "$1" >&2
@@ -63,16 +79,17 @@ fi
 MAKE=make
 [ "$(uname -s)" = FreeBSD ] && MAKE=gmake
 
-${MAKE} -j update
+${MAKE} $parallel update
 
 restart=0
 
-if [ -n "$(diff ./Makefile huskybse/Makefile)" ]
+if [ "$no_update" -eq 0 ] && [ -n "$(diff ./Makefile huskybse/Makefile)" ]
 then
     cp -p -f huskybse/Makefile ./
 fi
 
-if [ -n "$(diff ./huskymak.cfg.new huskybse/huskymak.cfg)" ]
+if [ "$no_update" -eq 0 ] && \
+   [ -n "$(diff ./huskymak.cfg.new huskybse/huskymak.cfg)" ]
 then
     mv -f ./huskymak.cfg.new huskymak.cfg.old
     cp -p -f huskybse/huskymak.cfg huskymak.cfg.new
@@ -92,7 +109,8 @@ then
     restart=1
 fi
 
-if [ -n "$(diff ./build.sh huskybse/script/build.sh)" ]
+if [ "$no_update" -eq 0 ] && \
+   [ -n "$(diff ./build.sh huskybse/script/build.sh)" ]
 then
     cp -p -f huskybse/script/build.sh ./
     if [ "$restart" -ne 1 ]
@@ -106,4 +124,4 @@ fi
 
 [ "$restart" -eq 1 ] && exit
 
-${MAKE} -j depend && ${MAKE} -j
+${MAKE} $parallel depend && ${MAKE} $parallel
