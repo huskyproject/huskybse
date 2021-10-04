@@ -12,11 +12,14 @@ die()
     exit 1
 }
 
-if [ "$(uname -s)" = Linux ] && [ -z "$(which --skip-alias git)" ] ||
+if [ "$(uname -s)" = Linux ] && [ -z "$(which --skip-alias git)" ] || \
    [ "$(uname -s)" = FreeBSD ] && [ -z "$(which git)" ]
 then
     die "Please install git"
 fi
+
+[ "$(uname -s)" = FreeBSD ] && [ -z "$(which /usr/local/bin/grep)" ] && \
+    die "Please install gnugrep"
 
 # Check that the script is not run by root
 [ "$(id -u)" -eq 0 ] && die "DO NOT run this as root"
@@ -88,11 +91,12 @@ cd $top_directory
 git clone https://github.com/huskyproject/huskybse.git
 
 cp -f -p huskybse/Makefile Makefile
-cp -f -p huskybse/huskymak.cfg huskymak.cfg.new
+[ "$(uname -s)" = Linux ]   && cp -f -p huskybse/huskymak.cfg huskymak.cfg.new
+[ "$(uname -s)" = FreeBSD ] && cp -f -p huskybse/huskymak.cfg.bsd huskymak.cfg.new
 cp -f -p huskybse/script/build.sh build.sh
 if [ -f huskymak.cfg ]
 then
-    mv -f huskymake.cfg huskymak.cfg.old
+    mv -f huskymak.cfg huskymak.cfg.old
     cp -p huskybse/huskymak.cfg huskymak.cfg
     echo
     echo "########################################################################"
