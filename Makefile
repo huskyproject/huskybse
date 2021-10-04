@@ -603,8 +603,12 @@ else
 
     ifeq ($(need_huskylib), 1)
         huskylib_glue: huskylib_get_date
-			$(eval huskylib_date:=$(subst -,,$(huskylib_mdate)))\
-			cd $(huskylib_ROOTDIR); echo "char cvs_date[]=\"$(huskylib_mdate)\";" > $(cvsdate)
+			$(eval huskylib_date:=$(subst -,,$(huskylib_mdate)))
+			@cd $(huskylib_ROOTDIR); curval=""; \
+			[ -f $(cvsdate) ] && \
+			curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
+			[ "$(huskylib_mdate)" != "$$curval" ] && \
+			echo "char cvs_date[]=\"$(huskylib_mdate)\";" > $(cvsdate) ||:
 
         huskylib_get_date: huskylib_update
 			$(eval huskylib_mdate:=$(shell cd $(huskylib_ROOTDIR); $(GIT) log -1 \
@@ -612,7 +616,7 @@ else
 			$(_SRC_DIR)$(DIRSEP)*.c))
 
         huskylib_update: | do_not_run_update_as_root
-			[ -d $(huskylib_ROOTDIR).git ] && cd $(huskylib_ROOTDIR) && \
+			@[ -d $(huskylib_ROOTDIR).git ] && cd $(huskylib_ROOTDIR) && \
 			{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
 			$(GIT) $(CLONE) https://github.com/huskyproject/huskylib.git
     endif
@@ -620,15 +624,19 @@ else
 
     ifeq ($(need_smapi), 1)
         smapi_glue: smapi_get_date
-			$(eval smapi_date:=$(subst -,,$(smapi_mdate)))\
-			cd $(smapi_ROOTDIR); echo "char cvs_date[]=\"$(smapi_mdate)\";" > $(cvsdate)
+			$(eval smapi_date:=$(subst -,,$(smapi_mdate)))
+			@cd $(smapi_ROOTDIR); curval=""; \
+			[ -f $(cvsdate) ] && \
+			curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
+			[ "$(smapi_mdate)" != "$$curval" ] && \
+			echo "char cvs_date[]=\"$(smapi_mdate)\";" > $(cvsdate) ||:
 
         smapi_get_date: smapi_update
 			$(eval smapi_mdate:=$(shell cd $(smapi_ROOTDIR); $(GIT) log -1 \
 			--date=short --format=format:"%cd" $(smapi_H_DIR)*.h $(_SRC_DIR)$(DIRSEP)*.c))
 
         smapi_update: | do_not_run_update_as_root
-			[ -d $(smapi_ROOTDIR).git ] && cd $(smapi_ROOTDIR) && \
+			@[ -d $(smapi_ROOTDIR).git ] && cd $(smapi_ROOTDIR) && \
 			{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
 			$(GIT) $(CLONE) https://github.com/huskyproject/smapi.git
     endif
@@ -636,12 +644,16 @@ else
 
     ifeq ($(need_fidoconf), 1)
         fidoconf_cmp: fidoconf_glue smapi_glue huskylib_glue
-			fidoconf_date=$(fidoconf_date); fidoconf_mdate=$(fidoconf_mdate); \
+			@fidoconf_date=$(fidoconf_date); fidoconf_mdate=$(fidoconf_mdate); \
 			if [ $$fidoconf_date -lt $(huskylib_date) ]; then fidoconf_date=$(huskylib_date); \
 			fidoconf_mdate=$(huskylib_mdate); fi;  \
 			if [ $$fidoconf_date -lt $(smapi_date) ]; then fidoconf_date=$(smapi_date); \
 			fidoconf_mdate=$(smapi_mdate); fi;  \
-			cd $(fidoconf_ROOTDIR); echo "char cvs_date[]=\"$$fidoconf_mdate\";" > $(cvsdate)
+			cd $(fidoconf_ROOTDIR); curval=""; \
+			[ -f $(cvsdate) ] && \
+			curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
+			[ "$$fidoconf_mdate" != "$$curval" ] && \
+			echo "char cvs_date[]=\"$$fidoconf_mdate\";" > $(cvsdate) ||:
 
         fidoconf_glue: fidoconf_get_date
 			$(eval fidoconf_date:=$(subst -,,$(fidoconf_mdate)))
@@ -652,7 +664,7 @@ else
 			$(_SRC_DIR)$(DIRSEP)*.c))
 
         fidoconf_update: | do_not_run_update_as_root
-			[ -d $(fidoconf_ROOTDIR).git ] && cd $(fidoconf_ROOTDIR) && \
+			@[ -d $(fidoconf_ROOTDIR).git ] && cd $(fidoconf_ROOTDIR) && \
 			{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
 			$(GIT) $(CLONE) https://github.com/huskyproject/fidoconf.git
     endif
@@ -661,14 +673,18 @@ else
     ifeq ($(need_areafix), 1)
         areafix_glue: areafix_get_date
 			$(eval areafix_date:=$(subst -,,$(areafix_mdate)))
-			cd $(areafix_ROOTDIR); echo "char cvs_date[]=\"$(areafix_mdate)\";" > $(cvsdate)
+			@cd $(areafix_ROOTDIR); curval=""; \
+			[ -f $(cvsdate) ] && \
+			curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
+			[ "$(areafix_mdate)" != "$$curval" ] && \
+			echo "char cvs_date[]=\"$(areafix_mdate)\";" > $(cvsdate) ||:
 
         areafix_get_date: areafix_update
 			$(eval areafix_mdate:=$(shell cd $(areafix_ROOTDIR); $(GIT) log -1 \
 			--date=short --format=format:"%cd" $(areafix_H_DIR)*.h $(_SRC_DIR)$(DIRSEP)*.c))
 
         areafix_update: | do_not_run_update_as_root
-			[ -d $(areafix_ROOTDIR).git ] && cd $(areafix_ROOTDIR) && \
+			@[ -d $(areafix_ROOTDIR).git ] && cd $(areafix_ROOTDIR) && \
 			{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
 			$(GIT) $(CLONE) https://github.com/huskyproject/areafix.git
     endif
@@ -677,14 +693,18 @@ else
     ifeq ($(need_hptzip), 1)
         hptzip_glue: hptzip_get_date
 			$(eval hptzip_date:=$(subst -,,$(hptzip_mdate)))
-			cd $(hptzip_ROOTDIR); echo "char cvs_date[]=\"$(hptzip_mdate)\";" > $(cvsdate)
+			@cd $(hptzip_ROOTDIR); curval=""; \
+			[ -f $(cvsdate) ] && \
+			curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
+			[ "$(hptzip_mdate)" != "$$curval" ] && \
+			echo "char cvs_date[]=\"$(hptzip_mdate)\";" > $(cvsdate) ||:
 
         hptzip_get_date: hptzip_update
 			$(eval hptzip_mdate:=$(shell cd $(hptzip_ROOTDIR); $(GIT) log -1 \
 			--date=short --format=format:"%cd" $(hptzip_H_DIR)*.h $(_SRC_DIR)$(DIRSEP)*.c))
 
         hptzip_update: | do_not_run_update_as_root
-			[ -d $(hptzip_ROOTDIR).git ] && cd $(hptzip_ROOTDIR) && \
+			@[ -d $(hptzip_ROOTDIR).git ] && cd $(hptzip_ROOTDIR) && \
 			{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
 			$(GIT) $(CLONE) https://github.com/huskyproject/hptzip.git
     endif
@@ -693,7 +713,7 @@ else
     ifeq ($(findstring hpt ,$(PROGRAMS)), hpt )
         ifeq ($(USE_HPTZIP), 1)
             hpt_cmp: hpt_glue hptzip_glue areafix_glue fidoconf_glue smapi_glue huskylib_glue
-				hpt_date=$(hpt_date); hpt_mdate=$(hpt_mdate); \
+				@hpt_date=$(hpt_date); hpt_mdate=$(hpt_mdate); \
 				if [ $$hpt_date -lt $(hptzip_date) ]; \
 				then hpt_date=$(hptzip_date); hpt_mdate=$(hptzip_mdate); fi; \
 				if [ $$hpt_date -lt $(areafix_date) ]; \
@@ -704,10 +724,14 @@ else
 				then hpt_date=$(smapi_date); hpt_mdate=$(smapi_mdate); fi; \
 				if [ $$hpt_date -lt $(huskylib_date) ]; \
 				then hpt_mdate=$(huskylib_mdate); fi; \
-				cd $(hpt_ROOTDIR); echo "char cvs_date[]=\"$$hpt_mdate\";" > $(cvsdate)
+				cd $(hpt_ROOTDIR); curval=""; \
+				[ -f $(cvsdate) ] && \
+				curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
+				[ "$$hpt_mdate" != "$$curval" ] && \
+				echo "char cvs_date[]=\"$$hpt_mdate\";" > $(cvsdate) ||:
         else
             hpt_cmp: hpt_glue areafix_glue fidoconf_glue smapi_glue huskylib_glue
-				hpt_date=$(hpt_date); hpt_mdate=$(hpt_mdate); \
+				@hpt_date=$(hpt_date); hpt_mdate=$(hpt_mdate); \
 				if [ $$hpt_date -lt $(areafix_date) ]; \
 				then hpt_date=$(areafix_date); hpt_mdate=$(areafix_mdate); fi; \
 				if [ $$hpt_date -lt $(fidoconf_date) ]; \
@@ -716,7 +740,11 @@ else
 				then hpt_date=$(smapi_date); hpt_mdate=$(smapi_mdate); fi; \
 				if [ $$hpt_date -lt $(huskylib_date) ]; \
 				then hpt_mdate=$(huskylib_mdate); fi; \
-				cd $(hpt_ROOTDIR); echo "char cvs_date[]=\"$$hpt_mdate\";" > $(cvsdate)
+				cd $(hpt_ROOTDIR); curval=""; \
+				[ -f $(cvsdate) ] && \
+				curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
+				[ "$$hpt_mdate" != "$$curval" ] && \
+				echo "char cvs_date[]=\"$$hpt_mdate\";" > $(cvsdate) ||:
         endif
 
         hpt_glue: hpt_get_date
@@ -727,7 +755,7 @@ else
 			--date=short --format=format:"%cd" $(hpt_H_DIR)*.h $(_SRC_DIR)$(DIRSEP)*.c))
 
         hpt_update: | do_not_run_update_as_root
-			[ -d $(hpt_ROOTDIR).git ] && cd $(hpt_ROOTDIR) && \
+			@[ -d $(hpt_ROOTDIR).git ] && cd $(hpt_ROOTDIR) && \
 			{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
 			$(GIT) $(CLONE) https://github.com/huskyproject/hpt.git
     endif
@@ -736,7 +764,7 @@ else
     ifeq ($(findstring htick,$(PROGRAMS)), htick)
         ifeq ($(USE_HPTZIP), 1)
             htick_cmp: htick_glue hptzip_glue areafix_glue fidoconf_glue smapi_glue huskylib_glue
-				htick_date=$(htick_date); htick_mdate=$(htick_mdate); \
+				@htick_date=$(htick_date); htick_mdate=$(htick_mdate); \
 				if [ $$htick_date -lt $(hptzip_date) ]; \
 				then htick_date=$(hptzip_date); htick_mdate=$(hptzip_mdate); fi; \
 				if [ $$htick_date -lt $(areafix_date) ]; \
@@ -747,10 +775,14 @@ else
 				then htick_date=$(smapi_date); htick_mdate=$(smapi_mdate); fi; \
 				if [ $$htick_date -lt $(huskylib_date) ]; \
 				then htick_mdate=$(huskylib_mdate); fi; \
-				cd $(htick_ROOTDIR); echo "char cvs_date[]=\"$$htick_mdate\";" > $(cvsdate)
+				cd $(htick_ROOTDIR); curval=""; \
+				[ -f $(cvsdate) ] && \
+				curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
+				[ "$$htick_mdate" != "$$curval" ] && \
+				echo "char cvs_date[]=\"$$htick_mdate\";" > $(cvsdate) ||:
         else
             htick_cmp: htick_glue areafix_glue fidoconf_glue smapi_glue huskylib_glue
-				htick_date=$(htick_date); htick_mdate=$(htick_mdate); \
+				@htick_date=$(htick_date); htick_mdate=$(htick_mdate); \
 				if [ $$htick_date -lt $(areafix_date) ]; \
 				then htick_date=$(areafix_date); htick_mdate=$(areafix_mdate); fi; \
 				if [ $$htick_date -lt $(fidoconf_date) ]; \
@@ -759,7 +791,11 @@ else
 				then htick_date=$(smapi_date); htick_mdate=$(smapi_mdate); fi; \
 				if [ $$htick_date -lt $(huskylib_date) ]; \
 				then htick_mdate=$(huskylib_mdate); fi; \
-				cd $(htick_ROOTDIR); echo "char cvs_date[]=\"$$htick_mdate\";" > $(cvsdate)
+				cd $(htick_ROOTDIR); curval=""; \
+				[ -f $(cvsdate) ] && \
+				curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
+				[ "$$htick_mdate" != "$$curval" ] && \
+				echo "char cvs_date[]=\"$$htick_mdate\";" > $(cvsdate) ||:
         endif
 
         htick_glue: htick_get_date
@@ -770,7 +806,7 @@ else
 			--date=short --format=format:"%cd" $(htick_H_DIR)*.h $(_SRC_DIR)$(DIRSEP)*.c))
 
         htick_update: | do_not_run_update_as_root
-			[ -d $(htick_ROOTDIR).git ] && cd $(htick_ROOTDIR) && \
+			@[ -d $(htick_ROOTDIR).git ] && cd $(htick_ROOTDIR) && \
 			{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
 			$(GIT) $(CLONE) https://github.com/huskyproject/htick.git
     endif
@@ -778,14 +814,18 @@ else
 
     ifeq ($(findstring hptkill,$(PROGRAMS)), hptkill)
         hptkill_cmp: hptkill_glue fidoconf_glue smapi_glue huskylib_glue
-			hptkill_date=$(hptkill_date); hptkill_mdate=$(hptkill_mdate); \
+			@hptkill_date=$(hptkill_date); hptkill_mdate=$(hptkill_mdate); \
 			if [ $$hptkill_date -lt $(fidoconf_date) ]; \
 			then hptkill_date=$(fidoconf_date); hptkill_mdate=$(fidoconf_mdate); fi; \
 			if [ $$hptkill_date -lt $(smapi_date) ]; \
 			then hptkill_date=$(smapi_date); hptkill_mdate=$(smapi_mdate); fi; \
 			if [ $$hptkill_date -lt $(huskylib_date) ]; \
 			then hptkill_mdate=$(huskylib_mdate); fi; \
-			cd $(hptkill_ROOTDIR); echo "char cvs_date[]=\"$$hptkill_mdate\";" > $(cvsdate)
+			cd $(hptkill_ROOTDIR); curval=""; \
+			[ -f $(cvsdate) ] && \
+			curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
+			[ "$$hptkill_mdate" != "$$curval" ] && \
+			echo "char cvs_date[]=\"$$hptkill_mdate\";" > $(cvsdate) ||:
 
         hptkill_glue: hptkill_get_date
 			$(eval hptkill_date:=$(subst -,,$(hptkill_mdate)))
@@ -795,7 +835,7 @@ else
 			--date=short --format=format:"%cd" $(hptkill_H_DIR)*.h $(_SRC_DIR)$(DIRSEP)*.c))
 
         hptkill_update: | do_not_run_update_as_root
-			[ -d $(hptkill_ROOTDIR).git ] && cd $(hptkill_ROOTDIR) && \
+			@[ -d $(hptkill_ROOTDIR).git ] && cd $(hptkill_ROOTDIR) && \
 			{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
 			$(GIT) $(CLONE) https://github.com/huskyproject/hptkill.git
     endif
@@ -803,13 +843,16 @@ else
 
     ifeq ($(findstring hptsqfix,$(PROGRAMS)), hptsqfix)
         hptsqfix_cmp: hptsqfix_glue smapi_glue huskylib_glue
-			hptsqfix_date=$(hptsqfix_date); hptsqfix_mdate=$(hptsqfix_mdate); \
+			@hptsqfix_date=$(hptsqfix_date); hptsqfix_mdate=$(hptsqfix_mdate); \
 			if [ $$hptsqfix_date -lt $(smapi_date) ]; \
 			then hptsqfix_date=$(smapi_date); hptsqfix_mdate=$(smapi_mdate); fi; \
 			if [ $$hptsqfix_date -lt $(huskylib_date) ]; \
 			then hptsqfix_mdate=$(huskylib_mdate); fi; \
-			cd $(hptsqfix_ROOTDIR); \
-			echo "char cvs_date[]=\"$$hptsqfix_mdate\";" > $(hptsqfix_H_DIR)$(cvsdate)
+			cd $(hptsqfix_ROOTDIR)$(hptsqfix_H_DIR); curval=""; \
+			[ -f $(cvsdate) ] && \
+			curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
+			[ "$$hptsqfix_mdate" != "$$curval" ] && \
+			echo "char cvs_date[]=\"$$hptsqfix_mdate\";" > $(cvsdate) ||:
 
         hptsqfix_glue: hptsqfix_get_date
 			$(eval hptsqfix_date:=$(subst -,,$(hptsqfix_mdate)))
@@ -819,7 +862,7 @@ else
 			--date=short --format=format:"%cd" $(hptsqfix_H_DIR)*.h $(_SRC_DIR)$(DIRSEP)*.c))
 
         hptsqfix_update: | do_not_run_update_as_root
-			[ -d $(hptsqfix_ROOTDIR).git ] && cd $(hptsqfix_ROOTDIR) && \
+			@[ -d $(hptsqfix_ROOTDIR).git ] && cd $(hptsqfix_ROOTDIR) && \
 			{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
 			$(GIT) $(CLONE) https://github.com/huskyproject/hptsqfix.git
     endif
@@ -827,14 +870,18 @@ else
 
     ifeq ($(findstring sqpack,$(PROGRAMS)), sqpack)
         sqpack_cmp: sqpack_glue smapi_glue huskylib_glue
-			sqpack_date=$(sqpack_date); sqpack_mdate=$(sqpack_mdate); \
+			@sqpack_date=$(sqpack_date); sqpack_mdate=$(sqpack_mdate); \
 			if [ $$sqpack_date -lt $(fidoconf_date) ]; \
 			then sqpack_date=$(fidoconf_date); sqpack_mdate=$(fidoconf_mdate); fi; \
 			if [ $$sqpack_date -lt $(smapi_date) ]; \
 			then sqpack_date=$(smapi_date); sqpack_mdate=$(smapi_mdate); fi; \
 			if [ $$sqpack_date -lt $(huskylib_date) ]; \
 			then sqpack_mdate=$(huskylib_mdate); fi; \
-			cd $(sqpack_ROOTDIR); echo "char cvs_date[]=\"$$sqpack_mdate\";" > $(cvsdate)
+			cd $(sqpack_ROOTDIR); curval=""; \
+			[ -f $(cvsdate) ] && \
+			curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
+			[ "$$sqpack_mdate" != "$$curval" ] && \
+			echo "char cvs_date[]=\"$$sqpack_mdate\";" > $(cvsdate) ||:
 
         sqpack_glue: sqpack_get_date
 			$(eval sqpack_date:=$(subst -,,$(sqpack_mdate)))
@@ -844,7 +891,7 @@ else
 			--date=short --format=format:"%cd" $(sqpack_H_DIR)*.h *.c))
 
         sqpack_update: | do_not_run_update_as_root
-			[ -d $(sqpack_ROOTDIR).git ] && cd $(sqpack_ROOTDIR) && \
+			@[ -d $(sqpack_ROOTDIR).git ] && cd $(sqpack_ROOTDIR) && \
 			{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
 			$(GIT) $(CLONE) https://github.com/huskyproject/sqpack.git
     endif
@@ -852,14 +899,18 @@ else
 
     ifeq ($(findstring msged,$(PROGRAMS)), msged)
         msged_cmp: msged_glue fidoconf_glue smapi_glue huskylib_glue
-			msged_date=$(msged_date); msged_mdate=$(msged_mdate); \
+			@msged_date=$(msged_date); msged_mdate=$(msged_mdate); \
 			if [ $$msged_date -lt $(fidoconf_date) ]; \
 			then msged_date=$(fidoconf_date); msged_mdate=$(fidoconf_mdate); fi; \
 			if [ $$msged_date -lt $(smapi_date) ]; \
 			then msged_date=$(smapi_date); msged_mdate=$(smapi_mdate); fi; \
 			if [ $$msged_date -lt $(huskylib_date) ]; \
 			then msged_mdate=$(huskylib_mdate); fi; \
-			cd $(msged_ROOTDIR); echo "char cvs_date[]=\"$$msged_mdate\";" > $(cvsdate)
+			cd $(msged_ROOTDIR); curval=""; \
+			[ -f $(cvsdate) ] && \
+			curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
+			[ "$$msged_mdate" != "$$curval" ] && \
+			echo "char cvs_date[]=\"$$msged_mdate\";" > $(cvsdate) ||:
 
         msged_glue: msged_get_date
 			$(eval msged_date:=$(subst -,,$(msged_mdate)))
@@ -869,7 +920,7 @@ else
 			--date=short --format=format:"%cd" *.h *.c))
 
         msged_update: | do_not_run_update_as_root
-			[ -d $(msged_ROOTDIR).git ] && cd $(msged_ROOTDIR) && \
+			@[ -d $(msged_ROOTDIR).git ] && cd $(msged_ROOTDIR) && \
 			{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
 			$(GIT) $(CLONE) https://github.com/huskyproject/msged.git
     endif
@@ -877,14 +928,18 @@ else
 
     ifeq ($(findstring fidoroute,$(PROGRAMS)), fidoroute)
         fidoroute_wdate: fidoroute_get_date
-			cd $(fidoroute_ROOTDIR); echo "char cvs_date[]=\"$(fidoroute_mdate)\";" > $(cvsdate)
+			@cd $(fidoroute_ROOTDIR); curval=""; \
+			[ -f $(cvsdate) ] && \
+			curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
+			[ "$(fidoroute_mdate)" != "$$curval" ] && \
+			echo "char cvs_date[]=\"$(fidoroute_mdate)\";" > $(cvsdate) ||:
 
         fidoroute_get_date: fidoroute_update
 			$(eval fidoroute_mdate:=$(shell cd $(fidoroute_ROOTDIR); $(GIT) log -1 \
 			--date=short --format=format:"%cd" *.cpp))
 
         fidoroute_update: | do_not_run_update_as_root
-			[ -d $(fidoroute_ROOTDIR).git ] && cd $(fidoroute_ROOTDIR) && \
+			@[ -d $(fidoroute_ROOTDIR).git ] && cd $(fidoroute_ROOTDIR) && \
 			{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
 			$(GIT) $(CLONE) https://github.com/huskyproject/fidoroute.git
     endif
@@ -892,20 +947,24 @@ else
 
     ifeq ($(findstring util,$(PROGRAMS)), util)
         util_wdate: util_get_date
-			cd $(util_ROOTDIR); echo "char cvs_date[]=\"$(util_mdate)\";" > $(cvsdate)
+			@cd $(util_ROOTDIR); curval=""; \
+			[ -f $(cvsdate) ] && \
+			curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
+			[ "$(util_mdate)" != "$$curval" ] && \
+			echo "char cvs_date[]=\"$(util_mdate)\";" > $(cvsdate) ||:
 
         util_get_date: util_update
 			$(eval util_mdate:=$(shell cd $(util_ROOTDIR); $(GIT) log -1 \
 			--date=short --format=format:"%cd" -- *.pl *.pm *.t))
 
         util_update: | do_not_run_update_as_root
-			[ -d $(util_ROOTDIR).git ] && cd $(util_ROOTDIR) && \
+			@[ -d $(util_ROOTDIR).git ] && cd $(util_ROOTDIR) && \
 			{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
 			$(GIT) $(CLONE) https://github.com/huskyproject/util.git
     endif
 
     huskybse_update: | do_not_run_update_as_root
-		[ -d $(huskybse_ROOTDIR).git ] && cd $(huskybse_ROOTDIR) && \
+		@[ -d $(huskybse_ROOTDIR).git ] && cd $(huskybse_ROOTDIR) && \
 		{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
 		$(GIT) $(CLONE) https://github.com/huskyproject/huskybse.git
 endif
