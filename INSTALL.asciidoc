@@ -41,8 +41,9 @@ and day.
 This assumes you have version 3.82 or newer of GNU make installed. In
 addition, to build packages of Perl utilities, you need to install
 `Module::Build`. Perhaps the corresponding package in your distribution is
-called `perl-Module-Build`. To configure the build using universal makefiles,
-use the file *huskymak.cfg*.
+called `perl-Module-Build`. In addition, you will need to install `git`. On
+FreeBSD, you will additionally need to install `gnugrep`. To configure the
+build using universal makefiles, use the file *huskymak.cfg*.
 
 2.1 Build configuration with `huskymak.cfg`
 ------------------------------------------
@@ -141,27 +142,30 @@ To start the installation, follow these steps:
   chmod 0755 init_build
   ./init_build
 
-As a result, the `~/husky` directory will be created. Husky sources will be
-downloaded to this directory in the future. But now we are interested in the
-file `huskymak.cfg` lying in this directory. This is the very build
-configuration file that you need to view and, possibly, change something in it.
+These commands are for Linux. On FreeBSD, write `fetch` instead of `wget`,
+the rest is the same. As a result, the `~/husky` directory will be created.
+Husky sources will be downloaded to this directory in the future. But now we
+are interested in the file `huskymak.cfg` residing in this directory. This is
+the very build configuration file that you need to view and, possibly, change
+something in it.
 
 These actions need to be performed only once. Now you can start the build:
 
   ./build.sh
 
-After the build is complete, to install the built programs, run
+After the build is complete, to install the built programs, on Linux run
 
   sudo make -j install
 
-Here, the `-j` option sets the parallel execution. If you want to uninstall
-the installed programs, run
+and on FreeBSD use `gmake` instead of `make`. Here, the `-j` option sets the
+parallel execution. If you want to uninstall the installed programs, run
 
   sudo make -j uninstall
 
 If you want to delete all the built results, run
 
-  make distclean
+  make distclean           (Linux)
+  gmake distclean          (FreeBSD)
 
 But keep in mind that if you deleted all the build results, you will have to
 repeat the entire build next time.
@@ -172,6 +176,13 @@ you want to build a new version, it will be enough to run again
   ./build.sh
 
 This will download all changes from GitHub and rebuild all the changed programs.
+
+If you previously cloned the Husky repositories from GitHub into a directory
+with a different name, run `init_build` this way:
+
+  ./init_build -d YOUR_DIRECTORY
+
+where `YOUR_DIRECTORY` is the name of your directory.
 
 3 Compiling with the Legacy Makefiles
 =====================================
