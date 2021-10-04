@@ -157,10 +157,18 @@ After the build is complete, to install the built programs, on Linux run
 
   sudo make -j install
 
-and on FreeBSD use `gmake` instead of `make`. Here, the `-j` option sets the
-parallel execution. If you want to uninstall the installed programs, run
+and on FreeBSD 
+
+  env SHELL=/bin/sh sudo -s gmake -j install
+
+Here, the `-j` option sets the parallel execution. If you want to uninstall
+the installed programs, on Linux run
 
   sudo make -j uninstall
+
+and on FreeBSD 
+
+  env SHELL=/bin/sh sudo -s gmake -j uninstall
 
 If you want to delete all the built results, run
 
