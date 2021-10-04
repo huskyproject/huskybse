@@ -88,19 +88,22 @@ then
     cp -p -f huskybse/Makefile ./
 fi
 
+huskymak=huskybse/huskymak.cfg
+[ "$(uname -s)" = FreeBSD ] && huskymak=huskybse/huskymak.cfg.bsd
+
 if [ "$no_update" -eq 0 ] && \
-   [ -n "$(diff ./huskymak.cfg.new huskybse/huskymak.cfg)" ]
+   [ -n "$(diff ./huskymak.cfg.new $huskymak)" ]
 then
     mv -f ./huskymak.cfg.new huskymak.cfg.old
-    cp -p -f huskybse/huskymak.cfg huskymak.cfg.new
+    cp -p -f $huskymak huskymak.cfg.new
     if [ ! -e ./huskymak.cfg ]
     then
         cp -p ./huskymak.cfg.new huskymak.cfg
     fi
     echo
-    echo "\"huskybse/huskymak.cfg\" has changed"
+    echo "\"$huskymak\" has changed"
     echo
-    echo "A new version of \"huskybse/huskymak.cfg\" is now"
+    echo "A new version of \"$huskymak\" is now"
     echo "in \"./huskymak.cfg.new\" and its old version"
     echo "is now in \"./huskymak.cfg.old\"."
     echo "Please adjust your \"./huskymak.cfg\" to the changes"

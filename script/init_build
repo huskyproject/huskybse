@@ -89,23 +89,28 @@ cd $top_directory
 [ -d "$top_directory/huskybse/.git" ] && cd huskybse && { git pull; cd ..; }  || \
 git clone https://github.com/huskyproject/huskybse.git
 
+huskymak=huskybse/huskymak.cfg
+[ "$(uname -s)" = FreeBSD ] && huskymak=huskybse/huskymak.cfg.bsd
+
 cp -f -p huskybse/Makefile Makefile
-[ "$(uname -s)" = Linux ]   && cp -f -p huskybse/huskymak.cfg huskymak.cfg.new
-[ "$(uname -s)" = FreeBSD ] && cp -f -p huskybse/huskymak.cfg.bsd huskymak.cfg.new
+cp -f -p $huskymak huskymak.cfg.new
 cp -f -p huskybse/script/build.sh build.sh
 if [ -f huskymak.cfg ]
 then
-    mv -f huskymak.cfg huskymak.cfg.old
-    cp -p huskybse/huskymak.cfg huskymak.cfg
-    echo
-    echo "########################################################################"
-    echo "Your huskymak.cfg was renamed to huskymak.cfg.old"
-    echo "Now you need to make changes to \"$top_directory/huskymak.cfg\""
-    echo "per your requirements and then run \"$top_directory/build.sh\"."
-    echo "########################################################################"
-    echo
+    if [ -n "$(diff $huskymak huskymak.cfg)" ]
+    then
+        mv -f huskymak.cfg huskymak.cfg.old
+        cp -p $huskymak huskymak.cfg
+        echo
+        echo "########################################################################"
+        echo "Your huskymak.cfg was renamed to huskymak.cfg.old"
+        echo "Now you need to make changes to \"$top_directory/huskymak.cfg\""
+        echo "per your requirements and then run \"$top_directory/build.sh\"."
+        echo "########################################################################"
+        echo
+    fi
 else
-    cp -p huskybse/huskymak.cfg huskymak.cfg
+    cp -p $huskymak huskymak.cfg
     echo
     echo "########################################################################"
     echo "Now you need to make changes to \"$top_directory/huskymak.cfg\""
