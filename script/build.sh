@@ -20,7 +20,7 @@ specified in PROGRAMS setting of huskymak.cfg and for the libraries
 they depend on.
 
 Usage:.
-    build.sh [-v|--version] [-h|-\?|--help]
+    build.sh [-v|--version] [-h|-\?|--help] [-n|--no-update] [-p]
 Options:
     -v
     --version
