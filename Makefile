@@ -869,7 +869,7 @@ else
 
 
     ifeq ($(findstring sqpack,$(PROGRAMS)), sqpack)
-        sqpack_cmp: sqpack_glue smapi_glue huskylib_glue
+        sqpack_cmp: sqpack_glue fidoconf_glue smapi_glue huskylib_glue
 			@sqpack_date=$(sqpack_date); sqpack_mdate=$(sqpack_mdate); \
 			if [ $${sqpack_date} -lt $(fidoconf_date) ]; \
 			then sqpack_date=$(fidoconf_date); sqpack_mdate=$(fidoconf_mdate); fi; \
