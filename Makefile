@@ -246,7 +246,7 @@ huskybse_ROOTDIR  := huskybse$(DIRSEP)
 
 
 # Define need_huskylib
-$(eval $(if $(or $(findstring hpt ,$(PROGRAMS)), \
+$(eval $(if $(or $(findstring 'hpt',$(PROGRAMS)), \
                  $(findstring htick,$(PROGRAMS)), \
                  $(findstring hptkill,$(PROGRAMS)), \
                  $(findstring hptsqfix,$(PROGRAMS)), \
@@ -254,7 +254,7 @@ $(eval $(if $(or $(findstring hpt ,$(PROGRAMS)), \
                  $(findstring msged,$(PROGRAMS)) \
              ),need_huskylib:=1,need_huskylib:=0))
 # Define need_smapi
-$(eval $(if $(or $(findstring hpt ,$(PROGRAMS)), \
+$(eval $(if $(or $(findstring 'hpt',$(PROGRAMS)), \
                  $(findstring htick,$(PROGRAMS)), \
                  $(findstring hptkill,$(PROGRAMS)), \
                  $(findstring hptsqfix,$(PROGRAMS)), \
@@ -262,18 +262,18 @@ $(eval $(if $(or $(findstring hpt ,$(PROGRAMS)), \
                  $(findstring msged,$(PROGRAMS)) \
              ),need_smapi:=1,need_smapi:=0))
 # Define need_fidoconf
-$(eval $(if $(or $(findstring hpt ,$(PROGRAMS)), \
+$(eval $(if $(or $(findstring 'hpt',$(PROGRAMS)), \
                  $(findstring htick,$(PROGRAMS)), \
                  $(findstring hptkill,$(PROGRAMS)), \
                  $(findstring sqpack,$(PROGRAMS)), \
                  $(findstring msged,$(PROGRAMS)) \
              ),need_fidoconf:=1,need_fidoconf:=0))
 # Define need_areafix
-$(eval $(if $(or $(findstring hpt ,$(PROGRAMS)), \
+$(eval $(if $(or $(findstring 'hpt',$(PROGRAMS)), \
                  $(findstring htick,$(PROGRAMS)) \
              ),need_areafix:=1,need_areafix:=0))
 # Define need_hptzip
-$(eval $(if $(or $(findstring hpt ,$(PROGRAMS)), \
+$(eval $(if $(or $(findstring 'hpt',$(PROGRAMS)), \
                  $(findstring htick,$(PROGRAMS)) \
              ),need_hptzip:=1,need_hptzip:=0))
 ifneq ($(USE_HPTZIP), 1)
@@ -327,7 +327,7 @@ ifeq ($(need_hptzip), 1)
     DISTCLEAN_PREREQ += hptzip_distclean
     UNINSTALL_PREREQ += hptzip_uninstall
 endif
-ifeq ($(findstring hpt ,$(PROGRAMS)), hpt )
+ifeq ($(findstring 'hpt',$(PROGRAMS)),'hpt')
     ALL_PREREQ       += hpt_all
     UPDATE_PREREQ    += hpt_cmp
     DEPEND_PREREQ    += hpt_depend
@@ -456,7 +456,7 @@ ifneq ($(MAKECMDGOALS),update)
     ifeq ($(need_hptzip), 1)
         include $(hptzip_ROOTDIR)Makefile
     endif
-    ifeq ($(findstring hpt ,$(PROGRAMS)), hpt )
+    ifeq ($(findstring 'hpt',$(PROGRAMS)),'hpt')
         include $(hpt_ROOTDIR)Makefile
     endif
     ifeq ($(findstring htick,$(PROGRAMS)), htick)
@@ -497,7 +497,7 @@ ifneq ($(MAKECMDGOALS),update)
         # Install
         #
         info_PREREQ := $(INFODIR_DST)fidoconfig.info.gz
-        ifeq ($(findstring hpt,$(PROGRAMS)), hpt)
+        ifeq ($(findstring 'hpt',$(PROGRAMS)),'hpt')
             info_PREREQ += $(INFODIR_DST)hpt.info.gz
         endif
         ifeq ($(findstring htick,$(PROGRAMS)), htick)
@@ -508,7 +508,7 @@ ifneq ($(MAKECMDGOALS),update)
         endif
 
         info_RECIPE := install-info --info-dir="$(INFODIR_DST)" "$(INFODIR_DST)fidoconfig.info.gz";
-        ifeq ($(findstring hpt,$(PROGRAMS)), hpt)
+        ifeq ($(findstring 'hpt',$(PROGRAMS)),'hpt')
             info_RECIPE += install-info --info-dir="$(INFODIR_DST)" \
             "$(INFODIR_DST)hpt.info.gz";
         endif
@@ -558,7 +558,7 @@ ifneq ($(MAKECMDGOALS),update)
         uninfo_RECIPE := [ -f $(INFODIR_DST)fidoconfig.info.gz ] && \
             install-info --remove --info-dir=$(DESTDIR)$(INFODIR) \
             $(INFODIR_DST)fidoconfig.info.gz;
-        ifeq ($(findstring hpt,$(PROGRAMS)), hpt)
+        ifeq ($(findstring 'hpt',$(PROGRAMS)),'hpt')
             uninfo_RECIPE += [ -f $(INFODIR_DST)hpt.info.gz ] && \
                 install-info --remove --info-dir=$(DESTDIR)$(INFODIR) \
                 $(INFODIR_DST)hpt.info.gz;
@@ -710,7 +710,7 @@ else
     endif
 
 
-    ifeq ($(findstring hpt ,$(PROGRAMS)), hpt )
+    ifeq ($(findstring 'hpt',$(PROGRAMS)),'hpt')
         ifeq ($(USE_HPTZIP), 1)
             hpt_cmp: hpt_glue hptzip_glue areafix_glue fidoconf_glue smapi_glue huskylib_glue
 				@hpt_date=$(hpt_date); hpt_mdate=$(hpt_mdate); \
