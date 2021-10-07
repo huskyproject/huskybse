@@ -17,6 +17,9 @@ then
     die "Please install git"
 fi
 
+[ "$(uname -s)" = FreeBSD ] && [ -z "$(which gmake)" ] && \
+    die "Please install gmake"
+
 [ "$(uname -s)" = FreeBSD ] && [ -z "$(which /usr/local/bin/grep)" ] && \
     die "Please install gnugrep"
 
