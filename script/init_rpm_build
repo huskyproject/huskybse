@@ -12,16 +12,16 @@ die()
 }
 
 n=0
-if [ -z `which --skip-alias git` ]
+if [ -z "$(whereis -b git | cut -d: -f2)" ]
 then
     echo Please install git
     n=1
 fi
-if [ -z `which --skip-alias mock` ]
+if [ -z "$(whereis -b mock | cut -d: -f2)" ]
 then
     echo Please install mock
     n=1
-    if [ -z `which --skip-alias rpmbuild` ]
+    if [ -z "$(whereis -b rpmbuild | cut -d: -f2)" ]
     then
         echo Please install rpmbuild if you cannot install mock
     fi

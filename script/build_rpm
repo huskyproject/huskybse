@@ -53,7 +53,7 @@ case $1 in
         exit
         ;;
     -r|--chroot)
-        if [ -z `which --skip-alias mock` ]
+        if [ -z "$(whereis -b mock | cut -d: -f2)" ]
         then
             die 'ERROR: to use "--chroot" (or "-r") you have to install mock'
         fi
@@ -67,7 +67,7 @@ case $1 in
         fi
         ;;
     --chroot=?*)
-        if [ -z `which --skip-alias mock` ]
+        if [ -z "$(whereis -b mock | cut -d: -f2)" ]
         then
             die 'ERROR: to use "--chroot" (or "-r") you have to install mock'
         fi
@@ -154,12 +154,12 @@ fi
 popd
 
 tar --exclude=.git -czf husky.tar.gz husky
-if [ -n "$(which --skip-alias mock)" ]
+if [ -n "$(whereis -b mock | cut -d: -f2)" ]
 then
     mock $config --buildsrpm --spec husky/husky.spec --sources husky.tar.gz --resultdir=./result
     SRCRPM=$(echo result/*.src.rpm)
     mock $config --no-clean --resultdir=./result --rebuild $SRCRPM
-elif [ -n "$(which --skip-alias rpmbuild)" ]
+elif [ -n "$(whereis -b rpmbuild | cut -d: -f2)" ]
 then
     rpmbuild -ta husky.tar.gz
 else

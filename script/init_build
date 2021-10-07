@@ -11,8 +11,7 @@ die()
     exit 1
 }
 
-if [ "$(uname -s)" = Linux ] && [ -z "$(which --skip-alias git)" ] || \
-   [ "$(uname -s)" = FreeBSD ] && [ -z "$(which git)" ]
+if [ -z "$(whereis -b git | cut -d: -f2)" ]
 then
     die "Please install git"
 fi
