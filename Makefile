@@ -37,6 +37,16 @@ ifeq ($(MAKECMDGOALS),)
     endif
 endif
 
+ifdef INFODIR
+    ifneq ($(MAKECMDGOALS),distclean)
+        ifneq ($(MAKECMDGOALS),uninstall)
+            ifeq ($(shell whereis -b makeinfo | cut -d: -f2),)
+                $(error Please install makeinfo)
+            endif
+        endif
+    endif
+endif
+
 ifeq ($(OSTYPE), UNIX)
   LIBPREFIX=lib
   DLLPREFIX=lib

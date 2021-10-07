@@ -80,6 +80,7 @@ MAKE=make
 [ "$(uname -s)" = FreeBSD ] && MAKE=gmake
 
 ${MAKE} $parallel update
+[ "$?" -ne 0 ] && exit 1
 
 restart=0
 
