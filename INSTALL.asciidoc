@@ -149,6 +149,13 @@ are interested in the file `huskymak.cfg` residing in this directory. This is
 the very build configuration file that you need to view and, possibly, change
 something in it.
 
+If you previously cloned the Husky repositories from GitHub into a directory
+with a different name, run `init_build` this way:
+
+  ./init_build -d YOUR_DIRECTORY
+
+where `YOUR_DIRECTORY` is the name of your directory.
+
 These actions need to be performed only once. Now you can start the build:
 
   ./build.sh
@@ -184,13 +191,6 @@ you want to build a new version, it will be enough to run again
   ./build.sh
 
 This will download all changes from GitHub and rebuild all the changed programs.
-
-If you previously cloned the Husky repositories from GitHub into a directory
-with a different name, run `init_build` this way:
-
-  ./init_build -d YOUR_DIRECTORY
-
-where `YOUR_DIRECTORY` is the name of your directory.
 
 3 Compiling with the Legacy Makefiles
 =====================================
