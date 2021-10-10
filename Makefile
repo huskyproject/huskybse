@@ -41,7 +41,7 @@ ifdef INFODIR
     ifneq ($(MAKECMDGOALS),distclean)
         ifneq ($(MAKECMDGOALS),uninstall)
             ifeq ($(shell whereis -b makeinfo | cut -d: -f2),)
-                $(error Please install makeinfo)
+                $(error Please install makeinfo program)
             endif
         endif
     endif
