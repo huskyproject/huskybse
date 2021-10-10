@@ -154,13 +154,25 @@ with a different name, run `init_build` this way:
 
   ./init_build -d YOUR_DIRECTORY
 
-where `YOUR_DIRECTORY` is the name of your directory.
+where `YOUR_DIRECTORY` is the name of your directory. This option can also be
+used if the `~/husky` directory is already occupied by something else, for
+example, there are photos of your beloved dog there.
 
 These actions need to be performed only once. Now you can start the build:
 
   ./build.sh
 
-After the build is complete, to install the built programs, on Linux run
+After the build is complete, you may install the built programs. If you have
+set PREFIX variable in your huskymak.cfg to some directory in your HOME, to
+install everything on Linux run
+
+  make -j install
+
+and on FreeBSD 
+
+  gmake -j install
+
+Otherwise, on Linux run
 
   sudo make -j install
 
@@ -168,8 +180,39 @@ and on FreeBSD
 
   env SHELL=/bin/sh sudo -s gmake -j install
 
-Here, the `-j` option sets the parallel execution. If you want to uninstall
-the installed programs, on Linux run
+Here, the `-j` option sets the parallel execution. 
+
+Before you start using the installed Perl utilities, it is important to
+consider whether the directory where the Perl modules are installed is in
+`@INC` array. If you used `PREFIX=/usr/local`, you have nothing to worry about.
+Otherwise, the directory with Perl modules is `$PREFIX/share/perl5`. To
+compare it with members of @INC array you first have to manually substitute
+`$PREFIX` with the value you have set for it in your `huskymak.cfg`. `@INC` is
+displayed at the end of the output from the command
+
+  perl -V
+
+You may not bother to look at @INC if you have set `PREFIX` to a subdirectory
+of `HOME`, since in this case `@INC` definitely does not contain
+`$PREFIX/share/perl5`.
+
+If `PREFIX` is a subdirectory of `HOME`, you have to set and export `PER5LIB`
+environment variable. On Linux with the default bash shell add the
+line to your `~/.bash_profile`:
+
+  export PERL5LIB=$PREFIX/share/perl5
+
+in which you manually substitute `$PREFIX` with its value. On FreeBSD you
+have to add this line to `~/.profile`. You also have to add `$PREFIX/bin`
+to `PATH` if the `PATH` does not contain `$PREFIX/bin`.
+
+If your `PREFIX` is not a subdirectory of `HOME` and `@INC` does not contain
+`$PREFIX/share/perl5`, you have to add the line exporting `PERL5LIB` to
+`/root/.bash_profile` on Linux and to `/root/.profile` on FreeBSD.
+
+If `@INC` contains `$PREFIX/share/perl5` directory, you have nothing to add.
+
+If you want to uninstall the installed programs, on Linux run
 
   sudo make -j uninstall
 
