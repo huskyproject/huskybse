@@ -19,7 +19,7 @@
 # built automatically. You may remove any program from the list, but to add
 # a program missing in the current list, one has to change makefiles.
 #
-PROGRAMS='hpt' 'htick' 'hptkill' 'hptsqfix' 'sqpack' 'msged' 'fidoroute' 'util'
+PROGRAMS=hpt htick hptkill hptsqfix sqpack msged fidoroute util
 
 # Perl support
 PERL=1

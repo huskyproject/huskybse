@@ -4,7 +4,7 @@
 #
 # This file is part of the Husky fidonet software project
 # Use with GNU make v.3.82 or later
-# Requires: husky enviroment
+# Requires: husky environment
 #
 
 SHELL = /bin/sh
@@ -256,36 +256,29 @@ huskybse_ROOTDIR  := huskybse$(DIRSEP)
 
 
 # Define need_huskylib
-$(eval $(if $(or $(findstring 'hpt',$(PROGRAMS)), \
-                 $(findstring htick,$(PROGRAMS)), \
-                 $(findstring hptkill,$(PROGRAMS)), \
-                 $(findstring hptsqfix,$(PROGRAMS)), \
-                 $(findstring sqpack,$(PROGRAMS)), \
-                 $(findstring msged,$(PROGRAMS)) \
-             ),need_huskylib:=1,need_huskylib:=0))
+need_huskylib := $(if $(or $(filter hpt,$(PROGRAMS)), \
+                           $(filter htick,$(PROGRAMS)), \
+                           $(filter hptkill,$(PROGRAMS)), \
+                           $(filter hptsqfix,$(PROGRAMS)), \
+                           $(filter sqpack,$(PROGRAMS)), \
+                           $(filter msged,$(PROGRAMS))),1,0)
+
 # Define need_smapi
-$(eval $(if $(or $(findstring 'hpt',$(PROGRAMS)), \
-                 $(findstring htick,$(PROGRAMS)), \
-                 $(findstring hptkill,$(PROGRAMS)), \
-                 $(findstring hptsqfix,$(PROGRAMS)), \
-                 $(findstring sqpack,$(PROGRAMS)), \
-                 $(findstring msged,$(PROGRAMS)) \
-             ),need_smapi:=1,need_smapi:=0))
+need_smapi := $(need_huskylib)
+
 # Define need_fidoconf
-$(eval $(if $(or $(findstring 'hpt',$(PROGRAMS)), \
-                 $(findstring htick,$(PROGRAMS)), \
-                 $(findstring hptkill,$(PROGRAMS)), \
-                 $(findstring sqpack,$(PROGRAMS)), \
-                 $(findstring msged,$(PROGRAMS)) \
-             ),need_fidoconf:=1,need_fidoconf:=0))
+need_fidoconf := $(if $(or $(filter hpt,$(PROGRAMS)), \
+                           $(filter htick,$(PROGRAMS)), \
+                           $(filter hptkill,$(PROGRAMS)), \
+                           $(filter sqpack,$(PROGRAMS)), \
+                           $(filter msged,$(PROGRAMS))),1,0)
+
 # Define need_areafix
-$(eval $(if $(or $(findstring 'hpt',$(PROGRAMS)), \
-                 $(findstring htick,$(PROGRAMS)) \
-             ),need_areafix:=1,need_areafix:=0))
+need_areafix := $(if $(or $(filter hpt,$(PROGRAMS)), \
+                          $(filter htick,$(PROGRAMS))),1,0)
+
 # Define need_hptzip
-$(eval $(if $(or $(findstring 'hpt',$(PROGRAMS)), \
-                 $(findstring htick,$(PROGRAMS)) \
-             ),need_hptzip:=1,need_hptzip:=0))
+need_hptzip := $(need_areafix)
 ifneq ($(USE_HPTZIP), 1)
     need_hptzip:=0
 endif
@@ -337,7 +330,7 @@ ifeq ($(need_hptzip), 1)
     DISTCLEAN_PREREQ += hptzip_distclean
     UNINSTALL_PREREQ += hptzip_uninstall
 endif
-ifeq ($(findstring 'hpt',$(PROGRAMS)),'hpt')
+ifeq ($(filter hpt,$(PROGRAMS)),hpt)
     ALL_PREREQ       += hpt_all
     UPDATE_PREREQ    += hpt_cmp
     DEPEND_PREREQ    += hpt_depend
@@ -347,7 +340,7 @@ ifeq ($(findstring 'hpt',$(PROGRAMS)),'hpt')
     UNDOCDIR_PREREQ  += hpt_doc_uninstall
     UNINSTALL_PREREQ += hpt_uninstall
 endif
-ifeq ($(findstring htick,$(PROGRAMS)), htick)
+ifeq ($(filter htick,$(PROGRAMS)), htick)
     ALL_PREREQ       += htick_all
     UPDATE_PREREQ    += htick_cmp
     DEPEND_PREREQ    += htick_depend
@@ -357,7 +350,7 @@ ifeq ($(findstring htick,$(PROGRAMS)), htick)
     UNDOCDIR_PREREQ  += htick_doc_uninstall
     UNINSTALL_PREREQ += htick_uninstall
 endif
-ifeq ($(findstring hptkill,$(PROGRAMS)), hptkill)
+ifeq ($(filter hptkill,$(PROGRAMS)), hptkill)
     ALL_PREREQ       += hptkill_all
     UPDATE_PREREQ    += hptkill_cmp
     DEPEND_PREREQ    += hptkill_depend
@@ -366,7 +359,7 @@ ifeq ($(findstring hptkill,$(PROGRAMS)), hptkill)
     DISTCLEAN_PREREQ += hptkill_distclean
     UNINSTALL_PREREQ += hptkill_uninstall
 endif
-ifeq ($(findstring hptsqfix,$(PROGRAMS)), hptsqfix)
+ifeq ($(filter hptsqfix,$(PROGRAMS)), hptsqfix)
     ALL_PREREQ       += hptsqfix_all
     UPDATE_PREREQ    += hptsqfix_cmp
     DEPEND_PREREQ    += hptsqfix_depend
@@ -375,7 +368,7 @@ ifeq ($(findstring hptsqfix,$(PROGRAMS)), hptsqfix)
     DISTCLEAN_PREREQ += hptsqfix_distclean
     UNINSTALL_PREREQ += hptsqfix_uninstall
 endif
-ifeq ($(findstring sqpack,$(PROGRAMS)), sqpack)
+ifeq ($(filter sqpack,$(PROGRAMS)), sqpack)
     ALL_PREREQ       += sqpack_all
     UPDATE_PREREQ    += sqpack_cmp
     DEPEND_PREREQ    += sqpack_depend
@@ -384,7 +377,7 @@ ifeq ($(findstring sqpack,$(PROGRAMS)), sqpack)
     DISTCLEAN_PREREQ += sqpack_distclean
     UNINSTALL_PREREQ += sqpack_uninstall
 endif
-ifeq ($(findstring msged,$(PROGRAMS)), msged)
+ifeq ($(filter msged,$(PROGRAMS)), msged)
     ALL_PREREQ       += msged_all
     UPDATE_PREREQ    += msged_cmp
     DEPEND_PREREQ    += msged_depend
@@ -394,7 +387,7 @@ ifeq ($(findstring msged,$(PROGRAMS)), msged)
     UNDOCDIR_PREREQ  += uninstall_msged_DOCDIR_DST
     UNINSTALL_PREREQ += msged_uninstall
 endif
-ifeq ($(findstring fidoroute,$(PROGRAMS)), fidoroute)
+ifeq ($(filter fidoroute,$(PROGRAMS)), fidoroute)
     ALL_PREREQ       += fidoroute_all
     UPDATE_PREREQ    += fidoroute_wdate
     DEPEND_PREREQ    += fidoroute_depend
@@ -403,7 +396,7 @@ ifeq ($(findstring fidoroute,$(PROGRAMS)), fidoroute)
     DISTCLEAN_PREREQ += fidoroute_distclean
     UNINSTALL_PREREQ += fidoroute_uninstall
 endif
-ifeq ($(findstring util,$(PROGRAMS)), util)
+ifeq ($(filter util,$(PROGRAMS)), util)
     ALL_PREREQ       += util_all
     UPDATE_PREREQ    += util_wdate
     INSTALL_PREREQ   += util_install
@@ -466,28 +459,28 @@ ifneq ($(MAKECMDGOALS),update)
     ifeq ($(need_hptzip), 1)
         include $(hptzip_ROOTDIR)Makefile
     endif
-    ifeq ($(findstring 'hpt',$(PROGRAMS)),'hpt')
+    ifeq ($(filter hpt,$(PROGRAMS)),hpt)
         include $(hpt_ROOTDIR)Makefile
     endif
-    ifeq ($(findstring htick,$(PROGRAMS)), htick)
+    ifeq ($(filter htick,$(PROGRAMS)), htick)
         include $(htick_ROOTDIR)Makefile
     endif
-    ifeq ($(findstring hptkill,$(PROGRAMS)), hptkill)
+    ifeq ($(filter hptkill,$(PROGRAMS)), hptkill)
         include $(hptkill_ROOTDIR)Makefile
     endif
-    ifeq ($(findstring hptsqfix,$(PROGRAMS)), hptsqfix)
+    ifeq ($(filter hptsqfix,$(PROGRAMS)), hptsqfix)
         include $(hptsqfix_ROOTDIR)Makefile
     endif
-    ifeq ($(findstring sqpack,$(PROGRAMS)), sqpack)
+    ifeq ($(filter sqpack,$(PROGRAMS)), sqpack)
         include $(sqpack_ROOTDIR)Makefile
     endif
-    ifeq ($(findstring msged,$(PROGRAMS)), msged)
+    ifeq ($(filter msged,$(PROGRAMS)), msged)
         include $(msged_ROOTDIR)Makefile
     endif
-    ifeq ($(findstring fidoroute,$(PROGRAMS)), fidoroute)
+    ifeq ($(filter fidoroute,$(PROGRAMS)), fidoroute)
         include $(fidoroute_ROOTDIR)Makefile
     endif
-    ifeq ($(findstring util,$(PROGRAMS)), util)
+    ifeq ($(filter util,$(PROGRAMS)), util)
         include $(util_ROOTDIR)Makefile
     endif
 
@@ -507,25 +500,25 @@ ifneq ($(MAKECMDGOALS),update)
         # Install
         #
         info_PREREQ := $(INFODIR_DST)fidoconfig.info.gz
-        ifeq ($(findstring 'hpt',$(PROGRAMS)),'hpt')
+        ifeq ($(filter hpt,$(PROGRAMS)),hpt)
             info_PREREQ += $(INFODIR_DST)hpt.info.gz
         endif
-        ifeq ($(findstring htick,$(PROGRAMS)), htick)
+        ifeq ($(filter htick,$(PROGRAMS)), htick)
             info_PREREQ += $(INFODIR_DST)htick.info.gz
         endif
-        ifeq ($(findstring msged,$(PROGRAMS)), msged)
+        ifeq ($(filter msged,$(PROGRAMS)), msged)
             info_PREREQ += $(INFODIR_DST)msged.info.gz
         endif
 
         info_RECIPE := install-info --info-dir="$(INFODIR_DST)" "$(INFODIR_DST)fidoconfig.info.gz";
-        ifeq ($(findstring 'hpt',$(PROGRAMS)),'hpt')
+        ifeq ($(filter hpt,$(PROGRAMS)),hpt)
             info_RECIPE += install-info --info-dir="$(INFODIR_DST)" \
             "$(INFODIR_DST)hpt.info.gz";
         endif
-        ifeq ($(findstring htick,$(PROGRAMS)), htick)
+        ifeq ($(filter htick,$(PROGRAMS)), htick)
             info_RECIPE += install-info --info-dir="$(INFODIR_DST)" "$(INFODIR_DST)htick.info.gz";
         endif
-        ifeq ($(findstring msged,$(PROGRAMS)), msged)
+        ifeq ($(filter msged,$(PROGRAMS)), msged)
             info_RECIPE += install-info --info-dir="$(INFODIR_DST)" "$(INFODIR_DST)msged.info.gz";
         endif
         info_RECIPE += touch $(INFODIR_DST)dir;
@@ -568,17 +561,17 @@ ifneq ($(MAKECMDGOALS),update)
         uninfo_RECIPE := [ -f $(INFODIR_DST)fidoconfig.info.gz ] && \
             install-info --remove --info-dir=$(DESTDIR)$(INFODIR) \
             $(INFODIR_DST)fidoconfig.info.gz;
-        ifeq ($(findstring 'hpt',$(PROGRAMS)),'hpt')
+        ifeq ($(filter hpt,$(PROGRAMS)),hpt)
             uninfo_RECIPE += [ -f $(INFODIR_DST)hpt.info.gz ] && \
                 install-info --remove --info-dir=$(DESTDIR)$(INFODIR) \
                 $(INFODIR_DST)hpt.info.gz;
         endif
-        ifeq ($(findstring htick,$(PROGRAMS)), htick)
+        ifeq ($(filter htick,$(PROGRAMS)), htick)
             uninfo_RECIPE += [ -f $(INFODIR_DST)htick.info.gz ] && \
                 install-info --remove --info-dir=$(DESTDIR)$(INFODIR) \
                 $(INFODIR_DST)htick.info.gz;
         endif
-        ifeq ($(findstring msged,$(PROGRAMS)), msged)
+        ifeq ($(filter msged,$(PROGRAMS)), msged)
             uninfo_RECIPE += [ -f $(INFODIR_DST)msged.info.gz ] && \
                 install-info --remove --info-dir=$(DESTDIR)$(INFODIR) \
                 $(INFODIR_DST)msged.info.gz
@@ -720,7 +713,7 @@ else
     endif
 
 
-    ifeq ($(findstring 'hpt',$(PROGRAMS)),'hpt')
+    ifeq ($(filter hpt,$(PROGRAMS)),hpt)
         ifeq ($(USE_HPTZIP), 1)
             hpt_cmp: hpt_glue hptzip_glue areafix_glue fidoconf_glue smapi_glue huskylib_glue
 				@hpt_date=$(hpt_date); hpt_mdate=$(hpt_mdate); \
@@ -771,7 +764,7 @@ else
     endif
 
 
-    ifeq ($(findstring htick,$(PROGRAMS)), htick)
+    ifeq ($(filter htick,$(PROGRAMS)), htick)
         ifeq ($(USE_HPTZIP), 1)
             htick_cmp: htick_glue hptzip_glue areafix_glue fidoconf_glue smapi_glue huskylib_glue
 				@htick_date=$(htick_date); htick_mdate=$(htick_mdate); \
@@ -822,7 +815,7 @@ else
     endif
 
 
-    ifeq ($(findstring hptkill,$(PROGRAMS)), hptkill)
+    ifeq ($(filter hptkill,$(PROGRAMS)), hptkill)
         hptkill_cmp: hptkill_glue fidoconf_glue smapi_glue huskylib_glue
 			@hptkill_date=$(hptkill_date); hptkill_mdate=$(hptkill_mdate); \
 			if [ $${hptkill_date} -lt $(fidoconf_date) ]; \
@@ -851,7 +844,7 @@ else
     endif
 
 
-    ifeq ($(findstring hptsqfix,$(PROGRAMS)), hptsqfix)
+    ifeq ($(filter hptsqfix,$(PROGRAMS)), hptsqfix)
         hptsqfix_cmp: hptsqfix_glue smapi_glue huskylib_glue
 			@hptsqfix_date=$(hptsqfix_date); hptsqfix_mdate=$(hptsqfix_mdate); \
 			if [ $${hptsqfix_date} -lt $(smapi_date) ]; \
@@ -878,7 +871,7 @@ else
     endif
 
 
-    ifeq ($(findstring sqpack,$(PROGRAMS)), sqpack)
+    ifeq ($(filter sqpack,$(PROGRAMS)), sqpack)
         sqpack_cmp: sqpack_glue fidoconf_glue smapi_glue huskylib_glue
 			@sqpack_date=$(sqpack_date); sqpack_mdate=$(sqpack_mdate); \
 			if [ $${sqpack_date} -lt $(fidoconf_date) ]; \
@@ -907,7 +900,7 @@ else
     endif
 
 
-    ifeq ($(findstring msged,$(PROGRAMS)), msged)
+    ifeq ($(filter msged,$(PROGRAMS)), msged)
         msged_cmp: msged_glue fidoconf_glue smapi_glue huskylib_glue
 			@msged_date=$(msged_date); msged_mdate=$(msged_mdate); \
 			if [ $${msged_date} -lt $(fidoconf_date) ]; \
@@ -936,7 +929,7 @@ else
     endif
 
 
-    ifeq ($(findstring fidoroute,$(PROGRAMS)), fidoroute)
+    ifeq ($(filter fidoroute,$(PROGRAMS)), fidoroute)
         fidoroute_wdate: fidoroute_get_date
 			@cd $(fidoroute_ROOTDIR); curval=""; \
 			[ -f $(cvsdate) ] && \
@@ -955,7 +948,7 @@ else
     endif
 
 
-    ifeq ($(findstring util,$(PROGRAMS)), util)
+    ifeq ($(filter util,$(PROGRAMS)), util)
         util_wdate: util_get_date
 			@cd $(util_ROOTDIR); curval=""; \
 			[ -f $(cvsdate) ] && \
