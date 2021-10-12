@@ -9,6 +9,19 @@
 
 SHELL = /bin/sh
 
+ifeq ($(MAKECMDGOALS),)
+    MAKECMDGOALS := all
+endif
+
+Make = make
+ifeq ($(shell uname -s),FreeBSD)
+    Make := gmake
+endif
+
+ifneq ($(words $(MAKECMDGOALS)),1)
+    $(error Please use $(Make) with one goal at a time)
+endif
+
 ifdef RPM_BUILD
     HUSKYMAK=./huskymak.rpm.cfg
 else ifdef RPM_BUILD_ROOT
@@ -26,7 +39,7 @@ ifeq ($(MAKECMDGOALS),update)
     endif
 endif
 
-ifeq ($(MAKECMDGOALS),)
+ifeq ($(MAKECMDGOALS),all)
     ifeq ($(findstring util,$(PROGRAMS)), util)
         ifneq ($(findstring This is perl,$(shell perl -v)),This is perl)
             $(error ERROR: To build util, you must install Perl)
@@ -38,11 +51,9 @@ ifeq ($(MAKECMDGOALS),)
 endif
 
 ifdef INFODIR
-    ifneq ($(MAKECMDGOALS),distclean)
-        ifneq ($(MAKECMDGOALS),uninstall)
-            ifeq ($(shell whereis -b makeinfo | cut -d: -f2),)
-                $(error Please install makeinfo program)
-            endif
+    ifeq ($(filter distclean,$(MAKECMDGOALS))$(filter uninstall,$(MAKECMDGOALS)),)
+        ifeq ($(shell whereis -b makeinfo | cut -d: -f2),)
+            $(error Please install makeinfo program)
         endif
     endif
 endif
@@ -414,7 +425,7 @@ endif
 ifneq ($(MAKECMDGOALS),update)
     all: $(ALL_PREREQ) ;
 
-    ifeq ($(MAKECMDGOALS),)
+    ifeq ($(MAKECMDGOALS),all)
         ifeq ($(OSTYPE), UNIX)
             do_not_run_make_as_root:
 			@[ $$($(ID) $(IDOPT)) -eq 0 ] && echo "DO NOT run \`make\` as root" && exit 1 || true
