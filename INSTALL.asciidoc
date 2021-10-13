@@ -196,7 +196,7 @@ You may not bother to look at @INC if you have set `PREFIX` to a subdirectory
 of `HOME`, since in this case `@INC` definitely does not contain
 `$PREFIX/share/perl5`.
 
-If `PREFIX` is a subdirectory of `HOME`, you have to set and export `PER5LIB`
+If `PREFIX` is a subdirectory of `HOME`, you have to set and export `PERL5LIB`
 environment variable. On Linux with the default bash shell add the
 line to your `~/.bash_profile`:
 
