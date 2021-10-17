@@ -267,6 +267,7 @@ fidoroute_DEPDIR   := $(fidoroute_ROOTDIR)$(DEPDIR)$(DIRSEP)
 fidoroute_SRCDIR   := $(fidoroute_ROOTDIR)
 fidoroute_MANDIR   := $(fidoroute_ROOTDIR)
 fidoroute_DOCDIR   := $(fidoroute_ROOTDIR)doc$(DIRSEP)
+fidoroute_DATEFILES := *.cpp
 
 ### util ###
 # The root directory of the subproject
@@ -274,6 +275,7 @@ util_ROOTDIR := util$(DIRSEP)
 # Directories
 util_token   := util$(DIRSEP)Fidoconfig-Token$(DIRSEP)
 util_rmfiles := util$(DIRSEP)Husky-Rmfiles$(DIRSEP)
+util_DATEFILES := *.pl *.pm *.t
 
 ### huskybse ###
 # The root directory of the subproject
@@ -656,6 +658,18 @@ define gen_date_selection
 		then $1_date=$($(sub)_date); $1_mdate=$($(sub)_mdate); fi;)
 endef
 
+# to use inside function which takes $1 as subproject name
+DEFAULT_DATEFILES = $($1_H_DIR)*.h $(_SRC_DIR)$(DIRSEP)*.c
+
+# get the project's last modification date
+# uses DEFAULT_DATEFILES for files to check if <project>_DATEFILES is not set
+# $1 subproject
+define get_mdate
+	$(shell cd $($1_ROOTDIR); \
+		$(GIT) log -1 --date=short --format=format:"%cd" \
+			$(or $($1_DATEFILES),$(DEFAULT_DATEFILES)))
+endef
+
 ifeq ($(need_huskylib), 1)
     huskylib_glue: huskylib_get_date
 			$(eval huskylib_date:=$(subst -,,$(huskylib_mdate)))
@@ -663,10 +677,7 @@ ifeq ($(need_huskylib), 1)
 			$(call gen_cvsdate,huskylib)
 
     huskylib_get_date: huskylib_update
-			$(eval huskylib_mdate:=$(shell cd $(huskylib_ROOTDIR); $(GIT) log -1 \
-			--date=short --format=format:"%cd" $(huskylib_H_DIR)*.h \
-			$(_SRC_DIR)$(DIRSEP)*.c))
-
+			$(eval huskylib_mdate:=$(call get_mdate,huskylib))
 endif
 
 
@@ -676,9 +687,7 @@ ifeq ($(need_smapi), 1)
 			@$(call date_make2shell,smapi) \
 			$(call gen_cvsdate,smapi)
     smapi_get_date: smapi_update
-			$(eval smapi_mdate:=$(shell cd $(smapi_ROOTDIR); $(GIT) log -1 \
-			--date=short --format=format:"%cd" $(smapi_H_DIR)*.h $(_SRC_DIR)$(DIRSEP)*.c))
-
+			$(eval smapi_mdate:=$(call get_mdate,smapi))
 endif
 
 
@@ -693,10 +702,7 @@ ifeq ($(need_fidoconf), 1)
 			$(eval fidoconf_date:=$(subst -,,$(fidoconf_mdate)))
 
     fidoconf_get_date: fidoconf_update
-			$(eval fidoconf_mdate:=$(shell cd $(fidoconf_ROOTDIR); $(GIT) log -1 \
-			--date=short --format=format:"%cd" $(fidoconf_H_DIR)*.h \
-			$(_SRC_DIR)$(DIRSEP)*.c))
-
+			$(eval fidoconf_mdate:=$(call get_mdate,fidoconf))
 endif
 
 
@@ -707,9 +713,7 @@ ifeq ($(need_areafix), 1)
 			$(call gen_cvsdate,areafix)
 
     areafix_get_date: areafix_update
-			$(eval areafix_mdate:=$(shell cd $(areafix_ROOTDIR); $(GIT) log -1 \
-			--date=short --format=format:"%cd" $(areafix_H_DIR)*.h $(_SRC_DIR)$(DIRSEP)*.c))
-
+			$(eval areafix_mdate:=$(call get_mdate,areafix))
 endif
 
 
@@ -720,9 +724,7 @@ ifeq ($(need_hptzip), 1)
 			$(call gen_cvsdate,hptzip)
 
     hptzip_get_date: hptzip_update
-			$(eval hptzip_mdate:=$(shell cd $(hptzip_ROOTDIR); $(GIT) log -1 \
-			--date=short --format=format:"%cd" $(hptzip_H_DIR)*.h $(_SRC_DIR)$(DIRSEP)*.c))
-
+			$(eval hptzip_mdate:=$(call get_mdate,hptzip))
 endif
 
 
@@ -735,9 +737,7 @@ ifeq ($(filter hpt,$(PROGRAMS)),hpt)
 			$(eval hpt_date:=$(subst -,,$(hpt_mdate)))
 
     hpt_get_date: hpt_update
-			$(eval hpt_mdate:=$(shell cd $(hpt_ROOTDIR); $(GIT) log -1 \
-			--date=short --format=format:"%cd" $(hpt_H_DIR)*.h $(_SRC_DIR)$(DIRSEP)*.c))
-
+			$(eval hpt_mdate:=$(call get_mdate,hpt))
 endif
 
 
@@ -750,9 +750,7 @@ ifeq ($(filter htick,$(PROGRAMS)), htick)
 			$(eval htick_date:=$(subst -,,$(htick_mdate)))
 
     htick_get_date: htick_update
-			$(eval htick_mdate:=$(shell cd $(htick_ROOTDIR); $(GIT) log -1 \
-			--date=short --format=format:"%cd" $(htick_H_DIR)*.h $(_SRC_DIR)$(DIRSEP)*.c))
-
+			$(eval htick_mdate:=$(call get_mdate,htick))
 endif
 
 
@@ -766,9 +764,7 @@ ifeq ($(filter hptkill,$(PROGRAMS)), hptkill)
 			$(eval hptkill_date:=$(subst -,,$(hptkill_mdate)))
 
     hptkill_get_date: hptkill_update
-			$(eval hptkill_mdate:=$(shell cd $(hptkill_ROOTDIR); $(GIT) log -1 \
-			--date=short --format=format:"%cd" $(hptkill_H_DIR)*.h $(_SRC_DIR)$(DIRSEP)*.c))
-
+			$(eval hptkill_mdate:=$(call get_mdate,hptkill))
 endif
 
 
@@ -782,9 +778,7 @@ ifeq ($(filter hptsqfix,$(PROGRAMS)), hptsqfix)
 			$(eval hptsqfix_date:=$(subst -,,$(hptsqfix_mdate)))
 
     hptsqfix_get_date: hptsqfix_update
-			$(eval hptsqfix_mdate:=$(shell cd $(hptsqfix_ROOTDIR); $(GIT) log -1 \
-			--date=short --format=format:"%cd" $(hptsqfix_H_DIR)*.h $(_SRC_DIR)$(DIRSEP)*.c))
-
+			$(eval hptsqfix_mdate:=$(call get_mdate,hptsqfix))
 endif
 
 
@@ -798,9 +792,7 @@ ifeq ($(filter sqpack,$(PROGRAMS)), sqpack)
 			$(eval sqpack_date:=$(subst -,,$(sqpack_mdate)))
 
     sqpack_get_date: sqpack_update
-			$(eval sqpack_mdate:=$(shell cd $(sqpack_ROOTDIR); $(GIT) log -1 \
-			--date=short --format=format:"%cd" $(sqpack_H_DIR)*.h *.c))
-
+			$(eval sqpack_mdate:=$(call get_mdate,sqpack))
 endif
 
 
@@ -814,9 +806,7 @@ ifeq ($(filter msged,$(PROGRAMS)), msged)
 			$(eval msged_date:=$(subst -,,$(msged_mdate)))
 
     msged_get_date: msged_update
-			$(eval msged_mdate:=$(shell cd $(msged_ROOTDIR); $(GIT) log -1 \
-			--date=short --format=format:"%cd" *.h *.c))
-
+			$(eval msged_mdate:=$(call get_mdate,msged))
 endif
 
 
@@ -826,9 +816,7 @@ ifeq ($(filter fidoroute,$(PROGRAMS)), fidoroute)
 			$(call gen_cvsdate,fidoroute)
 
     fidoroute_get_date: fidoroute_update
-			$(eval fidoroute_mdate:=$(shell cd $(fidoroute_ROOTDIR); $(GIT) log -1 \
-			--date=short --format=format:"%cd" *.cpp))
-
+			$(eval fidoroute_mdate:=$(call get_mdate,fidoroute))
 endif
 
 
@@ -838,9 +826,7 @@ ifeq ($(filter util,$(PROGRAMS)), util)
 			$(call gen_cvsdate,util)
 
     util_get_date: util_update
-			$(eval util_mdate:=$(shell cd $(util_ROOTDIR); $(GIT) log -1 \
-			--date=short --format=format:"%cd" -- *.pl *.pm *.t))
-
+			$(eval util_mdate:=$(call get_mdate,util))
 endif
 
 # <subproject_update pattern rule for git pull
