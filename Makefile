@@ -116,6 +116,7 @@ huskylib_OBJDIR   := $(huskylib_ROOTDIR)$(OBJDIR)$(DIRSEP)
 huskylib_DEPDIR   := $(huskylib_ROOTDIR)$(DEPDIR)$(DIRSEP)
 huskylib_SRCDIR   := $(huskylib_ROOTDIR)$(_SRC_DIR)$(DIRSEP)
 
+
 ### smapi ###
 # Library name
 smapi_LIBNAME = smapi
@@ -142,6 +143,7 @@ fidoconf_OBJDIR   := $(fidoconf_ROOTDIR)$(OBJDIR)$(DIRSEP)
 fidoconf_DEPDIR   := $(fidoconf_ROOTDIR)$(DEPDIR)$(DIRSEP)
 fidoconf_SRCDIR   := $(fidoconf_ROOTDIR)$(_SRC_DIR)$(DIRSEP)
 fidoconf_MANDIR   := $(fidoconf_ROOTDIR)man$(DIRSEP)
+fidoconf_DATEDEPS  = smapi huskylib
 
 ### areafix ###
 # Library name
@@ -182,6 +184,8 @@ hpt_DEPDIR   := $(hpt_ROOTDIR)$(DEPDIR)$(DIRSEP)
 hpt_SRCDIR   := $(hpt_ROOTDIR)$(_SRC_DIR)$(DIRSEP)
 hpt_MANDIR   := $(hpt_ROOTDIR)man$(DIRSEP)
 hpt_DOCDIR   := $(hpt_ROOTDIR)doc$(DIRSEP)
+# must be lazy due to HPTZIP
+hpt_DATEDEPS  = $(HPTZIP) areafix fidoconf smapi huskylib
 
 ### htick ###
 # The root directory of the subproject
@@ -195,6 +199,7 @@ htick_DEPDIR   := $(htick_ROOTDIR)$(DEPDIR)$(DIRSEP)
 htick_SRCDIR   := $(htick_ROOTDIR)$(_SRC_DIR)$(DIRSEP)
 htick_MANDIR   := $(htick_ROOTDIR)man$(DIRSEP)
 htick_DOCDIR   := $(htick_ROOTDIR)doc$(DIRSEP)
+htick_DATEDEPS  = $(HPTZIP) areafix fidoconf smapi huskylib
 
 ### hptkill ###
 # The root directory of the subproject
@@ -207,6 +212,7 @@ hptkill_OBJDIR   := $(hptkill_ROOTDIR)$(OBJDIR)$(DIRSEP)
 hptkill_DEPDIR   := $(hptkill_ROOTDIR)$(DEPDIR)$(DIRSEP)
 hptkill_SRCDIR   := $(hptkill_ROOTDIR)$(_SRC_DIR)$(DIRSEP)
 hptkill_MANDIR   := $(hptkill_ROOTDIR)
+hptkill_DATEDEPS  = fidoconf smapi huskylib
 
 ### hptsqfix ###
 # The root directory of the subproject
@@ -220,6 +226,7 @@ hptsqfix_DEPDIR   := $(hptsqfix_ROOTDIR)$(DEPDIR)$(DIRSEP)
 hptsqfix_SRCDIR   := $(hptsqfix_ROOTDIR)$(_SRC_DIR)$(DIRSEP)
 hptsqfix_MANDIR   := $(hptsqfix_ROOTDIR)man$(DIRSEP)
 hptsqfix_CVSDATEDIR := hptsqfix$(DIRSEP)$(hptsqfix_H_DIR)
+hptsqfix_DATEDEPS  = smapi huskylib
 
 ### sqpack ###
 # The root directory of the subproject
@@ -232,6 +239,7 @@ sqpack_OBJDIR   := $(sqpack_ROOTDIR)$(OBJDIR)$(DIRSEP)
 sqpack_DEPDIR   := $(sqpack_ROOTDIR)$(DEPDIR)$(DIRSEP)
 sqpack_SRCDIR   := $(sqpack_ROOTDIR)
 sqpack_MANDIR   := $(sqpack_ROOTDIR)
+sqpack_DATEDEPS  = fidoconf smapi huskylib
 
 ### msged ###
 # The root directory of the subproject
@@ -245,6 +253,7 @@ msged_DEPDIR   := $(msged_ROOTDIR)$(DEPDIR)$(DIRSEP)
 msged_SRCDIR   := $(msged_ROOTDIR)
 msged_DOCDIR   := $(msged_ROOTDIR)doc$(DIRSEP)
 msged_MAPDIR   := $(msged_ROOTDIR)maps$(DIRSEP)
+msged_DATEDEPS  = fidoconf smapi huskylib
 
 ### fidoroute ###
 # The root directory of the subproject
@@ -297,6 +306,10 @@ need_areafix := $(if $(or $(filter hpt,$(PROGRAMS)), \
 need_hptzip := $(need_areafix)
 ifneq ($(USE_HPTZIP), 1)
     need_hptzip:=0
+endif
+# HPTZIP variable for date dependencies in hpt and htick
+ifeq ($(need_hptzip),1)
+    HPTZIP := hptzip
 endif
 
 UPDATE_PREREQ := huskybse_update
@@ -671,9 +684,9 @@ endif
 
 
 ifeq ($(need_fidoconf), 1)
-    fidoconf_cmp: fidoconf_glue smapi_glue huskylib_glue
+    fidoconf_cmp: $(addsuffix _glue,fidoconf $(fidoconf_DATEDEPS))
 			@$(call date_make2shell,fidoconf) \
-			$(call gen_date_selection,fidoconf,huskylib smapi) \
+			$(call gen_date_selection,fidoconf,$(fidoconf_DATEDEPS)) \
 			$(call gen_cvsdate,fidoconf)
 
     fidoconf_glue: fidoconf_get_date
@@ -714,18 +727,10 @@ endif
 
 
 ifeq ($(filter hpt,$(PROGRAMS)),hpt)
-    ifeq ($(USE_HPTZIP), 1)
-        hpt_cmp: hpt_glue hptzip_glue areafix_glue fidoconf_glue smapi_glue huskylib_glue
+        hpt_cmp: $(addsuffix _glue,hpt $(hpt_DATEDEPS))
 				@$(call date_make2shell,hpt) \
-				$(call gen_date_selection,hpt,hptzip areafix fidoconf smapi huskylib) \
+				$(call gen_date_selection,hpt,$(hpt_DATEDEPS)) \
 				$(call gen_cvsdate,hpt)
-    else
-        hpt_cmp: hpt_glue areafix_glue fidoconf_glue smapi_glue huskylib_glue
-				$(call date_make2shell,hpt) \
-				$(call gen_date_selection,hpt,areafix fidoconf smapi huskylib) \
-				$(call gen_cvsdate,hpt)
-    endif
-
     hpt_glue: hpt_get_date
 			$(eval hpt_date:=$(subst -,,$(hpt_mdate)))
 
@@ -737,18 +742,10 @@ endif
 
 
 ifeq ($(filter htick,$(PROGRAMS)), htick)
-    ifeq ($(USE_HPTZIP), 1)
-        htick_cmp: htick_glue hptzip_glue areafix_glue fidoconf_glue smapi_glue huskylib_glue
+        htick_cmp: $(addsuffix _glue,htick $(htick_DATEDEPS))
 				@$(call date_make2shell,htick) \
-				$(call gen_date_selection,htick,hptzip areafix fidoconf smapi huskylib) \
+				$(call gen_date_selection,htick,$(htick_DATEDEPS)) \
 				$(call gen_cvsdate,htick)
-    else
-        htick_cmp: htick_glue areafix_glue fidoconf_glue smapi_glue huskylib_glue
-				@$(call date_make2shell,htick) \
-				$(call gen_date_selection,htick,areafix fidoconf smapi huskylib) \
-				$(call gen_cvsdate,htick)
-    endif
-
     htick_glue: htick_get_date
 			$(eval htick_date:=$(subst -,,$(htick_mdate)))
 
@@ -760,9 +757,9 @@ endif
 
 
 ifeq ($(filter hptkill,$(PROGRAMS)), hptkill)
-    hptkill_cmp: hptkill_glue fidoconf_glue smapi_glue huskylib_glue
+    hptkill_cmp: $(addsuffix _glue,hptkill $(hptkill_DATEDEPS))
 			@$(call date_make2shell,hptkill) \
-			$(call gen_date_selection,hptkill,fidoconf smapi huskylib) \
+			$(call gen_date_selection,hptkill,$(hptkill_DATEDEPS)) \
 			$(call gen_cvsdate,hptkill)
 
     hptkill_glue: hptkill_get_date
@@ -776,9 +773,9 @@ endif
 
 
 ifeq ($(filter hptsqfix,$(PROGRAMS)), hptsqfix)
-    hptsqfix_cmp: hptsqfix_glue smapi_glue huskylib_glue
+    hptsqfix_cmp: $(addsuffix _glue,hptsqfix $(hptsqfix_DATEDEPS))
 			@$(call date_make2shell,hptsqfix) \
-			$(call gen_date_selection,hptsqfix,smapi huskylib) \
+			$(call gen_date_selection,hptsqfix,$(hptsqfix_DATEDEPS)) \
 			$(call gen_cvsdate,hptsqfix)
 
     hptsqfix_glue: hptsqfix_get_date
@@ -792,9 +789,9 @@ endif
 
 
 ifeq ($(filter sqpack,$(PROGRAMS)), sqpack)
-    sqpack_cmp: sqpack_glue fidoconf_glue smapi_glue huskylib_glue
+    sqpack_cmp: $(addsuffix _glue,sqpack $(sqpack_DATEDEPS))
 			@$(call date_make2shell,sqpack) \
-			$(call gen_date_selection,sqpack,fidoconf smapi huskylib) \
+			$(call gen_date_selection,sqpack,$(sqpack_DATEDEPS)) \
 			$(call gen_cvsdate,sqpack)
 
     sqpack_glue: sqpack_get_date
@@ -808,9 +805,9 @@ endif
 
 
 ifeq ($(filter msged,$(PROGRAMS)), msged)
-    msged_cmp: msged_glue fidoconf_glue smapi_glue huskylib_glue
+    msged_cmp: $(addsuffix _glue,msged $(msged_DATEDEPS))
 			@$(call date_make2shell,msged) \
-			$(call gen_date_selection,msged,fidoconf smapi huskylib) \
+			$(call gen_date_selection,msged,$(msged_DATEDEPS)) \
 			$(call gen_cvsdate,msged)
 
     msged_glue: msged_get_date
