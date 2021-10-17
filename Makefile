@@ -692,12 +692,9 @@ endef # gen_subproject
 $(foreach sub,$(SUBPROJECTS),$(eval $(call gen_subproject,$(sub))))
 
 # <subproject>_glue
-$(addsuffix _glue,$(SUBPROJECTS)): %_glue: %_get_date
-	$(eval $*_date:=$(subst -,,$($*_mdate)))
-
-# <subproject>_get_date
-$(addsuffix _get_date,$(SUBPROJECTS)): %_get_date: %_git_update
+$(addsuffix _glue,$(SUBPROJECTS)): %_glue: %_git_update
 	$(eval $*_mdate:=$(call get_mdate,$*))
+	$(eval $*_date:=$(subst -,,$($*_mdate)))
 
 # <subproject>_git_update pattern rule for git pull
 $(addsuffix _git_update,$(SUBPROJECTS)): %_git_update: do_not_run_update_as_root
