@@ -219,6 +219,7 @@ hptsqfix_OBJDIR   := $(hptsqfix_ROOTDIR)$(OBJDIR)$(DIRSEP)
 hptsqfix_DEPDIR   := $(hptsqfix_ROOTDIR)$(DEPDIR)$(DIRSEP)
 hptsqfix_SRCDIR   := $(hptsqfix_ROOTDIR)$(_SRC_DIR)$(DIRSEP)
 hptsqfix_MANDIR   := $(hptsqfix_ROOTDIR)man$(DIRSEP)
+hptsqfix_CVSDATEDIR := hptsqfix$(DIRSEP)$(hptsqfix_H_DIR)
 
 ### sqpack ###
 # The root directory of the subproject
@@ -619,14 +620,24 @@ else
     do_not_run_update_as_root: ;
 endif
 
+# $1 subproject
+define gen_cvsdate
+	cd "$(or $($1_CVSDATEDIR),$($1_ROOTDIR))"; curval=""; \
+	[ -f $(cvsdate) ] && \
+	curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
+	[ "$${$1_mdate}" != "$${curval}" ] && \
+	echo "char cvs_date[]=\"$${$1_mdate}\";" > $(cvsdate) ||:
+endef # gen_cvsdate
+
+# introduce <project>_date and <project>_mdate variables to shell
+# $1 subproject
+date_make2shell = $1_date=$($1_date); $1_mdate=$($1_mdate);
+
 ifeq ($(need_huskylib), 1)
     huskylib_glue: huskylib_get_date
 			$(eval huskylib_date:=$(subst -,,$(huskylib_mdate)))
-			@cd $(huskylib_ROOTDIR); curval=""; \
-			[ -f $(cvsdate) ] && \
-			curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
-			[ "$(huskylib_mdate)" != "$${curval}" ] && \
-			echo "char cvs_date[]=\"$(huskylib_mdate)\";" > $(cvsdate) ||:
+			@$(call date_make2shell,huskylib) \
+			$(call gen_cvsdate,huskylib)
 
     huskylib_get_date: huskylib_update
 			$(eval huskylib_mdate:=$(shell cd $(huskylib_ROOTDIR); $(GIT) log -1 \
@@ -639,12 +650,8 @@ endif
 ifeq ($(need_smapi), 1)
     smapi_glue: smapi_get_date
 			$(eval smapi_date:=$(subst -,,$(smapi_mdate)))
-			@cd $(smapi_ROOTDIR); curval=""; \
-			[ -f $(cvsdate) ] && \
-			curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
-			[ "$(smapi_mdate)" != "$${curval}" ] && \
-			echo "char cvs_date[]=\"$(smapi_mdate)\";" > $(cvsdate) ||:
-
+			@$(call date_make2shell,smapi) \
+			$(call gen_cvsdate,smapi)
     smapi_get_date: smapi_update
 			$(eval smapi_mdate:=$(shell cd $(smapi_ROOTDIR); $(GIT) log -1 \
 			--date=short --format=format:"%cd" $(smapi_H_DIR)*.h $(_SRC_DIR)$(DIRSEP)*.c))
@@ -654,16 +661,12 @@ endif
 
 ifeq ($(need_fidoconf), 1)
     fidoconf_cmp: fidoconf_glue smapi_glue huskylib_glue
-			@fidoconf_date=$(fidoconf_date); fidoconf_mdate=$(fidoconf_mdate); \
+			@$(call date_make2shell,fidoconf) \
 			if [ $${fidoconf_date} -lt $(huskylib_date) ]; then fidoconf_date=$(huskylib_date); \
 			fidoconf_mdate=$(huskylib_mdate); fi;  \
 			if [ $${fidoconf_date} -lt $(smapi_date) ]; then fidoconf_date=$(smapi_date); \
 			fidoconf_mdate=$(smapi_mdate); fi;  \
-			cd $(fidoconf_ROOTDIR); curval=""; \
-			[ -f $(cvsdate) ] && \
-			curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
-			[ "$${fidoconf_mdate}" != "$${curval}" ] && \
-			echo "char cvs_date[]=\"$${fidoconf_mdate}\";" > $(cvsdate) ||:
+			$(call gen_cvsdate,fidoconf)
 
     fidoconf_glue: fidoconf_get_date
 			$(eval fidoconf_date:=$(subst -,,$(fidoconf_mdate)))
@@ -679,11 +682,8 @@ endif
 ifeq ($(need_areafix), 1)
     areafix_glue: areafix_get_date
 			$(eval areafix_date:=$(subst -,,$(areafix_mdate)))
-			@cd $(areafix_ROOTDIR); curval=""; \
-			[ -f $(cvsdate) ] && \
-			curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
-			[ "$(areafix_mdate)" != "$${curval}" ] && \
-			echo "char cvs_date[]=\"$(areafix_mdate)\";" > $(cvsdate) ||:
+			@$(call date_make2shell,areafix) \
+			$(call gen_cvsdate,areafix)
 
     areafix_get_date: areafix_update
 			$(eval areafix_mdate:=$(shell cd $(areafix_ROOTDIR); $(GIT) log -1 \
@@ -695,11 +695,8 @@ endif
 ifeq ($(need_hptzip), 1)
     hptzip_glue: hptzip_get_date
 			$(eval hptzip_date:=$(subst -,,$(hptzip_mdate)))
-			@cd $(hptzip_ROOTDIR); curval=""; \
-			[ -f $(cvsdate) ] && \
-			curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
-			[ "$(hptzip_mdate)" != "$${curval}" ] && \
-			echo "char cvs_date[]=\"$(hptzip_mdate)\";" > $(cvsdate) ||:
+			@$(call date_make2shell,hptzip) \
+			$(call gen_cvsdate,hptzip)
 
     hptzip_get_date: hptzip_update
 			$(eval hptzip_mdate:=$(shell cd $(hptzip_ROOTDIR); $(GIT) log -1 \
@@ -711,7 +708,7 @@ endif
 ifeq ($(filter hpt,$(PROGRAMS)),hpt)
     ifeq ($(USE_HPTZIP), 1)
         hpt_cmp: hpt_glue hptzip_glue areafix_glue fidoconf_glue smapi_glue huskylib_glue
-				@hpt_date=$(hpt_date); hpt_mdate=$(hpt_mdate); \
+				@$(call date_make2shell,hpt) \
 				if [ $${hpt_date} -lt $(hptzip_date) ]; \
 				then hpt_date=$(hptzip_date); hpt_mdate=$(hptzip_mdate); fi; \
 				if [ $${hpt_date} -lt $(areafix_date) ]; \
@@ -722,14 +719,10 @@ ifeq ($(filter hpt,$(PROGRAMS)),hpt)
 				then hpt_date=$(smapi_date); hpt_mdate=$(smapi_mdate); fi; \
 				if [ $${hpt_date} -lt $(huskylib_date) ]; \
 				then hpt_mdate=$(huskylib_mdate); fi; \
-				cd $(hpt_ROOTDIR); curval=""; \
-				[ -f $(cvsdate) ] && \
-				curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
-				[ "$${hpt_mdate}" != "$${curval}" ] && \
-				echo "char cvs_date[]=\"$${hpt_mdate}\";" > $(cvsdate) ||:
+				$(call gen_cvsdate,hpt)
     else
         hpt_cmp: hpt_glue areafix_glue fidoconf_glue smapi_glue huskylib_glue
-				@hpt_date=$(hpt_date); hpt_mdate=$(hpt_mdate); \
+				$(call date_make2shell,hpt) \
 				if [ $${hpt_date} -lt $(areafix_date) ]; \
 				then hpt_date=$(areafix_date); hpt_mdate=$(areafix_mdate); fi; \
 				if [ $${hpt_date} -lt $(fidoconf_date) ]; \
@@ -738,11 +731,7 @@ ifeq ($(filter hpt,$(PROGRAMS)),hpt)
 				then hpt_date=$(smapi_date); hpt_mdate=$(smapi_mdate); fi; \
 				if [ $${hpt_date} -lt $(huskylib_date) ]; \
 				then hpt_mdate=$(huskylib_mdate); fi; \
-				cd $(hpt_ROOTDIR); curval=""; \
-				[ -f $(cvsdate) ] && \
-				curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
-				[ "$${hpt_mdate}" != "$${curval}" ] && \
-				echo "char cvs_date[]=\"$${hpt_mdate}\";" > $(cvsdate) ||:
+				$(call gen_cvsdate,hpt)
     endif
 
     hpt_glue: hpt_get_date
@@ -758,7 +747,7 @@ endif
 ifeq ($(filter htick,$(PROGRAMS)), htick)
     ifeq ($(USE_HPTZIP), 1)
         htick_cmp: htick_glue hptzip_glue areafix_glue fidoconf_glue smapi_glue huskylib_glue
-				@htick_date=$(htick_date); htick_mdate=$(htick_mdate); \
+				@$(call date_make2shell,htick) \
 				if [ $${htick_date} -lt $(hptzip_date) ]; \
 				then htick_date=$(hptzip_date); htick_mdate=$(hptzip_mdate); fi; \
 				if [ $${htick_date} -lt $(areafix_date) ]; \
@@ -769,14 +758,10 @@ ifeq ($(filter htick,$(PROGRAMS)), htick)
 				then htick_date=$(smapi_date); htick_mdate=$(smapi_mdate); fi; \
 				if [ $${htick_date} -lt $(huskylib_date) ]; \
 				then htick_mdate=$(huskylib_mdate); fi; \
-				cd $(htick_ROOTDIR); curval=""; \
-				[ -f $(cvsdate) ] && \
-				curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
-				[ "$${htick_mdate}" != "$${curval}" ] && \
-				echo "char cvs_date[]=\"$${htick_mdate}\";" > $(cvsdate) ||:
+				$(call gen_cvsdate,htick)
     else
         htick_cmp: htick_glue areafix_glue fidoconf_glue smapi_glue huskylib_glue
-				@htick_date=$(htick_date); htick_mdate=$(htick_mdate); \
+				@$(call date_make2shell,htick) \
 				if [ $${htick_date} -lt $(areafix_date) ]; \
 				then htick_date=$(areafix_date); htick_mdate=$(areafix_mdate); fi; \
 				if [ $${htick_date} -lt $(fidoconf_date) ]; \
@@ -785,11 +770,7 @@ ifeq ($(filter htick,$(PROGRAMS)), htick)
 				then htick_date=$(smapi_date); htick_mdate=$(smapi_mdate); fi; \
 				if [ $${htick_date} -lt $(huskylib_date) ]; \
 				then htick_mdate=$(huskylib_mdate); fi; \
-				cd $(htick_ROOTDIR); curval=""; \
-				[ -f $(cvsdate) ] && \
-				curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
-				[ "$${htick_mdate}" != "$${curval}" ] && \
-				echo "char cvs_date[]=\"$${htick_mdate}\";" > $(cvsdate) ||:
+				$(call gen_cvsdate,htick)
     endif
 
     htick_glue: htick_get_date
@@ -804,18 +785,14 @@ endif
 
 ifeq ($(filter hptkill,$(PROGRAMS)), hptkill)
     hptkill_cmp: hptkill_glue fidoconf_glue smapi_glue huskylib_glue
-			@hptkill_date=$(hptkill_date); hptkill_mdate=$(hptkill_mdate); \
+			@$(call date_make2shell,hptkill) \
 			if [ $${hptkill_date} -lt $(fidoconf_date) ]; \
 			then hptkill_date=$(fidoconf_date); hptkill_mdate=$(fidoconf_mdate); fi; \
 			if [ $${hptkill_date} -lt $(smapi_date) ]; \
 			then hptkill_date=$(smapi_date); hptkill_mdate=$(smapi_mdate); fi; \
 			if [ $${hptkill_date} -lt $(huskylib_date) ]; \
 			then hptkill_mdate=$(huskylib_mdate); fi; \
-			cd $(hptkill_ROOTDIR); curval=""; \
-			[ -f $(cvsdate) ] && \
-			curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
-			[ "$${hptkill_mdate}" != "$${curval}" ] && \
-			echo "char cvs_date[]=\"$${hptkill_mdate}\";" > $(cvsdate) ||:
+			$(call gen_cvsdate,hptkill)
 
     hptkill_glue: hptkill_get_date
 			$(eval hptkill_date:=$(subst -,,$(hptkill_mdate)))
@@ -829,16 +806,12 @@ endif
 
 ifeq ($(filter hptsqfix,$(PROGRAMS)), hptsqfix)
     hptsqfix_cmp: hptsqfix_glue smapi_glue huskylib_glue
-			@hptsqfix_date=$(hptsqfix_date); hptsqfix_mdate=$(hptsqfix_mdate); \
+			@$(call date_make2shell,hptsqfix) \
 			if [ $${hptsqfix_date} -lt $(smapi_date) ]; \
 			then hptsqfix_date=$(smapi_date); hptsqfix_mdate=$(smapi_mdate); fi; \
 			if [ $${hptsqfix_date} -lt $(huskylib_date) ]; \
 			then hptsqfix_mdate=$(huskylib_mdate); fi; \
-			cd $(hptsqfix_ROOTDIR)$(hptsqfix_H_DIR); curval=""; \
-			[ -f $(cvsdate) ] && \
-			curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
-			[ "$${hptsqfix_mdate}" != "$${curval}" ] && \
-			echo "char cvs_date[]=\"$${hptsqfix_mdate}\";" > $(cvsdate) ||:
+			$(call gen_cvsdate,hptsqfix)
 
     hptsqfix_glue: hptsqfix_get_date
 			$(eval hptsqfix_date:=$(subst -,,$(hptsqfix_mdate)))
@@ -852,18 +825,14 @@ endif
 
 ifeq ($(filter sqpack,$(PROGRAMS)), sqpack)
     sqpack_cmp: sqpack_glue fidoconf_glue smapi_glue huskylib_glue
-			@sqpack_date=$(sqpack_date); sqpack_mdate=$(sqpack_mdate); \
+			@$(call date_make2shell,sqpack) \
 			if [ $${sqpack_date} -lt $(fidoconf_date) ]; \
 			then sqpack_date=$(fidoconf_date); sqpack_mdate=$(fidoconf_mdate); fi; \
 			if [ $${sqpack_date} -lt $(smapi_date) ]; \
 			then sqpack_date=$(smapi_date); sqpack_mdate=$(smapi_mdate); fi; \
 			if [ $${sqpack_date} -lt $(huskylib_date) ]; \
 			then sqpack_mdate=$(huskylib_mdate); fi; \
-			cd $(sqpack_ROOTDIR); curval=""; \
-			[ -f $(cvsdate) ] && \
-			curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
-			[ "$${sqpack_mdate}" != "$${curval}" ] && \
-			echo "char cvs_date[]=\"$${sqpack_mdate}\";" > $(cvsdate) ||:
+			$(call gen_cvsdate,sqpack)
 
     sqpack_glue: sqpack_get_date
 			$(eval sqpack_date:=$(subst -,,$(sqpack_mdate)))
@@ -877,18 +846,14 @@ endif
 
 ifeq ($(filter msged,$(PROGRAMS)), msged)
     msged_cmp: msged_glue fidoconf_glue smapi_glue huskylib_glue
-			@msged_date=$(msged_date); msged_mdate=$(msged_mdate); \
+			@$(call date_make2shell,msged) \
 			if [ $${msged_date} -lt $(fidoconf_date) ]; \
 			then msged_date=$(fidoconf_date); msged_mdate=$(fidoconf_mdate); fi; \
 			if [ $${msged_date} -lt $(smapi_date) ]; \
 			then msged_date=$(smapi_date); msged_mdate=$(smapi_mdate); fi; \
 			if [ $${msged_date} -lt $(huskylib_date) ]; \
 			then msged_mdate=$(huskylib_mdate); fi; \
-			cd $(msged_ROOTDIR); curval=""; \
-			[ -f $(cvsdate) ] && \
-			curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
-			[ "$${msged_mdate}" != "$${curval}" ] && \
-			echo "char cvs_date[]=\"$${msged_mdate}\";" > $(cvsdate) ||:
+			$(call gen_cvsdate,msged)
 
     msged_glue: msged_get_date
 			$(eval msged_date:=$(subst -,,$(msged_mdate)))
@@ -902,11 +867,8 @@ endif
 
 ifeq ($(filter fidoroute,$(PROGRAMS)), fidoroute)
     fidoroute_wdate: fidoroute_get_date
-			@cd $(fidoroute_ROOTDIR); curval=""; \
-			[ -f $(cvsdate) ] && \
-			curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
-			[ "$(fidoroute_mdate)" != "$${curval}" ] && \
-			echo "char cvs_date[]=\"$(fidoroute_mdate)\";" > $(cvsdate) ||:
+			@$(call date_make2shell,fidoroute) \
+			$(call gen_cvsdate,fidoroute)
 
     fidoroute_get_date: fidoroute_update
 			$(eval fidoroute_mdate:=$(shell cd $(fidoroute_ROOTDIR); $(GIT) log -1 \
@@ -917,11 +879,8 @@ endif
 
 ifeq ($(filter util,$(PROGRAMS)), util)
     util_wdate: util_get_date
-			@cd $(util_ROOTDIR); curval=""; \
-			[ -f $(cvsdate) ] && \
-			curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
-			[ "$(util_mdate)" != "$${curval}" ] && \
-			echo "char cvs_date[]=\"$(util_mdate)\";" > $(cvsdate) ||:
+			@$(call date_make2shell,util) \
+			$(call gen_cvsdate,util)
 
     util_get_date: util_update
 			$(eval util_mdate:=$(shell cd $(util_ROOTDIR); $(GIT) log -1 \
