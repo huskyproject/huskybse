@@ -97,6 +97,10 @@ endif
 
 cvsdate=cvsdate.h
 
+# In dependency order
+SUBPROJECTS := huskybse huskylib smapi fidoconf areafix hptzip \
+		hpt htick hptkill hptsqfix sqpack msged fidoroute util
+
 ### huskylib ###
 # Library name
 huskylib_LIBNAME = husky
@@ -629,10 +633,6 @@ ifeq ($(need_huskylib), 1)
 			--date=short --format=format:"%cd" $(huskylib_H_DIR)*.h \
 			$(_SRC_DIR)$(DIRSEP)*.c))
 
-    huskylib_update: | do_not_run_update_as_root
-			@[ -d $(huskylib_ROOTDIR).git ] && cd $(huskylib_ROOTDIR) && \
-			{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
-			$(GIT) $(CLONE) https://github.com/huskyproject/huskylib.git
 endif
 
 
@@ -649,10 +649,6 @@ ifeq ($(need_smapi), 1)
 			$(eval smapi_mdate:=$(shell cd $(smapi_ROOTDIR); $(GIT) log -1 \
 			--date=short --format=format:"%cd" $(smapi_H_DIR)*.h $(_SRC_DIR)$(DIRSEP)*.c))
 
-    smapi_update: | do_not_run_update_as_root
-			@[ -d $(smapi_ROOTDIR).git ] && cd $(smapi_ROOTDIR) && \
-			{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
-			$(GIT) $(CLONE) https://github.com/huskyproject/smapi.git
 endif
 
 
@@ -677,10 +673,6 @@ ifeq ($(need_fidoconf), 1)
 			--date=short --format=format:"%cd" $(fidoconf_H_DIR)*.h \
 			$(_SRC_DIR)$(DIRSEP)*.c))
 
-    fidoconf_update: | do_not_run_update_as_root
-			@[ -d $(fidoconf_ROOTDIR).git ] && cd $(fidoconf_ROOTDIR) && \
-			{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
-			$(GIT) $(CLONE) https://github.com/huskyproject/fidoconf.git
 endif
 
 
@@ -697,10 +689,6 @@ ifeq ($(need_areafix), 1)
 			$(eval areafix_mdate:=$(shell cd $(areafix_ROOTDIR); $(GIT) log -1 \
 			--date=short --format=format:"%cd" $(areafix_H_DIR)*.h $(_SRC_DIR)$(DIRSEP)*.c))
 
-    areafix_update: | do_not_run_update_as_root
-			@[ -d $(areafix_ROOTDIR).git ] && cd $(areafix_ROOTDIR) && \
-			{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
-			$(GIT) $(CLONE) https://github.com/huskyproject/areafix.git
 endif
 
 
@@ -717,10 +705,6 @@ ifeq ($(need_hptzip), 1)
 			$(eval hptzip_mdate:=$(shell cd $(hptzip_ROOTDIR); $(GIT) log -1 \
 			--date=short --format=format:"%cd" $(hptzip_H_DIR)*.h $(_SRC_DIR)$(DIRSEP)*.c))
 
-    hptzip_update: | do_not_run_update_as_root
-			@[ -d $(hptzip_ROOTDIR).git ] && cd $(hptzip_ROOTDIR) && \
-			{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
-			$(GIT) $(CLONE) https://github.com/huskyproject/hptzip.git
 endif
 
 
@@ -768,10 +752,6 @@ ifeq ($(filter hpt,$(PROGRAMS)),hpt)
 			$(eval hpt_mdate:=$(shell cd $(hpt_ROOTDIR); $(GIT) log -1 \
 			--date=short --format=format:"%cd" $(hpt_H_DIR)*.h $(_SRC_DIR)$(DIRSEP)*.c))
 
-    hpt_update: | do_not_run_update_as_root
-			@[ -d $(hpt_ROOTDIR).git ] && cd $(hpt_ROOTDIR) && \
-			{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
-			$(GIT) $(CLONE) https://github.com/huskyproject/hpt.git
 endif
 
 
@@ -819,10 +799,6 @@ ifeq ($(filter htick,$(PROGRAMS)), htick)
 			$(eval htick_mdate:=$(shell cd $(htick_ROOTDIR); $(GIT) log -1 \
 			--date=short --format=format:"%cd" $(htick_H_DIR)*.h $(_SRC_DIR)$(DIRSEP)*.c))
 
-    htick_update: | do_not_run_update_as_root
-			@[ -d $(htick_ROOTDIR).git ] && cd $(htick_ROOTDIR) && \
-			{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
-			$(GIT) $(CLONE) https://github.com/huskyproject/htick.git
 endif
 
 
@@ -848,10 +824,6 @@ ifeq ($(filter hptkill,$(PROGRAMS)), hptkill)
 			$(eval hptkill_mdate:=$(shell cd $(hptkill_ROOTDIR); $(GIT) log -1 \
 			--date=short --format=format:"%cd" $(hptkill_H_DIR)*.h $(_SRC_DIR)$(DIRSEP)*.c))
 
-    hptkill_update: | do_not_run_update_as_root
-			@[ -d $(hptkill_ROOTDIR).git ] && cd $(hptkill_ROOTDIR) && \
-			{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
-			$(GIT) $(CLONE) https://github.com/huskyproject/hptkill.git
 endif
 
 
@@ -875,10 +847,6 @@ ifeq ($(filter hptsqfix,$(PROGRAMS)), hptsqfix)
 			$(eval hptsqfix_mdate:=$(shell cd $(hptsqfix_ROOTDIR); $(GIT) log -1 \
 			--date=short --format=format:"%cd" $(hptsqfix_H_DIR)*.h $(_SRC_DIR)$(DIRSEP)*.c))
 
-    hptsqfix_update: | do_not_run_update_as_root
-			@[ -d $(hptsqfix_ROOTDIR).git ] && cd $(hptsqfix_ROOTDIR) && \
-			{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
-			$(GIT) $(CLONE) https://github.com/huskyproject/hptsqfix.git
 endif
 
 
@@ -904,10 +872,6 @@ ifeq ($(filter sqpack,$(PROGRAMS)), sqpack)
 			$(eval sqpack_mdate:=$(shell cd $(sqpack_ROOTDIR); $(GIT) log -1 \
 			--date=short --format=format:"%cd" $(sqpack_H_DIR)*.h *.c))
 
-    sqpack_update: | do_not_run_update_as_root
-			@[ -d $(sqpack_ROOTDIR).git ] && cd $(sqpack_ROOTDIR) && \
-			{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
-			$(GIT) $(CLONE) https://github.com/huskyproject/sqpack.git
 endif
 
 
@@ -933,10 +897,6 @@ ifeq ($(filter msged,$(PROGRAMS)), msged)
 			$(eval msged_mdate:=$(shell cd $(msged_ROOTDIR); $(GIT) log -1 \
 			--date=short --format=format:"%cd" *.h *.c))
 
-    msged_update: | do_not_run_update_as_root
-			@[ -d $(msged_ROOTDIR).git ] && cd $(msged_ROOTDIR) && \
-			{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
-			$(GIT) $(CLONE) https://github.com/huskyproject/msged.git
 endif
 
 
@@ -952,10 +912,6 @@ ifeq ($(filter fidoroute,$(PROGRAMS)), fidoroute)
 			$(eval fidoroute_mdate:=$(shell cd $(fidoroute_ROOTDIR); $(GIT) log -1 \
 			--date=short --format=format:"%cd" *.cpp))
 
-    fidoroute_update: | do_not_run_update_as_root
-			@[ -d $(fidoroute_ROOTDIR).git ] && cd $(fidoroute_ROOTDIR) && \
-			{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
-			$(GIT) $(CLONE) https://github.com/huskyproject/fidoroute.git
 endif
 
 
@@ -971,13 +927,10 @@ ifeq ($(filter util,$(PROGRAMS)), util)
 			$(eval util_mdate:=$(shell cd $(util_ROOTDIR); $(GIT) log -1 \
 			--date=short --format=format:"%cd" -- *.pl *.pm *.t))
 
-    util_update: | do_not_run_update_as_root
-			@[ -d $(util_ROOTDIR).git ] && cd $(util_ROOTDIR) && \
-			{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
-			$(GIT) $(CLONE) https://github.com/huskyproject/util.git
 endif
 
-huskybse_update: | do_not_run_update_as_root
-		@[ -d $(huskybse_ROOTDIR).git ] && cd $(huskybse_ROOTDIR) && \
-		{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
-		$(GIT) $(CLONE) https://github.com/huskyproject/huskybse.git
+# <subproject_update pattern rule for git pull
+$(addsuffix _update,$(SUBPROJECTS)): %_update: do_not_run_update_as_root
+	@[ -d $($*_ROOTDIR).git ] && cd $($*_ROOTDIR) && \
+	{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
+	$(GIT) $(CLONE) https://github.com/huskyproject/$*.git
