@@ -635,15 +635,12 @@ define gen_cvsdate
 	echo "char cvs_date[]=\"$${$1_mdate}\";" > $(cvsdate) ||:
 endef # gen_cvsdate
 
-# introduce <project>_date and <project>_mdate variables to shell
-# $1 subproject
-date_make2shell = $1_date=$($1_date); $1_mdate=$($1_mdate);
-
 # generate shell code to choose the latest date from dependent subprojects
 # assumes that that previous code set <project>_date/_mdate already
 # $1 subproject
 # $2 dependencies
 define gen_date_selection
+	$1_date=$($1_date); $1_mdate=$($1_mdate); \
 	$(foreach sub,$2,\
 		if [ "$${$1_date}" -lt $($(sub)_date) ]; \
 		then $1_date=$($(sub)_date); $1_mdate=$($(sub)_mdate); fi;)
@@ -680,8 +677,7 @@ define gen_subproject
 #                      [ "${<subproject>_mdate}" != "${curval}" ] && \
 #                      echo "char cvs_date[]=\"${<subproject>_mdate}\";" > $(cvsdate) ||:
 $1_update: $$(addsuffix _glue,$1 $$($1_DATEDEPS))
-	@$$(call date_make2shell,$1) \
-	$$(call gen_date_selection,$1,$$($1_DATEDEPS)) \
+	@$$(call gen_date_selection,$1,$$($1_DATEDEPS)) \
 	$$(call gen_cvsdate,$1)
 
 .PHONY: $1_update $1_glue $1_git_update
