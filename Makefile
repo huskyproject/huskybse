@@ -8,6 +8,7 @@
 #
 
 SHELL = /bin/sh
+.DEFAULT_GOAL := all
 
 ifeq ($(MAKECMDGOALS),)
     MAKECMDGOALS := all
@@ -460,6 +461,73 @@ ifeq ($(filter util,$(PROGRAMS)), util)
     UNINSTALL_PREREQ += util_uninstall
 endif
 
+# $1 subproject
+define gen_cvsdate
+	cd "$(or $($1_CVSDATEDIR),$($1_ROOTDIR))"; curval=""; \
+	[ -f $(cvsdate) ] && \
+	curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
+	[ "$${$1_mdate}" != "$${curval}" ] && \
+	echo "char cvs_date[]=\"$${$1_mdate}\";" > $(cvsdate) ||:
+endef # gen_cvsdate
+
+# generate shell code to choose the latest date from dependent subprojects
+# assumes that that previous code set <project>_date/_mdate already
+# $1 subproject
+# $2 dependencies
+define gen_date_selection
+	$1_date=$($1_date); $1_mdate=$($1_mdate); \
+	$(foreach sub,$2,\
+		if [ "$${$1_date}" -lt $($(sub)_date) ]; \
+		then $1_date=$($(sub)_date); $1_mdate=$($(sub)_mdate); fi;)
+endef
+
+# to use inside function which takes $1 as subproject name
+DEFAULT_DATEFILES = $($1_H_DIR)*.h $(_SRC_DIR)$(DIRSEP)*.c
+
+# get the project's last modification date
+# uses DEFAULT_DATEFILES for files to check if <project>_DATEFILES is not set
+# $1 subproject
+define get_mdate
+	$(shell cd $($1_ROOTDIR); \
+		$(GIT) log -1 --date=short --format=format:"%cd" \
+			$(or $($1_DATEFILES),$(DEFAULT_DATEFILES)))
+endef
+
+# generate data and rules for subproject
+# $1 subproject
+define gen_subproject
+
+ifneq ($(MAKECMDGOALS),update)
+ifneq ($1,huskybse) # skip ourself :)
+include $($1_ROOTDIR)Makefile
+endif
+endif
+
+# main update rule for subproject
+# <subproject>_update: <subproject>_glue <dep>_glue
+#                      <subproject>_date=$(<subproject>_date); \
+#                      <subproject>_mdate=$(<subproject>_mdate); \
+#                      if [ "${<subproject>_date}" -lt $(<dep>_date) ]; \
+#                      then <subproject_date=$(<dep>_date); \
+#                           <subproject_mdate=$(<dep>_mdate); \
+#                      fi; \
+#                      cd "$(<subproject>_CVSDATEDIR)"; \ # or _ROOTDIR if not set
+#                      curval=""; \
+#                      [ -f $(cvsdate) ] && \
+#                      curval=$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
+#                      [ "${<subproject>_mdate}" != "${curval}" ] && \
+#                      echo "char cvs_date[]=\"${<subproject>_mdate}\";" > $(cvsdate) ||:
+$1_update: $$(addsuffix _glue,$1 $$($1_DATEDEPS))
+	@$$(call gen_date_selection,$1,$$($1_DATEDEPS)) \
+	$$(call gen_cvsdate,$1)
+
+.PHONY: $1_update $1_glue $1_git_update
+
+endef # gen_subproject
+
+# Generate main update rule for subprojects
+$(foreach sub,$(ENABLED),$(eval $(call gen_subproject,$(sub))))
+
 .PHONY: all install uninstall clean distclean depend update huskylib_update \
         smapi_update fidoconf_update areafix_update hptzip_update hpt_update \
         htick_update hptkill_update hptsqfix_update sqpack_update msged_update \
@@ -607,73 +675,6 @@ ifeq ($(OSTYPE), UNIX)
 else
     do_not_run_update_as_root: ;
 endif
-
-# $1 subproject
-define gen_cvsdate
-	cd "$(or $($1_CVSDATEDIR),$($1_ROOTDIR))"; curval=""; \
-	[ -f $(cvsdate) ] && \
-	curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
-	[ "$${$1_mdate}" != "$${curval}" ] && \
-	echo "char cvs_date[]=\"$${$1_mdate}\";" > $(cvsdate) ||:
-endef # gen_cvsdate
-
-# generate shell code to choose the latest date from dependent subprojects
-# assumes that that previous code set <project>_date/_mdate already
-# $1 subproject
-# $2 dependencies
-define gen_date_selection
-	$1_date=$($1_date); $1_mdate=$($1_mdate); \
-	$(foreach sub,$2,\
-		if [ "$${$1_date}" -lt $($(sub)_date) ]; \
-		then $1_date=$($(sub)_date); $1_mdate=$($(sub)_mdate); fi;)
-endef
-
-# to use inside function which takes $1 as subproject name
-DEFAULT_DATEFILES = $($1_H_DIR)*.h $(_SRC_DIR)$(DIRSEP)*.c
-
-# get the project's last modification date
-# uses DEFAULT_DATEFILES for files to check if <project>_DATEFILES is not set
-# $1 subproject
-define get_mdate
-	$(shell cd $($1_ROOTDIR); \
-		$(GIT) log -1 --date=short --format=format:"%cd" \
-			$(or $($1_DATEFILES),$(DEFAULT_DATEFILES)))
-endef
-
-# generate data and rules for subproject
-# $1 subproject
-define gen_subproject
-
-ifneq ($(MAKECMDGOALS),update)
-ifneq ($1,huskybse) # skip ourself :)
-include $($1_ROOTDIR)Makefile
-endif
-endif
-
-# main update rule for subproject
-# <subproject>_update: <subproject>_glue <dep>_glue
-#                      <subproject>_date=$(<subproject>_date); \
-#                      <subproject>_mdate=$(<subproject>_mdate); \
-#                      if [ "${<subproject>_date}" -lt $(<dep>_date) ]; \
-#                      then <subproject_date=$(<dep>_date); \
-#                           <subproject_mdate=$(<dep>_mdate); \
-#                      fi; \
-#                      cd "$(<subproject>_CVSDATEDIR)"; \ # or _ROOTDIR if not set
-#                      curval=""; \
-#                      [ -f $(cvsdate) ] && \
-#                      curval=$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
-#                      [ "${<subproject>_mdate}" != "${curval}" ] && \
-#                      echo "char cvs_date[]=\"${<subproject>_mdate}\";" > $(cvsdate) ||:
-$1_update: $$(addsuffix _glue,$1 $$($1_DATEDEPS))
-	@$$(call gen_date_selection,$1,$$($1_DATEDEPS)) \
-	$$(call gen_cvsdate,$1)
-
-.PHONY: $1_update $1_glue $1_git_update
-
-endef # gen_subproject
-
-# Generate main update rule for subprojects
-$(foreach sub,$(ENABLED),$(eval $(call gen_subproject,$(sub))))
 
 # <subproject>_glue
 $(addsuffix _glue,$(ENABLED)): %_glue: %_git_update
