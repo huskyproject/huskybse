@@ -196,60 +196,37 @@ util_DATEFILES := *.pl *.pm *.t
 ### huskybse ###
 
 
-# Define need_huskylib
-need_huskylib := $(if $(or $(filter hpt,$(PROGRAMS)), \
-                           $(filter htick,$(PROGRAMS)), \
-                           $(filter hptkill,$(PROGRAMS)), \
-                           $(filter hptsqfix,$(PROGRAMS)), \
-                           $(filter sqpack,$(PROGRAMS)), \
-                           $(filter msged,$(PROGRAMS))),1,0)
+HUSKYLIB := $(and $(or $(filter hpt,$(PROGRAMS)), \
+                       $(filter htick,$(PROGRAMS)), \
+                       $(filter hptkill,$(PROGRAMS)), \
+                       $(filter hptsqfix,$(PROGRAMS)), \
+                       $(filter sqpack,$(PROGRAMS)), \
+                       $(filter msged,$(PROGRAMS))),\
+                  huskylib)
 
-# Define need_smapi
-need_smapi := $(need_huskylib)
+SMAPI := $(and $(HUSKYLIB),smapi)
 
-# Define need_fidoconf
-need_fidoconf := $(if $(or $(filter hpt,$(PROGRAMS)), \
-                           $(filter htick,$(PROGRAMS)), \
-                           $(filter hptkill,$(PROGRAMS)), \
-                           $(filter sqpack,$(PROGRAMS)), \
-                           $(filter msged,$(PROGRAMS))),1,0)
+FIDOCONF := $(and $(or $(filter hpt,$(PROGRAMS)), \
+                       $(filter htick,$(PROGRAMS)), \
+                       $(filter hptkill,$(PROGRAMS)), \
+                       $(filter sqpack,$(PROGRAMS)), \
+                       $(filter msged,$(PROGRAMS))),\
+                  fidoconf)
 
-# Define need_areafix
-need_areafix := $(if $(or $(filter hpt,$(PROGRAMS)), \
-                          $(filter htick,$(PROGRAMS))),1,0)
+AREAFIX := $(and $(or $(filter hpt,$(PROGRAMS)), \
+                      $(filter htick,$(PROGRAMS))),\
+                 areafix)
 
-# Define need_hptzip
-need_hptzip := $(need_areafix)
+HPTZIP := $(and $(AREAFIX),hptzip)
+
 ifneq ($(USE_HPTZIP), 1)
-    need_hptzip:=0
-endif
-# HPTZIP variable for date dependencies in hpt and htick
-ifeq ($(need_hptzip),1)
-    HPTZIP := hptzip
-endif
-
-# make dependency sorted list of enabled subprojects
-# keep need_* for now 0/1
-DEPS :=
-ifeq ($(need_huskylib),1)
-DEPS += huskylib
-endif
-ifeq ($(need_smapi),1)
-DEPS += smapi
-endif
-ifeq ($(need_fidoconf),1)
-DEPS += fidoconf
-endif
-ifeq ($(need_areafix),1)
-DEPS += areafix
-endif
-ifeq ($(need_hptzip),1)
-DEPS += hptzip
+    HPTZIP :=
 endif
 
 ENABLED := huskybse
 $(foreach sub,$(SUBPROJECTS),\
-       $(if $(filter $(sub),$(PROGRAMS) $(DEPS)),\
+       $(if $(filter $(sub),\
+               $(PROGRAMS) $(HUSKYLIB) $(SMAPI) $(FIDOCONF) $(AREAFIX) $(HPTZIP)),\
                $(eval ENABLED += $(sub)),))
 
 # $1 subproject
