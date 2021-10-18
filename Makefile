@@ -498,48 +498,6 @@ clean: $(CLEAN_PREREQ) ;
 
 distclean: $(DISTCLEAN_PREREQ) ;
 
-ifneq ($(MAKECMDGOALS),update)
-    ifeq ($(need_huskylib), 1)
-        include $(huskylib_ROOTDIR)Makefile
-    endif
-    ifeq ($(need_smapi), 1)
-        include $(smapi_ROOTDIR)Makefile
-    endif
-    ifeq ($(need_fidoconf), 1)
-        include $(fidoconf_ROOTDIR)Makefile
-    endif
-    ifeq ($(need_areafix), 1)
-        include $(areafix_ROOTDIR)Makefile
-    endif
-    ifeq ($(need_hptzip), 1)
-        include $(hptzip_ROOTDIR)Makefile
-    endif
-    ifeq ($(filter hpt,$(PROGRAMS)),hpt)
-        include $(hpt_ROOTDIR)Makefile
-    endif
-    ifeq ($(filter htick,$(PROGRAMS)), htick)
-        include $(htick_ROOTDIR)Makefile
-    endif
-    ifeq ($(filter hptkill,$(PROGRAMS)), hptkill)
-        include $(hptkill_ROOTDIR)Makefile
-    endif
-    ifeq ($(filter hptsqfix,$(PROGRAMS)), hptsqfix)
-        include $(hptsqfix_ROOTDIR)Makefile
-    endif
-    ifeq ($(filter sqpack,$(PROGRAMS)), sqpack)
-        include $(sqpack_ROOTDIR)Makefile
-    endif
-    ifeq ($(filter msged,$(PROGRAMS)), msged)
-        include $(msged_ROOTDIR)Makefile
-    endif
-    ifeq ($(filter fidoroute,$(PROGRAMS)), fidoroute)
-        include $(fidoroute_ROOTDIR)Makefile
-    endif
-    ifeq ($(filter util,$(PROGRAMS)), util)
-        include $(util_ROOTDIR)Makefile
-    endif
-endif # update
-
 $(DOCDIR_DST):
 		[ -d "$(PARENT_DOCDIR_DST)" ] || $(MKDIR) $(MKDIROPT) "$(PARENT_DOCDIR_DST)"
 		[ -d "$@" ] || $(MKDIR) $(MKDIROPT) "$@"
@@ -685,6 +643,12 @@ endef
 # generate data and rules for subproject
 # $1 subproject
 define gen_subproject
+
+ifneq ($(MAKECMDGOALS),update)
+ifneq ($1,huskybse) # skip ourself :)
+include $($1_ROOTDIR)Makefile
+endif
+endif
 
 # main update rule for subproject
 # <subproject>_update: <subproject>_glue <dep>_glue
