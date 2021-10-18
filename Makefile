@@ -145,6 +145,7 @@ fidoconf_DEPDIR   := $(fidoconf_ROOTDIR)$(DEPDIR)$(DIRSEP)
 fidoconf_SRCDIR   := $(fidoconf_ROOTDIR)$(_SRC_DIR)$(DIRSEP)
 fidoconf_MANDIR   := $(fidoconf_ROOTDIR)man$(DIRSEP)
 fidoconf_DATEDEPS  = smapi huskylib
+fidoconf_UNDOCDIR_PREREQ := fidoconf_docs_uninstall
 
 ### areafix ###
 # Library name
@@ -187,6 +188,7 @@ hpt_MANDIR   := $(hpt_ROOTDIR)man$(DIRSEP)
 hpt_DOCDIR   := $(hpt_ROOTDIR)doc$(DIRSEP)
 # must be lazy due to HPTZIP
 hpt_DATEDEPS  = $(HPTZIP) areafix fidoconf smapi huskylib
+hpt_UNDOCDIR_PREREQ := hpt_doc_uninstall
 
 ### htick ###
 # The root directory of the subproject
@@ -201,6 +203,7 @@ htick_SRCDIR   := $(htick_ROOTDIR)$(_SRC_DIR)$(DIRSEP)
 htick_MANDIR   := $(htick_ROOTDIR)man$(DIRSEP)
 htick_DOCDIR   := $(htick_ROOTDIR)doc$(DIRSEP)
 htick_DATEDEPS  = $(HPTZIP) areafix fidoconf smapi huskylib
+htick_UNDOCDIR_PREREQ := htick_doc_uninstall
 
 ### hptkill ###
 # The root directory of the subproject
@@ -255,6 +258,7 @@ msged_SRCDIR   := $(msged_ROOTDIR)
 msged_DOCDIR   := $(msged_ROOTDIR)doc$(DIRSEP)
 msged_MAPDIR   := $(msged_ROOTDIR)maps$(DIRSEP)
 msged_DATEDEPS  = fidoconf smapi huskylib
+msged_UNDOCDIR_PREREQ := uninstall_msged_DOCDIR_DST
 
 ### fidoroute ###
 # The root directory of the subproject
@@ -339,128 +343,6 @@ $(foreach sub,$(SUBPROJECTS),\
        $(if $(filter $(sub),$(PROGRAMS) $(DEPS)),\
                $(eval ENABLED += $(sub)),))
 
-UPDATE_PREREQ := huskybse_update
-ifeq ($(need_huskylib), 1)
-    ALL_PREREQ       += huskylib_all
-    UPDATE_PREREQ    += huskylib_update
-    DEPEND_PREREQ    += huskylib_depend
-    INSTALL_PREREQ   += huskylib_install
-    CLEAN_PREREQ     += huskylib_clean
-    DISTCLEAN_PREREQ += huskylib_distclean
-    UNINSTALL_PREREQ += huskylib_uninstall
-endif
-ifeq ($(need_smapi), 1)
-    ALL_PREREQ       += smapi_all
-    UPDATE_PREREQ    += smapi_update
-    DEPEND_PREREQ    += smapi_depend
-    INSTALL_PREREQ   += smapi_install
-    CLEAN_PREREQ     += smapi_clean
-    DISTCLEAN_PREREQ += smapi_distclean
-    UNINSTALL_PREREQ += smapi_uninstall
-endif
-ifeq ($(need_fidoconf), 1)
-    ALL_PREREQ       += fidoconf_all
-    UPDATE_PREREQ    += fidoconf_update
-    DEPEND_PREREQ    += fidoconf_depend
-    INSTALL_PREREQ   += fidoconf_install
-    CLEAN_PREREQ     += fidoconf_clean
-    DISTCLEAN_PREREQ += fidoconf_distclean
-    UNDOCDIR_PREREQ  := fidoconf_docs_uninstall
-    UNINSTALL_PREREQ += fidoconf_uninstall
-endif
-ifeq ($(need_areafix), 1)
-    ALL_PREREQ       += areafix_all
-    UPDATE_PREREQ    += areafix_update
-    DEPEND_PREREQ    += areafix_depend
-    INSTALL_PREREQ   += areafix_install
-    CLEAN_PREREQ     += areafix_clean
-    DISTCLEAN_PREREQ += areafix_distclean
-    UNINSTALL_PREREQ += areafix_uninstall
-endif
-ifeq ($(need_hptzip), 1)
-    ALL_PREREQ       += hptzip_all
-    UPDATE_PREREQ    += hptzip_update
-    DEPEND_PREREQ    += hptzip_depend
-    INSTALL_PREREQ   += hptzip_install
-    CLEAN_PREREQ     += hptzip_clean
-    DISTCLEAN_PREREQ += hptzip_distclean
-    UNINSTALL_PREREQ += hptzip_uninstall
-endif
-ifeq ($(filter hpt,$(PROGRAMS)),hpt)
-    ALL_PREREQ       += hpt_all
-    UPDATE_PREREQ    += hpt_update
-    DEPEND_PREREQ    += hpt_depend
-    INSTALL_PREREQ   += hpt_install
-    CLEAN_PREREQ     += hpt_clean
-    DISTCLEAN_PREREQ += hpt_distclean
-    UNDOCDIR_PREREQ  += hpt_doc_uninstall
-    UNINSTALL_PREREQ += hpt_uninstall
-endif
-ifeq ($(filter htick,$(PROGRAMS)), htick)
-    ALL_PREREQ       += htick_all
-    UPDATE_PREREQ    += htick_update
-    DEPEND_PREREQ    += htick_depend
-    INSTALL_PREREQ   += htick_install
-    CLEAN_PREREQ     += htick_clean
-    DISTCLEAN_PREREQ += htick_distclean
-    UNDOCDIR_PREREQ  += htick_doc_uninstall
-    UNINSTALL_PREREQ += htick_uninstall
-endif
-ifeq ($(filter hptkill,$(PROGRAMS)), hptkill)
-    ALL_PREREQ       += hptkill_all
-    UPDATE_PREREQ    += hptkill_update
-    DEPEND_PREREQ    += hptkill_depend
-    INSTALL_PREREQ   += hptkill_install
-    CLEAN_PREREQ     += hptkill_clean
-    DISTCLEAN_PREREQ += hptkill_distclean
-    UNINSTALL_PREREQ += hptkill_uninstall
-endif
-ifeq ($(filter hptsqfix,$(PROGRAMS)), hptsqfix)
-    ALL_PREREQ       += hptsqfix_all
-    UPDATE_PREREQ    += hptsqfix_update
-    DEPEND_PREREQ    += hptsqfix_depend
-    INSTALL_PREREQ   += hptsqfix_install
-    CLEAN_PREREQ     += hptsqfix_clean
-    DISTCLEAN_PREREQ += hptsqfix_distclean
-    UNINSTALL_PREREQ += hptsqfix_uninstall
-endif
-ifeq ($(filter sqpack,$(PROGRAMS)), sqpack)
-    ALL_PREREQ       += sqpack_all
-    UPDATE_PREREQ    += sqpack_update
-    DEPEND_PREREQ    += sqpack_depend
-    INSTALL_PREREQ   += sqpack_install
-    CLEAN_PREREQ     += sqpack_clean
-    DISTCLEAN_PREREQ += sqpack_distclean
-    UNINSTALL_PREREQ += sqpack_uninstall
-endif
-ifeq ($(filter msged,$(PROGRAMS)), msged)
-    ALL_PREREQ       += msged_all
-    UPDATE_PREREQ    += msged_update
-    DEPEND_PREREQ    += msged_depend
-    INSTALL_PREREQ   += msged_install
-    CLEAN_PREREQ     += msged_clean
-    DISTCLEAN_PREREQ += msged_distclean
-    UNDOCDIR_PREREQ  += uninstall_msged_DOCDIR_DST
-    UNINSTALL_PREREQ += msged_uninstall
-endif
-ifeq ($(filter fidoroute,$(PROGRAMS)), fidoroute)
-    ALL_PREREQ       += fidoroute_all
-    UPDATE_PREREQ    += fidoroute_update
-    DEPEND_PREREQ    += fidoroute_depend
-    INSTALL_PREREQ   += fidoroute_install
-    CLEAN_PREREQ     += fidoroute_clean
-    DISTCLEAN_PREREQ += fidoroute_distclean
-    UNINSTALL_PREREQ += fidoroute_uninstall
-endif
-ifeq ($(filter util,$(PROGRAMS)), util)
-    ALL_PREREQ       += util_all
-    UPDATE_PREREQ    += util_update
-    INSTALL_PREREQ   += util_install
-    CLEAN_PREREQ     += util_clean
-    DISTCLEAN_PREREQ += util_distclean
-    UNINSTALL_PREREQ += util_uninstall
-endif
-
 # $1 subproject
 define gen_cvsdate
 	cd "$(or $($1_CVSDATEDIR),$($1_ROOTDIR))"; curval=""; \
@@ -497,6 +379,23 @@ endef
 # $1 subproject
 define gen_subproject
 
+# Add subproject rules to the dependencies
+
+UPDATE_PREREQ    += $1_update
+ifneq ($1,huskybse) # special, only one target addes
+ALL_PREREQ       += $1_all
+DEPEND_PREREQ    += $1_depend
+INSTALL_PREREQ   += $1_install
+CLEAN_PREREQ     += $1_clean
+DISTCLEAN_PREREQ += $1_distclean
+UNDOCDIR_PREREQ  += $($1_UNDOCDIR_PREREQ)
+UNINSTALL_PREREQ += $1_uninstall
+endif
+
+.PHONY: $($1_UNDOCDIR_PREREQ)
+.PHONY: $(addprefix $1_,all update depend install clean distclean uninstall)
+
+
 ifneq ($(MAKECMDGOALS),update)
 ifneq ($1,huskybse) # skip ourself :)
 include $($1_ROOTDIR)Makefile
@@ -528,11 +427,8 @@ endef # gen_subproject
 # Generate main update rule for subprojects
 $(foreach sub,$(ENABLED),$(eval $(call gen_subproject,$(sub))))
 
-.PHONY: all install uninstall clean distclean depend update huskylib_update \
-        smapi_update fidoconf_update areafix_update hptzip_update hpt_update \
-        htick_update hptkill_update hptsqfix_update sqpack_update msged_update \
-        fidoroute_update util_update huskybse_update uninstall_DOCDIR_DST \
-        do_not_run_make_as_root do_not_run_depend_as_root
+.PHONY: all install uninstall clean distclean depend update
+.PHONY: do_not_run_make_as_root
 
 all: $(ALL_PREREQ) ;
 
