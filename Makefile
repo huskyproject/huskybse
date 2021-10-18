@@ -102,189 +102,98 @@ cvsdate=cvsdate.h
 SUBPROJECTS := huskybse huskylib smapi fidoconf areafix hptzip \
 		hpt htick hptkill hptsqfix sqpack msged fidoroute util
 
-### huskylib ###
-# Library name
-huskylib_LIBNAME = husky
-# The root directory of the subproject
-huskylib_ROOTDIR  := huskylib/
-# The directory with header files
-huskylib_H_DIR   = huskylib/
-# Directories
-huskylib_BUILDDIR := $(huskylib_ROOTDIR)$(BUILDDIR)$(DIRSEP)
+# Per-subproject special variables
+# gen_subproject generates defaults (in form <subproject>_<NAME>, skipping DIRSEP):
+# LIBNAME = <subproject>
+# ROOTDIR = <subproject>
+## H_DIR is not generated, blank (used as current dir) by default
+# BUILDDIR = $(<subproject>_ROOTDIR)$(BUILDDIR)
 # $(OBJDIR) is taken from huskymak.cfg
-huskylib_OBJDIR   := $(huskylib_ROOTDIR)$(OBJDIR)$(DIRSEP)
+# OBJDIR = $(<subproject>_ROOTDIR)$(OBJDIR)
 # $(DEPDIR) is taken from huskymak.cfg
-huskylib_DEPDIR   := $(huskylib_ROOTDIR)$(DEPDIR)$(DIRSEP)
-huskylib_SRCDIR   := $(huskylib_ROOTDIR)$(_SRC_DIR)$(DIRSEP)
+# DEPDIR = $(<subproject>_ROOTDIR)$(DEPDIR)
+# SRCDIR = $(<subproject>_ROOTDIR)$(_SRCDIR) # overwritable
+# MANDIR = $(<subproject>_ROOTDIR)man        # overwritable
+# DOCDIR = $(<subproject>_ROOTDIR)doc
+
+### huskylib ###
+# The directory with header files
+huskylib_H_DIR   = huskylib$(DIRSEP)
 
 
 ### smapi ###
-# Library name
-smapi_LIBNAME = smapi
-# The root directory of the subproject
-smapi_ROOTDIR  := smapi$(DIRSEP)
 # The directory with header files
 smapi_H_DIR   = smapi$(DIRSEP)
-# Directories
-smapi_BUILDDIR := $(smapi_ROOTDIR)$(BUILDDIR)$(DIRSEP)
-smapi_OBJDIR   := $(smapi_ROOTDIR)$(OBJDIR)$(DIRSEP)
-smapi_DEPDIR   := $(smapi_ROOTDIR)$(DEPDIR)$(DIRSEP)
-smapi_SRCDIR   := $(smapi_ROOTDIR)$(_SRC_DIR)$(DIRSEP)
 
 ### fidoconf ###
-# Library name
-fidoconf_LIBNAME := fidoconfig
-# The root directory of the subproject
-fidoconf_ROOTDIR := fidoconf$(DIRSEP)
 # The directory with header files
 fidoconf_H_DIR := fidoconf$(DIRSEP)
-# Directories
-fidoconf_BUILDDIR := $(fidoconf_ROOTDIR)$(BUILDDIR)$(DIRSEP)
-fidoconf_OBJDIR   := $(fidoconf_ROOTDIR)$(OBJDIR)$(DIRSEP)
-fidoconf_DEPDIR   := $(fidoconf_ROOTDIR)$(DEPDIR)$(DIRSEP)
-fidoconf_SRCDIR   := $(fidoconf_ROOTDIR)$(_SRC_DIR)$(DIRSEP)
-fidoconf_MANDIR   := $(fidoconf_ROOTDIR)man$(DIRSEP)
 fidoconf_DATEDEPS  = smapi huskylib
 fidoconf_UNDOCDIR_PREREQ := fidoconf_docs_uninstall
 
 ### areafix ###
-# Library name
-areafix_LIBNAME = areafix
-# The root directory of the subproject
-areafix_ROOTDIR  := areafix$(DIRSEP)
 # The directory with header files
 areafix_H_DIR   = areafix$(DIRSEP)
-# Directories
-areafix_BUILDDIR := $(areafix_ROOTDIR)$(BUILDDIR)$(DIRSEP)
-areafix_OBJDIR   := $(areafix_ROOTDIR)$(OBJDIR)$(DIRSEP)
-areafix_DEPDIR   := $(areafix_ROOTDIR)$(DEPDIR)$(DIRSEP)
-areafix_SRCDIR   := $(areafix_ROOTDIR)$(_SRC_DIR)$(DIRSEP)
-
 
 ### hptzip ###
-# Library name
-hptzip_LIBNAME = hptzip
-# The root directory of the subproject
-hptzip_ROOTDIR  := hptzip$(DIRSEP)
 # The directory with header files
 hptzip_H_DIR   = hptzip$(DIRSEP)
-# Directories
-hptzip_BUILDDIR := $(hptzip_ROOTDIR)$(BUILDDIR)$(DIRSEP)
-hptzip_OBJDIR   := $(hptzip_ROOTDIR)$(OBJDIR)$(DIRSEP)
-hptzip_DEPDIR   := $(hptzip_ROOTDIR)$(DEPDIR)$(DIRSEP)
-hptzip_SRCDIR   := $(hptzip_ROOTDIR)$(_SRC_DIR)$(DIRSEP)
 
 ### hpt ###
-# The root directory of the subproject
-hpt_ROOTDIR  := hpt$(DIRSEP)
 # The directory with header files
 hpt_H_DIR   = h$(DIRSEP)
-# Directories
-hpt_BUILDDIR := $(hpt_ROOTDIR)$(BUILDDIR)$(DIRSEP)
-hpt_OBJDIR   := $(hpt_ROOTDIR)$(OBJDIR)$(DIRSEP)
-hpt_DEPDIR   := $(hpt_ROOTDIR)$(DEPDIR)$(DIRSEP)
-hpt_SRCDIR   := $(hpt_ROOTDIR)$(_SRC_DIR)$(DIRSEP)
-hpt_MANDIR   := $(hpt_ROOTDIR)man$(DIRSEP)
-hpt_DOCDIR   := $(hpt_ROOTDIR)doc$(DIRSEP)
 # must be lazy due to HPTZIP
 hpt_DATEDEPS  = $(HPTZIP) areafix fidoconf smapi huskylib
 hpt_UNDOCDIR_PREREQ := hpt_doc_uninstall
 
 ### htick ###
-# The root directory of the subproject
-htick_ROOTDIR  := htick$(DIRSEP)
 # The directory with header files
 htick_H_DIR   = h$(DIRSEP)
 # Directories
-htick_BUILDDIR := $(htick_ROOTDIR)$(BUILDDIR)$(DIRSEP)
-htick_OBJDIR   := $(htick_ROOTDIR)$(OBJDIR)$(DIRSEP)
-htick_DEPDIR   := $(htick_ROOTDIR)$(DEPDIR)$(DIRSEP)
-htick_SRCDIR   := $(htick_ROOTDIR)$(_SRC_DIR)$(DIRSEP)
-htick_MANDIR   := $(htick_ROOTDIR)man$(DIRSEP)
-htick_DOCDIR   := $(htick_ROOTDIR)doc$(DIRSEP)
+htick_DOCDIR   = $(htick_ROOTDIR)doc$(DIRSEP)
 htick_DATEDEPS  = $(HPTZIP) areafix fidoconf smapi huskylib
 htick_UNDOCDIR_PREREQ := htick_doc_uninstall
 
 ### hptkill ###
-# The root directory of the subproject
-hptkill_ROOTDIR  := hptkill$(DIRSEP)
 # The directory with header files
 hptkill_H_DIR   = h$(DIRSEP)
 # Directories
-hptkill_BUILDDIR := $(hptkill_ROOTDIR)$(BUILDDIR)$(DIRSEP)
-hptkill_OBJDIR   := $(hptkill_ROOTDIR)$(OBJDIR)$(DIRSEP)
-hptkill_DEPDIR   := $(hptkill_ROOTDIR)$(DEPDIR)$(DIRSEP)
-hptkill_SRCDIR   := $(hptkill_ROOTDIR)$(_SRC_DIR)$(DIRSEP)
-hptkill_MANDIR   := $(hptkill_ROOTDIR)
+hptkill_MANDIR   = $(hptkill_ROOTDIR)
 hptkill_DATEDEPS  = fidoconf smapi huskylib
 
 ### hptsqfix ###
-# The root directory of the subproject
-hptsqfix_ROOTDIR  := hptsqfix$(DIRSEP)
 # The directory with header files
 hptsqfix_H_DIR   = h$(DIRSEP)
 # Directories
-hptsqfix_BUILDDIR := $(hptsqfix_ROOTDIR)$(BUILDDIR)$(DIRSEP)
-hptsqfix_OBJDIR   := $(hptsqfix_ROOTDIR)$(OBJDIR)$(DIRSEP)
-hptsqfix_DEPDIR   := $(hptsqfix_ROOTDIR)$(DEPDIR)$(DIRSEP)
-hptsqfix_SRCDIR   := $(hptsqfix_ROOTDIR)$(_SRC_DIR)$(DIRSEP)
-hptsqfix_MANDIR   := $(hptsqfix_ROOTDIR)man$(DIRSEP)
 hptsqfix_CVSDATEDIR := hptsqfix$(DIRSEP)$(hptsqfix_H_DIR)
 hptsqfix_DATEDEPS  = smapi huskylib
 
 ### sqpack ###
-# The root directory of the subproject
-sqpack_ROOTDIR  := sqpack$(DIRSEP)
-# The directory with header files
-sqpack_H_DIR    :=
 # Directories
-sqpack_BUILDDIR := $(sqpack_ROOTDIR)$(BUILDDIR)$(DIRSEP)
-sqpack_OBJDIR   := $(sqpack_ROOTDIR)$(OBJDIR)$(DIRSEP)
-sqpack_DEPDIR   := $(sqpack_ROOTDIR)$(DEPDIR)$(DIRSEP)
-sqpack_SRCDIR   := $(sqpack_ROOTDIR)
-sqpack_MANDIR   := $(sqpack_ROOTDIR)
+sqpack_SRCDIR   = $(sqpack_ROOTDIR)
+sqpack_MANDIR   = $(sqpack_ROOTDIR)
 sqpack_DATEDEPS  = fidoconf smapi huskylib
 
 ### msged ###
-# The root directory of the subproject
-msged_ROOTDIR  := msged$(DIRSEP)
-# The directory with header files
-msged_H_DIR    :=
 # Directories
-msged_BUILDDIR := $(msged_ROOTDIR)$(BUILDDIR)$(DIRSEP)
-msged_OBJDIR   := $(msged_ROOTDIR)$(OBJDIR)$(DIRSEP)
-msged_DEPDIR   := $(msged_ROOTDIR)$(DEPDIR)$(DIRSEP)
-msged_SRCDIR   := $(msged_ROOTDIR)
-msged_DOCDIR   := $(msged_ROOTDIR)doc$(DIRSEP)
-msged_MAPDIR   := $(msged_ROOTDIR)maps$(DIRSEP)
+msged_SRCDIR   = $(msged_ROOTDIR)
+msged_MAPDIR   = $(msged_ROOTDIR)maps$(DIRSEP)
 msged_DATEDEPS  = fidoconf smapi huskylib
 msged_UNDOCDIR_PREREQ := uninstall_msged_DOCDIR_DST
 
 ### fidoroute ###
-# The root directory of the subproject
-fidoroute_ROOTDIR  := fidoroute$(DIRSEP)
-# The directory with header files
-fidoroute_H_DIR    :=
 # Directories
-fidoroute_BUILDDIR := $(fidoroute_ROOTDIR)$(BUILDDIR)$(DIRSEP)
-fidoroute_OBJDIR   := $(fidoroute_ROOTDIR)$(OBJDIR)$(DIRSEP)
-fidoroute_DEPDIR   := $(fidoroute_ROOTDIR)$(DEPDIR)$(DIRSEP)
-fidoroute_SRCDIR   := $(fidoroute_ROOTDIR)
-fidoroute_MANDIR   := $(fidoroute_ROOTDIR)
-fidoroute_DOCDIR   := $(fidoroute_ROOTDIR)doc$(DIRSEP)
+fidoroute_SRCDIR   = $(fidoroute_ROOTDIR)
+fidoroute_MANDIR   = $(fidoroute_ROOTDIR)
 fidoroute_DATEFILES := *.cpp
 
 ### util ###
-# The root directory of the subproject
-util_ROOTDIR := util$(DIRSEP)
 # Directories
 util_token   := util$(DIRSEP)Fidoconfig-Token$(DIRSEP)
 util_rmfiles := util$(DIRSEP)Husky-Rmfiles$(DIRSEP)
 util_DATEFILES := *.pl *.pm *.t
 
 ### huskybse ###
-# The root directory of the subproject
-huskybse_ROOTDIR  := huskybse$(DIRSEP)
 
 
 # Define need_huskylib
@@ -379,6 +288,20 @@ endef
 # $1 subproject
 define gen_subproject
 
+# subproject default variables
+# LIBNAME is required for libraries, but makes no harm for others
+$1_LIBNAME := $1
+# need eval since ROOTDIR is used for include below and for overwrites
+$1_ROOTDIR := $1$(DIRSEP)
+$1_BUILDDIR := $$($1_ROOTDIR)$(BUILDDIR)$(DIRSEP)
+# $(OBJDIR) is taken from huskymak.cfg
+$1_OBJDIR   := $$($1_ROOTDIR)$(OBJDIR)$(DIRSEP)
+# $(DEPDIR) is taken from huskymak.cfg
+$1_DEPDIR   := $$($1_ROOTDIR)$(DEPDIR)$(DIRSEP)
+$1_SRCDIR   := $$(or $$($1_SRCDIR),$$($1_ROOTDIR)$(_SRC_DIR)$(DIRSEP))
+$1_MANDIR   := $$(or $$($1_MANDIR),$$($1_ROOTDIR)man$(DIRSEP))
+$1_DOCDIR   := $$($1_ROOTDIR)doc$(DIRSEP)
+
 # Add subproject rules to the dependencies
 
 UPDATE_PREREQ    += $1_update
@@ -398,7 +321,7 @@ endif
 
 ifneq ($(MAKECMDGOALS),update)
 ifneq ($1,huskybse) # skip ourself :)
-include $($1_ROOTDIR)Makefile
+include $$($1_ROOTDIR)Makefile
 endif
 endif
 
