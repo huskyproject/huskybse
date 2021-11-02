@@ -260,6 +260,10 @@ util_ROOTDIR := util$(DIRSEP)
 # Directories
 util_token   := util$(DIRSEP)Fidoconfig-Token$(DIRSEP)
 util_rmfiles := util$(DIRSEP)Husky-Rmfiles$(DIRSEP)
+# Files
+util_DATEFILES := bin/*.pl t/*.t \
+    Fidoconfig-Token/lib/Fidoconfig/Token.pm Fidoconfig-Token/t/*.t \
+    Husky-Rmfiles/lib/Husky/Rmfiles.pm Husky-Rmfiles/t/*.t
 
 ### huskybse ###
 # The root directory of the subproject
@@ -960,25 +964,25 @@ else
 
 
     ifeq ($(filter util,$(PROGRAMS)), util)
-        util_wdate: util_get_date
-			@cd $(util_ROOTDIR); curval=""; \
+        util_wdate: util_update
+			@cd util; curval=""; \
+			util_mdate=$$($(GIT) log -1 \
+			--date=short --format=format:"%cd" -- $(util_DATEFILES))
 			[ -f $(cvsdate) ] && \
 			curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
-			[ "$(util_mdate)" != "$${curval}" ] && \
-			echo "char cvs_date[]=\"$(util_mdate)\";" > $(cvsdate) ||:
-
-        util_get_date: util_update
-			$(eval util_mdate:=$(shell cd $(util_ROOTDIR); $(GIT) log -1 \
-			--date=short --format=format:"%cd" -- *.pl *.pm *.t))
+			[ "$${util_mdate}" != "$${curval}" ] && \
+			echo "char cvs_date[]=\"$${util_mdate}\";" > $(cvsdate) ||:
 
         util_update: | do_not_run_update_as_root
-			@[ -d $(util_ROOTDIR).git ] && cd $(util_ROOTDIR) && \
+			@[ -d util/.git ] && cd util && \
 			{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
-			$(GIT) $(CLONE) https://github.com/huskyproject/util.git
+			{ $(GIT) $(CLONE) https://github.com/huskyproject/util.git; \
+			cd util; $(GIT) checkout new_makefiles; }
     endif
 
     huskybse_update: | do_not_run_update_as_root
 		@[ -d $(huskybse_ROOTDIR).git ] && cd $(huskybse_ROOTDIR) && \
 		{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
-		$(GIT) $(CLONE) https://github.com/huskyproject/huskybse.git
+		{ $(GIT) $(CLONE) https://github.com/huskyproject/huskybse.git; \
+		cd huskybse; $(GIT) checkout new_makefiles; }
 endif
