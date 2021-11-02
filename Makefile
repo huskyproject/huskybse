@@ -967,7 +967,7 @@ else
         util_wdate: util_update
 			@cd util; curval=""; \
 			util_mdate=$$($(GIT) log -1 \
-			--date=short --format=format:"%cd" -- $(util_DATEFILES))
+			--date=short --format=format:"%cd" -- $(util_DATEFILES)); \
 			[ -f $(cvsdate) ] && \
 			curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
 			[ "$${util_mdate}" != "$${curval}" ] && \
