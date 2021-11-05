@@ -3,7 +3,7 @@
 # build_rpm
 #
 
-VERSION="1.0"
+VERSION="1.2"
 top_directory=~/husky_build
 
 die()
@@ -18,8 +18,10 @@ show_help()
 
 Download the necessary sources and build RPMs for the programs specified
 in PROGRAMS setting in huskymak.rpm.cfg and for the libraries they depend on.
-Usage:.
-    build_rpm [-r|--chroot CONFIG] [-v|--version] [-h|-\?|--help]
+Usage:
+    build_rpm [-r|--chroot CONFIG] [-n|--no-update] [-j JOBS]
+    build_rpm [-v|--version]
+    build_rpm [-h|-\?|--help]
 Options:
     -r CONFIG
     --chroot CONFIG
@@ -30,6 +32,17 @@ Options:
         interpreted as full path to config file. If the option is not specified,
         uses the chroot config linked to by /etc/mock/default.cfg.
 
+    -n
+    --no-update
+        Do not update Makefile, huskymak.rpm.cfg, husky.spec.in,
+        spec_configure, build_rpm
+
+    -j JOBS
+        JOBS is a positive integer. It specifies the number of makefile
+        recipes to run simultaneously. If you omit the option, make runs
+        as many recipes simultaneously as possible. To switch the parallel
+        makefile execution off, use "-j 1".
+
     -v
     --version
         Print the script version and exit.
@@ -38,51 +51,76 @@ Options:
     -?
     --help
         Print this help and exit.
+
 EOF
 }
 
 help=0
 config=
+no_update=0
+jobs=-j
 
-case $1 in
-    -h|-\?|--help)
-        help=1
-        ;;
-    -v|--version)
-        echo "version = $VERSION"
-        exit
-        ;;
-    -r|--chroot)
-        if [ -z "$(whereis -b mock | cut -d: -f2)" ]
-        then
-            die 'ERROR: to use "--chroot" (or "-r") you have to install mock'
-        fi
-        if [ "$2" ]
-        then
-            config="-r $2"
+while :
+do
+    case $1 in
+        -h|-\?|--help)
+            help=1
+            break
+            ;;
+        -v|--version)
+            echo "version = $VERSION"
+            exit
+            ;;
+        -r|--chroot)
+            if [ -z "$(whereis -b mock | cut -d: -f2)" ]
+            then
+                die 'ERROR: to use "--chroot" (or "-r") you have to install mock'
+            fi
+            if [ "$2" ]
+            then
+                config="-r $2"
+                help=0
+                shift
+            else
+                die 'ERROR: "--chroot" requires a non-empty option argument'
+            fi
+            ;;
+        --chroot=?*)
+            if [ -z "$(whereis -b mock | cut -d: -f2)" ]
+            then
+                die 'ERROR: to use "--chroot" (or "-r") you have to install mock'
+            fi
+            config="-r ${1#*=}"
             help=0
-            shift
-        else
+            ;;
+        --chroot=)
             die 'ERROR: "--chroot" requires a non-empty option argument'
-        fi
-        ;;
-    --chroot=?*)
-        if [ -z "$(whereis -b mock | cut -d: -f2)" ]
-        then
-            die 'ERROR: to use "--chroot" (or "-r") you have to install mock'
-        fi
-        config="-r ${1#*=}"
-        help=0
-        ;;
-    --chroot=)
-        die 'ERROR: "--chroot" requires a non-empty option argument'
-        ;;
-    -*)
-        printf 'WARN: Unknown option (ignored): %s\n' "$1" >&2
-        ;;
-    *)
-        ;;
-esac
+            ;;
+        -n|--no-update)
+            no_update=1
+            ;;
+        -j)
+            if [ "$2" ]
+            then
+                if [ -z "${2##*[!0-9]*}" ] || [ "$2" -eq 0 ]
+                then
+                    die 'ERROR: "-j" requires a positive integer argument'
+                else
+                    jobs=-j$2
+                    shift
+                fi
+            else
+                die 'ERROR: "-j" requires a positive integer argument'
+            fi
+            ;;
+        -*)
+            printf 'WARN: Unknown option (ignored): %s\n' "$1" >&2
+            ;;
+        *)
+            break
+    esac
+    shift
+done
 
 if [ $help -eq 1 ]
 then
@@ -90,33 +128,37 @@ then
     exit
 fi
 
-
 # Check that the script is not run by root
 [ "$(id -u)" -eq 0 ] && die "DO NOT run this as root"
 
 cd $top_directory
 pushd husky >& /dev/null
 
-make -j update
+make $jobs update
+[ "$?" -ne 0 ] && exit 1
 
 restart=0
 
-if [ -n "$(diff $top_directory/husky/Makefile huskybse/Makefile)" ]
+if [ "$no_update" -eq 0 ] && \
+   [ -n "$(diff $top_directory/husky/Makefile huskybse/Makefile)" ]
 then
     cp -a -f huskybse/Makefile ./
 fi
 
-if [ -n "$(diff $top_directory/husky/husky.spec.in huskybse/husky.spec.in)" ]
+if [ "$no_update" -eq 0 ] && \
+   [ -n "$(diff $top_directory/husky/husky.spec.in huskybse/husky.spec.in)" ]
 then
     cp -a -f huskybse/husky.spec.in ./
 fi
 
-if [ -n "$(diff $top_directory/spec_configure huskybse/script/spec_configure)" ]
+if [ "$no_update" -eq 0 ] && \
+   [ -n "$(diff $top_directory/spec_configure huskybse/script/spec_configure)" ]
 then
     cp -a -f huskybse/script/spec_configure $top_directory/
 fi
 
-if [ -n "$(diff $top_directory/huskymak.rpm.cfg.new huskybse/huskymak.rpm.cfg)" ]
+if [ "$no_update" -eq 0 ] && \
+   [ -n "$(diff $top_directory/huskymak.rpm.cfg.new huskybse/huskymak.rpm.cfg)" ]
 then
     mv $top_directory/huskymak.rpm.cfg.new $top_directory/huskymak.rpm.cfg.old
     cp -a huskybse/huskymak.rpm.cfg $top_directory/huskymak.rpm.cfg.new
@@ -136,7 +178,8 @@ then
     restart=1
 fi
 
-if [ -n "$(diff $top_directory/build_rpm huskybse/script/build_rpm)" ]
+if [ "$no_update" -eq 0 ] && \
+   [ -n "$(diff $top_directory/build_rpm huskybse/script/build_rpm)" ]
 then
     cp -a -f huskybse/script/build_rpm $top_directory/
     if [ "$restart" -ne 1 ]
@@ -158,10 +201,10 @@ if [ -n "$(whereis -b mock | cut -d: -f2)" ]
 then
     mock $config --buildsrpm --spec husky/husky.spec --sources husky.tar.gz --resultdir=./result
     SRCRPM=$(echo result/*.src.rpm)
-    mock $config --no-clean --resultdir=./result --rebuild $SRCRPM
+    mock $config -D "jobs $jobs" --no-clean --resultdir=./result --rebuild $SRCRPM
 elif [ -n "$(whereis -b rpmbuild | cut -d: -f2)" ]
 then
-    rpmbuild -ta husky.tar.gz
+    rpmbuild -ta -D "jobs $jobs" husky.tar.gz
 else
     echo "You have not installed both \"rpmbuild\" and \"mock\"; please, install them."
 fi
