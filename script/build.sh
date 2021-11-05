@@ -3,7 +3,7 @@
 # build.sh
 #
 
-VERSION="1.1"
+VERSION="1.2"
 
 die()
 {
@@ -20,8 +20,19 @@ specified in PROGRAMS setting of huskymak.cfg and for the libraries
 they depend on.
 
 Usage:.
-    build.sh [-v|--version] [-h|-\?|--help] [-n|--no-update] [-p]
+    build.sh [-n|--no-update] [-j JOBS] [-v|--version] [-h|-\?|--help]
 Options:
+
+    -n
+    --no-update
+        Do not update Makefile, huskymak.cfg, build.sh
+
+    -j JOBS
+        JOBS is a positive integer. It specifies the number of makefile
+        recipes to run simultaneously. If you omit the option, make runs
+        as many recipes simultaneously as possible. To switch the parallel
+        makefile execution off, use "-j 1".
+
     -v
     --version
         Print the script version and exit.
@@ -30,41 +41,49 @@ Options:
     -?
     --help
         Print this help and exit.
-
-    -n
-    --no-update
-        Do not update Makefile, huskymak.cfg, build.sh
-
-    -p
-        Prohibit parallel makefile execution
-
 EOF
 }
 
 help=0
 no_update=0
-parallel=-j
+jobs=-j
 
-case $1 in
-    -h|-\?|--help)
-        help=1
-        ;;
-    -v|--version)
-        echo "version = $VERSION"
-        exit
-        ;;
-    -n|--no-update)
-        no_update=1
-        ;;
-    -p)
-        parallel=
-        ;;
-    -*)
-        printf 'WARN: Unknown option (ignored): %s\n' "$1" >&2
-        ;;
-    *)
-        ;;
-esac
+while :
+do
+    case $1 in
+        -h|-\?|--help)
+            help=1
+            break
+            ;;
+        -v|--version)
+            echo "version = $VERSION"
+            exit
+            ;;
+        -n|--no-update)
+            no_update=1
+            ;;
+        -j)
+            if [ "$2" ]
+            then
+                if [ -z "${2##*[!0-9]*}" ] || [ "$2" -eq 0 ]
+                then
+                    die 'ERROR: "-j" requires a positive integer argument'
+                else
+                    jobs=-j$2
+                    shift
+                fi
+            else
+                die 'ERROR: "-j" requires a positive integer argument'
+            fi
+            ;;
+        -*)
+            printf 'WARN: Unknown option (ignored): %s\n' "$1" >&2
+            ;;
+        *)
+            break
+    esac
+    shift
+done
 
 if [ $help -eq 1 ]
 then
@@ -79,7 +98,7 @@ fi
 MAKE=make
 [ "$(uname -s)" = FreeBSD ] && MAKE=gmake
 
-${MAKE} $parallel update
+${MAKE} $jobs update
 [ "$?" -ne 0 ] && exit 1
 
 restart=0
@@ -128,4 +147,4 @@ fi
 
 [ "$restart" -eq 1 ] && exit
 
-${MAKE} $parallel depend && ${MAKE} $parallel
+${MAKE} $jobs depend && ${MAKE} $jobs
