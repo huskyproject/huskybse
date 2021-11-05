@@ -976,13 +976,11 @@ else
         util_update: | do_not_run_update_as_root
 			@[ -d util/.git ] && cd util && \
 			{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
-			{ $(GIT) $(CLONE) https://github.com/huskyproject/util.git; \
-			cd util; $(GIT) checkout new_makefiles; }
+			$(GIT) $(CLONE) https://github.com/huskyproject/util.git
     endif
 
     huskybse_update: | do_not_run_update_as_root
 		@[ -d $(huskybse_ROOTDIR).git ] && cd $(huskybse_ROOTDIR) && \
 		{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
-		{ $(GIT) $(CLONE) https://github.com/huskyproject/huskybse.git; \
-		cd huskybse; $(GIT) checkout new_makefiles; }
+		$(GIT) $(CLONE) https://github.com/huskyproject/huskybse.git
 endif
