@@ -33,6 +33,10 @@ endif
 # include Husky-Makefile-Config
 include $(HUSKYMAK)
 
+ifneq ($(findstring ~,$(PREFIX)),)
+    $(eval PREFIX := $(subst ~,$${HOME},$(PREFIX)))
+endif
+
 ifeq ($(MAKECMDGOALS),update)
     ifneq ($(findstring git version,$(shell git --version)),git version)
         $(error ERROR: To update Husky, you must install git)
