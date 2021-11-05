@@ -20,7 +20,7 @@ my $spec     = "husky.spec";
 
 my (@lines, @macros);
 my @settings = qw(PROGRAMS PERL USE_HPTZIP DYNLIBS DEBUG GNMSGID FIDOCONF_UTIL
-                  HPT_UTIL HTML TXT DVI PDF PREFIX LIBDIR BINDIR PERLDATADIR
+                  HPT_UTIL HTML TXT DVI PDF PREFIX LIBDIR BINDIR
                   MAN1DIR MAN3DIR MAN5DIR INFODIR DOCDIR CC);
 my @progs = qw(hpt htick hptkill hptsqfix sqpack msged fidoroute util);
 my ($hpt, $htick, $hptkill, $hptsqfix, $sqpack, $msged, $fidoroute, $util,
@@ -510,6 +510,9 @@ if($util)
     $util_reldate = max($util_reldate, $showold_reldate);
     push(@macros, "%global util_ver $util_ver");
     push(@macros, "%global util_reldate $util_reldate");
+
+    $PERLDATADIR = "$PREFIX/share/perl5";
+    push(@macros, "%global PERLDATADIR $PERLDATADIR");
 }
 
 
