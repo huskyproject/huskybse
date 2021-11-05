@@ -588,12 +588,12 @@ BuildRequires: texi2dvi
 %setup -q -n %name
 
 %build
-%make_build depend
-%make_build
+%make_build %{?jobs} depend
+%make_build %{?jobs}
 
 %install
 umask 022
-%make_install
+%make_install %{?jobs}
 chmod -R a+rX,u+w,go-w %buildroot
 
 
