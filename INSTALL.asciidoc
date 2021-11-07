@@ -114,7 +114,7 @@ If you used the recommended value
 
   DYNLIBS=0
 
-the names of the received packets will contain the word `static`. It means
+the names of the built packets will contain the word `static`. It means
 that a partly static build was used, in which the Husky libraries were
 linked statically, and the system libraries were dynamic.
 
@@ -131,6 +131,8 @@ If you want to build packages for another operating system using `mock`, run
   ~/husky_build/build_rpm -r 'CONFIG'
 
 where CONFIG is the chroot configuration. See `build_rpm --help` and mock(1).
+You may also find some additional options for `build_rpm`.
+See `build_rpm --help`.
 
 
 2.3 Installing Husky on other UNIX-like operating systems
@@ -210,7 +212,7 @@ If your `PREFIX` is not a subdirectory of `HOME` and `@INC` does not contain
 `$PREFIX/share/perl5`, you have to add the line exporting `PERL5LIB` to
 `/root/.bash_profile` on Linux and to `/root/.profile` on FreeBSD.
 
-If `@INC` contains `$PREFIX/share/perl5` directory, you have nothing to add.
+If `@INC` contains `$PREFIX/share/perl5` directory, you have to add nothing.
 
 If you want to uninstall the installed programs, on Linux run
 
@@ -234,6 +236,9 @@ you want to build a new version, it will be enough to run again
   ./build.sh
 
 This will download all changes from GitHub and rebuild all the changed programs.
+
+You may also find some additional options for `build.sh`.
+See `build.sh --help`.
 
 3 Compiling with the Legacy Makefiles
 =====================================
