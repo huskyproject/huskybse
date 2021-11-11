@@ -285,10 +285,13 @@ util_DATEFILES := bin/*.pl t/*.t \
     Fidoconfig-Token/lib/Fidoconfig/Token.pm Fidoconfig-Token/t/*.t \
     Husky-Rmfiles/lib/Husky/Rmfiles.pm Husky-Rmfiles/t/*.t
 
+nil :=
+space := $(nil) $(nil)
+
 ### huskybse ###
 # The root directory of the subproject
 huskybse_ROOTDIR  := huskybse$(DIRSEP)
-
+huskybse_DATEFILES:= $(space)
 
 # Define need_huskylib
 need_huskylib := $(if $(or $(filter hpt,$(PROGRAMS)), \
