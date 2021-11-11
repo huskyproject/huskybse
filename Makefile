@@ -322,6 +322,30 @@ ifeq ($(need_hptzip),1)
     HPTZIP := hptzip
 endif
 
+# make dependency sorted list of enabled subprojects
+# keep need_* for now 0/1
+DEPS :=
+ifeq ($(need_huskylib),1)
+DEPS += huskylib
+endif
+ifeq ($(need_smapi),1)
+DEPS += smapi
+endif
+ifeq ($(need_fidoconf),1)
+DEPS += fidoconf
+endif
+ifeq ($(need_areafix),1)
+DEPS += areafix
+endif
+ifeq ($(need_hptzip),1)
+DEPS += hptzip
+endif
+
+ENABLED := huskybse
+$(foreach sub,$(SUBPROJECTS),\
+    $(if $(filter $(sub),$(PROGRAMS) $(DEPS)),\
+        $(eval ENABLED += $(sub)),))
+
 UPDATE_PREREQ := huskybse_update
 ifeq ($(need_huskylib), 1)
     ALL_PREREQ       += huskylib_all
@@ -695,15 +719,15 @@ $1_update: $$(addsuffix _glue,$1 $$($1_DATEDEPS))
 endef # gen_subproject
 
 # Generate main update rule for subprojects
-$(foreach sub,$(SUBPROJECTS),$(eval $(call gen_subproject,$(sub))))
+$(foreach sub,$(ENABLED),$(eval $(call gen_subproject,$(sub))))
 
 # <subproject>_glue
-$(addsuffix _glue,$(SUBPROJECTS)): %_glue: %_git_update
+$(addsuffix _glue,$(ENABLED)): %_glue: %_git_update
 	$(eval $*_mdate:=$(call get_mdate,$*))
 	$(eval $*_date:=$(subst -,,$($*_mdate)))
 
 # <subproject>_git_update pattern rule
-$(addsuffix _git_update,$(SUBPROJECTS)): %_git_update: do_not_run_update_as_root
+$(addsuffix _git_update,$(ENABLED)): %_git_update: do_not_run_update_as_root
 	@[ -d $($*_ROOTDIR).git ] && cd $($*_ROOTDIR) && \
 	{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
 	$(GIT) $(CLONE) https://github.com/huskyproject/$*.git
