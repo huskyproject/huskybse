@@ -625,19 +625,7 @@ uninstall_DOCDIR_DST: $(UNDOCDIR_PREREQ)
 
 update: $(UPDATE_PREREQ)
 
-.PHONY: do_not_run_update_as_root \
-        huskylib_glue huskylib_get_date smapi_glue smapi_get_date \
-        fidoconf_glue fidoconf_get_date \
-        areafix_glue areafix_get_date hptzip_glue hptzip_get_date \
-        hpt_glue hpt_get_date htick_glue htick_get_date \
-        hptkill_glue hptkill_get_date hptsqfix_glue hptsqfix_get_date \
-        sqpack_glue sqpack_get_date msged_glue msged_get_date \
-        fidoroute_get_date util_get_date \
-        huskylib_git_update smapi_git_update fidoconf_git_update \
-        areafix_git_update hptzip_git_update hpt_git_update \
-        htick_git_update hptkill_git_update hptsqfix_git_update \
-        sqpack_git_update msged_git_update fidoroute_git_update \
-        util_git_update huskybse_git_update
+.PHONY: do_not_run_update_as_root
 
 ifeq ($(OSTYPE), UNIX)
     do_not_run_update_as_root:
@@ -683,104 +671,35 @@ define get_mdate
 			$(or $($1_DATEFILES),$(DEFAULT_DATEFILES)))
 endef
 
-ifeq ($(need_huskylib), 1)
-    huskylib_update: huskylib_glue
-		@$(call date_make2shell,huskylib) \
-		$(call gen_cvsdate,huskylib)
-endif
+# generate data and rules for a subproject
+# $1 is a subproject
+define gen_subproject
 
+# main update rule for a subproject
+# <subproject>_update: <subproject>_glue <dep>_glue
+#                      <subproject>_date=$(<subproject>_date); \
+#                      <subproject>_mdate=$(<subproject>_mdate); \
+#                      if [ "${<subproject>_date}" -lt $(<dep>_date) ]; \
+#                      then <subproject_date=$(<dep>_date); \
+#                           <subproject_mdate=$(<dep>_mdate); \
+#                      fi; \
+#                      cd "$(<subproject>_CVSDATEDIR)"; \ # or _ROOTDIR if not set
+#                      curval=""; \
+#                      [ -f $(cvsdate) ] && \
+#                      curval=$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
+#                      [ "${<subproject>_mdate}" != "${curval}" ] && \
+#                      echo "char cvs_date[]=\"${<subproject>_mdate}\";" > $(cvsdate) ||:
+$1_update: $$(addsuffix _glue,$1 $$($1_DATEDEPS))
+   @$$(call date_make2shell,$1) \
+   $$(call gen_date_selection,$1,$$($1_DATEDEPS)) \
+   $$(call gen_cvsdate,$1)
 
-ifeq ($(need_smapi), 1)
-    smapi_update: smapi_glue
-		@$(call date_make2shell,smapi) \
-		$(call gen_cvsdate,smapi)
-endif
+.PHONY: $1_update $1_glue $1_git_update
 
+endef # gen_subproject
 
-ifeq ($(need_fidoconf), 1)
-    fidoconf_update: $(addsuffix _glue,fidoconf $(fidoconf_DATEDEPS))
-		@$(call date_make2shell,fidoconf) \
-		$(call gen_date_selection,fidoconf,huskylib smapi) \
-		$(call gen_cvsdate,fidoconf)
-endif
-
-
-ifeq ($(need_areafix), 1)
-    areafix_update: areafix_glue
-		@$(call date_make2shell,areafix) \
-		$(call gen_cvsdate,areafix)
-endif
-
-
-ifeq ($(need_hptzip), 1)
-    hptzip_update: hptzip_glue
-		@$(call date_make2shell,hptzip) \
-		$(call gen_cvsdate,hptzip)
-endif
-
-
-ifeq ($(filter hpt,$(PROGRAMS)),hpt)
-    hpt_update: $(addsuffix _glue,hpt $(hpt_DATEDEPS))
-		@$(call date_make2shell,hpt) \
-		$(call gen_date_selection,hpt,$(hpt_DATEDEPS)) \
-		$(call gen_cvsdate,hpt)
-endif
-
-
-ifeq ($(filter htick,$(PROGRAMS)), htick)
-    htick_update: $(addsuffix _glue,htick $(htick_DATEDEPS))
-		@$(call date_make2shell,htick) \
-		$(call gen_date_selection,htick,$(htick_DATEDEPS)) \
-		$(call gen_cvsdate,htick)
-endif
-
-
-ifeq ($(filter hptkill,$(PROGRAMS)), hptkill)
-    hptkill_update: $(addsuffix _glue,hptkill $(hptkill_DATEDEPS))
-		@$(call date_make2shell,hptkill) \
-		$(call gen_date_selection,hptkill,$(hptkill_DATEDEPS)) \
-		$(call gen_cvsdate,hptkill)
-endif
-
-
-ifeq ($(filter hptsqfix,$(PROGRAMS)), hptsqfix)
-    hptsqfix_update: $(addsuffix _glue,hptsqfix $(hptsqfix_DATEDEPS))
-		@$(call date_make2shell,hptsqfix) \
-		$(call gen_date_selection,hptsqfix,$(hptsqfix_DATEDEPS)) \
-		$(call gen_cvsdate,hptsqfix)
-endif
-
-
-ifeq ($(filter sqpack,$(PROGRAMS)), sqpack)
-    sqpack_update: $(addsuffix _glue,sqpack $(sqpack_DATEDEPS))
-		@$(call date_make2shell,sqpack) \
-		$(call gen_date_selection,sqpack,$(sqpack_DATEDEPS)) \
-		$(call gen_cvsdate,sqpack)
-endif
-
-
-ifeq ($(filter msged,$(PROGRAMS)), msged)
-    msged_update: $(addsuffix _glue,msged $(msged_DATEDEPS))
-		@$(call date_make2shell,msged) \
-		$(call gen_date_selection,msged,$(msged_DATEDEPS)) \
-		$(call gen_cvsdate,msged)
-endif
-
-
-ifeq ($(filter fidoroute,$(PROGRAMS)), fidoroute)
-    fidoroute_update: fidoroute_get_date
-		@$(call date_make2shell,fidoroute) \
-		$(call gen_cvsdate,fidoroute)
-endif
-
-
-ifeq ($(filter util,$(PROGRAMS)), util)
-    util_update: util_get_date
-		@$(call date_make2shell,util) \
-		$(call gen_cvsdate,util)
-endif
-
-huskybse_update: huskybse_git_update
+# Generate main update rule for subprojects
+$(foreach sub,$(SUBPROJECTS),$(eval $(call gen_subproject,$(sub))))
 
 # <subproject>_glue
 $(addsuffix _glue,$(SUBPROJECTS)): %_glue: %_get_date
