@@ -215,26 +215,15 @@ space := $(nil) $(nil)
 huskybse_DATEFILES:= $(space)
 
 
-HUSKYLIB := $(and $(or $(filter hpt,$(PROGRAMS)), \
-                       $(filter htick,$(PROGRAMS)), \
-                       $(filter hptkill,$(PROGRAMS)), \
-                       $(filter hptsqfix,$(PROGRAMS)), \
-                       $(filter sqpack,$(PROGRAMS)), \
-                       $(filter msged,$(PROGRAMS))),\
-                  huskylib)
+HUSKYLIB := $(and $(filter hpt htick hptkill hptsqfix sqpack msged, \
+                    $(PROGRAMS)), huskylib)
 
 SMAPI := $(and $(HUSKYLIB),smapi)
 
-FIDOCONF := $(and $(or $(filter hpt,$(PROGRAMS)), \
-                       $(filter htick,$(PROGRAMS)), \
-                       $(filter hptkill,$(PROGRAMS)), \
-                       $(filter sqpack,$(PROGRAMS)), \
-                       $(filter msged,$(PROGRAMS))),\
+FIDOCONF := $(and $(filter hpt htick hptkill sqpack msged,$(PROGRAMS)), \
                   fidoconf)
 
-AREAFIX := $(and $(or $(filter hpt,$(PROGRAMS)), \
-                      $(filter htick,$(PROGRAMS))),\
-                 areafix)
+AREAFIX := $(and $(filter hpt htick,$(PROGRAMS)), areafix)
 
 HPTZIP := $(and $(AREAFIX),hptzip)
 
