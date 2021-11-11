@@ -325,7 +325,7 @@ endif
 UPDATE_PREREQ := huskybse_update
 ifeq ($(need_huskylib), 1)
     ALL_PREREQ       += huskylib_all
-    UPDATE_PREREQ    += huskylib_glue
+    UPDATE_PREREQ    += huskylib_update
     DEPEND_PREREQ    += huskylib_depend
     INSTALL_PREREQ   += huskylib_install
     CLEAN_PREREQ     += huskylib_clean
@@ -334,7 +334,7 @@ ifeq ($(need_huskylib), 1)
 endif
 ifeq ($(need_smapi), 1)
     ALL_PREREQ       += smapi_all
-    UPDATE_PREREQ    += smapi_glue
+    UPDATE_PREREQ    += smapi_update
     DEPEND_PREREQ    += smapi_depend
     INSTALL_PREREQ   += smapi_install
     CLEAN_PREREQ     += smapi_clean
@@ -343,7 +343,7 @@ ifeq ($(need_smapi), 1)
 endif
 ifeq ($(need_fidoconf), 1)
     ALL_PREREQ       += fidoconf_all
-    UPDATE_PREREQ    += fidoconf_cmp
+    UPDATE_PREREQ    += fidoconf_update
     DEPEND_PREREQ    += fidoconf_depend
     INSTALL_PREREQ   += fidoconf_install
     CLEAN_PREREQ     += fidoconf_clean
@@ -353,7 +353,7 @@ ifeq ($(need_fidoconf), 1)
 endif
 ifeq ($(need_areafix), 1)
     ALL_PREREQ       += areafix_all
-    UPDATE_PREREQ    += areafix_glue
+    UPDATE_PREREQ    += areafix_update
     DEPEND_PREREQ    += areafix_depend
     INSTALL_PREREQ   += areafix_install
     CLEAN_PREREQ     += areafix_clean
@@ -362,7 +362,7 @@ ifeq ($(need_areafix), 1)
 endif
 ifeq ($(need_hptzip), 1)
     ALL_PREREQ       += hptzip_all
-    UPDATE_PREREQ    += hptzip_glue
+    UPDATE_PREREQ    += hptzip_update
     DEPEND_PREREQ    += hptzip_depend
     INSTALL_PREREQ   += hptzip_install
     CLEAN_PREREQ     += hptzip_clean
@@ -371,7 +371,7 @@ ifeq ($(need_hptzip), 1)
 endif
 ifeq ($(filter hpt,$(PROGRAMS)),hpt)
     ALL_PREREQ       += hpt_all
-    UPDATE_PREREQ    += hpt_cmp
+    UPDATE_PREREQ    += hpt_update
     DEPEND_PREREQ    += hpt_depend
     INSTALL_PREREQ   += hpt_install
     CLEAN_PREREQ     += hpt_clean
@@ -381,7 +381,7 @@ ifeq ($(filter hpt,$(PROGRAMS)),hpt)
 endif
 ifeq ($(filter htick,$(PROGRAMS)), htick)
     ALL_PREREQ       += htick_all
-    UPDATE_PREREQ    += htick_cmp
+    UPDATE_PREREQ    += htick_update
     DEPEND_PREREQ    += htick_depend
     INSTALL_PREREQ   += htick_install
     CLEAN_PREREQ     += htick_clean
@@ -391,7 +391,7 @@ ifeq ($(filter htick,$(PROGRAMS)), htick)
 endif
 ifeq ($(filter hptkill,$(PROGRAMS)), hptkill)
     ALL_PREREQ       += hptkill_all
-    UPDATE_PREREQ    += hptkill_cmp
+    UPDATE_PREREQ    += hptkill_update
     DEPEND_PREREQ    += hptkill_depend
     INSTALL_PREREQ   += hptkill_install
     CLEAN_PREREQ     += hptkill_clean
@@ -400,7 +400,7 @@ ifeq ($(filter hptkill,$(PROGRAMS)), hptkill)
 endif
 ifeq ($(filter hptsqfix,$(PROGRAMS)), hptsqfix)
     ALL_PREREQ       += hptsqfix_all
-    UPDATE_PREREQ    += hptsqfix_cmp
+    UPDATE_PREREQ    += hptsqfix_update
     DEPEND_PREREQ    += hptsqfix_depend
     INSTALL_PREREQ   += hptsqfix_install
     CLEAN_PREREQ     += hptsqfix_clean
@@ -409,7 +409,7 @@ ifeq ($(filter hptsqfix,$(PROGRAMS)), hptsqfix)
 endif
 ifeq ($(filter sqpack,$(PROGRAMS)), sqpack)
     ALL_PREREQ       += sqpack_all
-    UPDATE_PREREQ    += sqpack_cmp
+    UPDATE_PREREQ    += sqpack_update
     DEPEND_PREREQ    += sqpack_depend
     INSTALL_PREREQ   += sqpack_install
     CLEAN_PREREQ     += sqpack_clean
@@ -418,7 +418,7 @@ ifeq ($(filter sqpack,$(PROGRAMS)), sqpack)
 endif
 ifeq ($(filter msged,$(PROGRAMS)), msged)
     ALL_PREREQ       += msged_all
-    UPDATE_PREREQ    += msged_cmp
+    UPDATE_PREREQ    += msged_update
     DEPEND_PREREQ    += msged_depend
     INSTALL_PREREQ   += msged_install
     CLEAN_PREREQ     += msged_clean
@@ -428,7 +428,7 @@ ifeq ($(filter msged,$(PROGRAMS)), msged)
 endif
 ifeq ($(filter fidoroute,$(PROGRAMS)), fidoroute)
     ALL_PREREQ       += fidoroute_all
-    UPDATE_PREREQ    += fidoroute_wdate
+    UPDATE_PREREQ    += fidoroute_update
     DEPEND_PREREQ    += fidoroute_depend
     INSTALL_PREREQ   += fidoroute_install
     CLEAN_PREREQ     += fidoroute_clean
@@ -437,7 +437,7 @@ ifeq ($(filter fidoroute,$(PROGRAMS)), fidoroute)
 endif
 ifeq ($(filter util,$(PROGRAMS)), util)
     ALL_PREREQ       += util_all
-    UPDATE_PREREQ    += util_wdate
+    UPDATE_PREREQ    += util_update
     INSTALL_PREREQ   += util_install
     CLEAN_PREREQ     += util_clean
     DISTCLEAN_PREREQ += util_distclean
@@ -627,14 +627,17 @@ update: $(UPDATE_PREREQ)
 
 .PHONY: do_not_run_update_as_root \
         huskylib_glue huskylib_get_date smapi_glue smapi_get_date \
-        fidoconf_cmp fidoconf_glue fidoconf_get_date \
+        fidoconf_glue fidoconf_get_date \
         areafix_glue areafix_get_date hptzip_glue hptzip_get_date \
-        hpt_cmp hpt_glue hpt_get_date htick_cmp htick_glue htick_get_date \
-        hptkill_cmp hptkill_glue hptkill_get_date \
-        hptsqfix_cmp hptsqfix_glue hptsqfix_get_date \
-        sqpack_cmp sqpack_glue sqpack_get_date \
-        msged_cmp msged_glue msged_get_date \
-        fidoroute_wdate fidoroute_get_date util_wdate util_get_date
+        hpt_glue hpt_get_date htick_glue htick_get_date \
+        hptkill_glue hptkill_get_date hptsqfix_glue hptsqfix_get_date \
+        sqpack_glue sqpack_get_date msged_glue msged_get_date \
+        fidoroute_get_date util_get_date \
+        huskylib_git_update smapi_git_update fidoconf_git_update \
+        areafix_git_update hptzip_git_update hpt_git_update \
+        htick_git_update hptkill_git_update hptsqfix_git_update \
+        sqpack_git_update msged_git_update fidoroute_git_update \
+        util_git_update huskybse_git_update
 
 ifeq ($(OSTYPE), UNIX)
     do_not_run_update_as_root:
@@ -681,29 +684,33 @@ define get_mdate
 endef
 
 ifeq ($(need_huskylib), 1)
-    huskylib_glue: huskylib_get_date
-		$(eval huskylib_date:=$(subst -,,$(huskylib_mdate)))
+    huskylib_update: huskylib_glue
 		@$(call date_make2shell,huskylib) \
 		$(call gen_cvsdate,huskylib)
 
-    huskylib_get_date: huskylib_update
+    huskylib_glue: huskylib_get_date
+		$(eval huskylib_date:=$(subst -,,$(huskylib_mdate)))
+
+    huskylib_get_date: huskylib_git_update
 		$(eval huskylib_mdate:=$(call get_mdate,huskylib))
 endif
 
 
 ifeq ($(need_smapi), 1)
-    smapi_glue: smapi_get_date
-		$(eval smapi_date:=$(subst -,,$(smapi_mdate)))
+    smapi_update: smapi_glue
 		@$(call date_make2shell,smapi) \
 		$(call gen_cvsdate,smapi)
 
-    smapi_get_date: smapi_update
+    smapi_glue: smapi_get_date
+		$(eval smapi_date:=$(subst -,,$(smapi_mdate)))
+
+    smapi_get_date: smapi_git_update
 		$(eval smapi_mdate:=$(call get_mdate,smapi))
 endif
 
 
 ifeq ($(need_fidoconf), 1)
-    fidoconf_cmp: $(addsuffix _glue,fidoconf $(fidoconf_DATEDEPS))
+    fidoconf_update: $(addsuffix _glue,fidoconf $(fidoconf_DATEDEPS))
 		@$(call date_make2shell,fidoconf) \
 		$(call gen_date_selection,fidoconf,huskylib smapi) \
 		$(call gen_cvsdate,fidoconf)
@@ -711,67 +718,67 @@ ifeq ($(need_fidoconf), 1)
     fidoconf_glue: fidoconf_get_date
 		$(eval fidoconf_date:=$(subst -,,$(fidoconf_mdate)))
 
-    fidoconf_get_date: fidoconf_update
+    fidoconf_get_date: fidoconf_git_update
 		$(eval fidoconf_mdate:=$(call get_mdate,fidoconf))
 endif
 
 
 ifeq ($(need_areafix), 1)
-    areafix_glue: areafix_get_date
-		$(eval areafix_date:=$(subst -,,$(areafix_mdate)))
+    areafix_update: areafix_glue
 		@$(call date_make2shell,areafix) \
 		$(call gen_cvsdate,areafix)
 
-    areafix_get_date: areafix_update
+    areafix_glue: areafix_get_date
+		$(eval areafix_date:=$(subst -,,$(areafix_mdate)))
+
+    areafix_get_date: areafix_git_update
 		$(eval areafix_mdate:=$(call get_mdate,areafix))
 endif
 
 
 ifeq ($(need_hptzip), 1)
-    hptzip_glue: hptzip_get_date
-		$(eval hptzip_date:=$(subst -,,$(hptzip_mdate)))
+    hptzip_update: hptzip_glue
 		@$(call date_make2shell,hptzip) \
 		$(call gen_cvsdate,hptzip)
 
-    hptzip_get_date: hptzip_update
+    hptzip_glue: hptzip_get_date
+		$(eval hptzip_date:=$(subst -,,$(hptzip_mdate)))
+
+    hptzip_get_date: hptzip_git_update
 		$(eval hptzip_mdate:=$(call get_mdate,hptzip))
 endif
 
 
 ifeq ($(filter hpt,$(PROGRAMS)),hpt)
-    ifeq ($(USE_HPTZIP), 1)
-        hpt_cmp: $(addsuffix _glue,hpt $(hpt_DATEDEPS))
-			@$(call date_make2shell,hpt) \
-			$(call gen_date_selection,hpt,$(hpt_DATEDEPS)) \
-			$(call gen_cvsdate,hpt)
-    endif
+    hpt_update: $(addsuffix _glue,hpt $(hpt_DATEDEPS))
+		@$(call date_make2shell,hpt) \
+		$(call gen_date_selection,hpt,$(hpt_DATEDEPS)) \
+		$(call gen_cvsdate,hpt)
 
     hpt_glue: hpt_get_date
 		$(eval hpt_date:=$(subst -,,$(hpt_mdate)))
 
-    hpt_get_date: hpt_update
+    hpt_get_date: hpt_git_update
 		$(eval hpt_mdate:=$(call get_mdate,hpt))
 endif
 
 
 ifeq ($(filter htick,$(PROGRAMS)), htick)
-    ifeq ($(USE_HPTZIP), 1)
-        htick_cmp: $(addsuffix _glue,htick $(htick_DATEDEPS))
-			@$(call date_make2shell,htick) \
-			$(call gen_date_selection,htick,$(htick_DATEDEPS)) \
-			$(call gen_cvsdate,htick)
-    endif
+    htick_update: $(addsuffix _glue,htick $(htick_DATEDEPS))
+		@$(call date_make2shell,htick) \
+		$(call gen_date_selection,htick,$(htick_DATEDEPS)) \
+		$(call gen_cvsdate,htick)
 
     htick_glue: htick_get_date
 		$(eval htick_date:=$(subst -,,$(htick_mdate)))
 
-    htick_get_date: htick_update
+    htick_get_date: htick_git_update
 		$(eval htick_mdate:=$(call get_mdate,htick))
 endif
 
 
 ifeq ($(filter hptkill,$(PROGRAMS)), hptkill)
-    hptkill_cmp: $(addsuffix _glue,hptkill $(hptkill_DATEDEPS))
+    hptkill_update: $(addsuffix _glue,hptkill $(hptkill_DATEDEPS))
 		@$(call date_make2shell,hptkill) \
 		$(call gen_date_selection,hptkill,$(hptkill_DATEDEPS)) \
 		$(call gen_cvsdate,hptkill)
@@ -779,13 +786,13 @@ ifeq ($(filter hptkill,$(PROGRAMS)), hptkill)
     hptkill_glue: hptkill_get_date
 		$(eval hptkill_date:=$(subst -,,$(hptkill_mdate)))
 
-    hptkill_get_date: hptkill_update
+    hptkill_get_date: hptkill_git_update
 		$(eval hptkill_mdate:=$(call get_mdate,hptkill))
 endif
 
 
 ifeq ($(filter hptsqfix,$(PROGRAMS)), hptsqfix)
-    hptsqfix_cmp: $(addsuffix _glue,hptsqfix $(hptsqfix_DATEDEPS))
+    hptsqfix_update: $(addsuffix _glue,hptsqfix $(hptsqfix_DATEDEPS))
 		@$(call date_make2shell,hptsqfix) \
 		$(call gen_date_selection,hptsqfix,$(hptsqfix_DATEDEPS)) \
 		$(call gen_cvsdate,hptsqfix)
@@ -793,13 +800,13 @@ ifeq ($(filter hptsqfix,$(PROGRAMS)), hptsqfix)
     hptsqfix_glue: hptsqfix_get_date
 		$(eval hptsqfix_date:=$(subst -,,$(hptsqfix_mdate)))
 
-    hptsqfix_get_date: hptsqfix_update
+    hptsqfix_get_date: hptsqfix_git_update
 		$(eval hptsqfix_mdate:=$(call get_mdate,hptsqfix))
 endif
 
 
 ifeq ($(filter sqpack,$(PROGRAMS)), sqpack)
-    sqpack_cmp: $(addsuffix _glue,sqpack $(sqpack_DATEDEPS))
+    sqpack_update: $(addsuffix _glue,sqpack $(sqpack_DATEDEPS))
 		@$(call date_make2shell,sqpack) \
 		$(call gen_date_selection,sqpack,$(sqpack_DATEDEPS)) \
 		$(call gen_cvsdate,sqpack)
@@ -807,13 +814,13 @@ ifeq ($(filter sqpack,$(PROGRAMS)), sqpack)
     sqpack_glue: sqpack_get_date
 		$(eval sqpack_date:=$(subst -,,$(sqpack_mdate)))
 
-    sqpack_get_date: sqpack_update
+    sqpack_get_date: sqpack_git_update
 		$(eval sqpack_mdate:=$(call get_mdate,sqpack))
 endif
 
 
 ifeq ($(filter msged,$(PROGRAMS)), msged)
-    msged_cmp: $(addsuffix _glue,msged $(msged_DATEDEPS))
+    msged_update: $(addsuffix _glue,msged $(msged_DATEDEPS))
 		@$(call date_make2shell,msged) \
 		$(call gen_date_selection,msged,$(msged_DATEDEPS)) \
 		$(call gen_cvsdate,msged)
@@ -821,32 +828,34 @@ ifeq ($(filter msged,$(PROGRAMS)), msged)
     msged_glue: msged_get_date
 		$(eval msged_date:=$(subst -,,$(msged_mdate)))
 
-    msged_get_date: msged_update
+    msged_get_date: msged_git_update
 		$(eval msged_mdate:=$(call get_mdate,msged))
 endif
 
 
 ifeq ($(filter fidoroute,$(PROGRAMS)), fidoroute)
-    fidoroute_wdate: fidoroute_get_date
+    fidoroute_update: fidoroute_get_date
 		@$(call date_make2shell,fidoroute) \
 		$(call gen_cvsdate,fidoroute)
 
-    fidoroute_get_date: fidoroute_update
+    fidoroute_get_date: fidoroute_git_update
 		$(eval fidoroute_mdate:=$(call get_mdate,fidoroute))
 endif
 
 
 ifeq ($(filter util,$(PROGRAMS)), util)
-    util_wdate: util_get_date
+    util_update: util_get_date
 		@$(call date_make2shell,util) \
 		$(call gen_cvsdate,util)
 
-    util_get_date: util_update
+    util_get_date: util_git_update
 		$(eval util_mdate:=$(call get_mdate,util))
 endif
 
-# <subproject>_update pattern rule
-$(addsuffix _update,$(SUBPROJECTS)): %_update: do_not_run_update_as_root
+huskybse_update: huskybse_git_update
+
+# <subproject>_git_update pattern rule
+$(addsuffix _git_update,$(SUBPROJECTS)): %_git_update: do_not_run_update_as_root
 	@[ -d $($*_ROOTDIR).git ] && cd $($*_ROOTDIR) && \
 	{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
 	$(GIT) $(CLONE) https://github.com/huskyproject/$*.git
