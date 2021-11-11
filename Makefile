@@ -39,24 +39,24 @@ ifneq ($(findstring ~,$(PREFIX)),)
 endif
 
 ifeq ($(MAKECMDGOALS),update)
-    ifneq ($(findstring git version,$(shell git --version)),git version)
+    ifeq ($(findstring git version,$(shell git --version)),)
         $(error ERROR: To update Husky, you must install git)
     endif
 endif
 
 ifeq ($(MAKECMDGOALS),all)
-    ifeq ($(findstring util,$(PROGRAMS)), util)
-        ifneq ($(findstring This is perl,$(shell perl -v)),This is perl)
+    ifneq ($(filter util,$(PROGRAMS)),)
+        ifeq ($(findstring This is perl,$(shell perl -v)),)
             $(error ERROR: To build util, you must install Perl)
         endif
-        ifneq ($(findstring Module::Build - Build and install,$(shell perldoc Module::Build)),Module::Build - Build and install)
+        ifeq ($(findstring Module::Build - Build and install,$(shell perldoc Module::Build)),)
             $(error ERROR: To build util, you must install Perl module Module::Build)
         endif
     endif
 endif
 
 ifdef INFODIR
-    ifeq ($(filter distclean,$(MAKECMDGOALS))$(filter uninstall,$(MAKECMDGOALS)),)
+    ifeq ($(filter distclean uninstall,$(MAKECMDGOALS)),)
         ifeq ($(shell whereis -b makeinfo | cut -d: -f2),)
             $(error Please install makeinfo program)
         endif
