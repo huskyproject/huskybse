@@ -507,45 +507,7 @@ clean: $(CLEAN_PREREQ) ;
 distclean: $(DISTCLEAN_PREREQ) ;
 
 ifneq ($(MAKECMDGOALS),update)
-    ifeq ($(need_huskylib), 1)
-        include $(huskylib_ROOTDIR)Makefile
-    endif
-    ifeq ($(need_smapi), 1)
-        include $(smapi_ROOTDIR)Makefile
-    endif
-    ifeq ($(need_fidoconf), 1)
-        include $(fidoconf_ROOTDIR)Makefile
-    endif
-    ifeq ($(need_areafix), 1)
-        include $(areafix_ROOTDIR)Makefile
-    endif
-    ifeq ($(need_hptzip), 1)
-        include $(hptzip_ROOTDIR)Makefile
-    endif
-    ifeq ($(filter hpt,$(PROGRAMS)),hpt)
-        include $(hpt_ROOTDIR)Makefile
-    endif
-    ifeq ($(filter htick,$(PROGRAMS)), htick)
-        include $(htick_ROOTDIR)Makefile
-    endif
-    ifeq ($(filter hptkill,$(PROGRAMS)), hptkill)
-        include $(hptkill_ROOTDIR)Makefile
-    endif
-    ifeq ($(filter hptsqfix,$(PROGRAMS)), hptsqfix)
-        include $(hptsqfix_ROOTDIR)Makefile
-    endif
-    ifeq ($(filter sqpack,$(PROGRAMS)), sqpack)
-        include $(sqpack_ROOTDIR)Makefile
-    endif
-    ifeq ($(filter msged,$(PROGRAMS)), msged)
-        include $(msged_ROOTDIR)Makefile
-    endif
-    ifeq ($(filter fidoroute,$(PROGRAMS)), fidoroute)
-        include $(fidoroute_ROOTDIR)Makefile
-    endif
-    ifeq ($(filter util,$(PROGRAMS)), util)
-        include $(util_ROOTDIR)Makefile
-    endif
+    include $(patsubst %,%/Makefile,$(filter-out huskybse,$(ENABLED)))
 endif
 
 $(DOCDIR_DST):
@@ -711,8 +673,8 @@ define gen_subproject
 #                      [ "${<subproject>_mdate}" != "${curval}" ] && \
 #                      echo "char cvs_date[]=\"${<subproject>_mdate}\";" > $(cvsdate) ||:
 $1_update: $$(addsuffix _glue,$1 $$($1_DATEDEPS))
-   @$$(call gen_date_selection,$1,$$($1_DATEDEPS)) \
-   $$(call gen_cvsdate,$1)
+	@$$(call gen_date_selection,$1,$$($1_DATEDEPS)) \
+	$$(call gen_cvsdate,$1)
 
 .PHONY: $1_update $1_glue $1_git_update
 
