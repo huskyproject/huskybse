@@ -56,9 +56,11 @@ ifeq ($(MAKECMDGOALS),all)
 endif
 
 ifdef INFODIR
-    ifeq ($(filter distclean uninstall,$(MAKECMDGOALS)),)
-        ifeq ($(shell whereis -b makeinfo | cut -d: -f2),)
-            $(error Please install makeinfo program)
+    ifdef MAKEINFO
+        ifeq ($(filter distclean uninstall,$(MAKECMDGOALS)),)
+            ifeq ($(shell whereis -b $(MAKEINFO) | cut -d: -f2),)
+                $(error Please install $(MAKEINFO) program)
+            endif
         endif
     endif
 endif
