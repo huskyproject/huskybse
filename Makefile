@@ -58,10 +58,24 @@ endif
 ifdef INFODIR
     ifdef MAKEINFO
         ifeq ($(filter distclean uninstall,$(MAKECMDGOALS)),)
-            ifeq ($(shell whereis -b $(MAKEINFO) | cut -d: -f2),)
-                $(error Please install $(MAKEINFO) program)
+            OStype := $(shell uname -s)
+            if_makeinfo = $(shell whereis -b makeinfo | cut -d: -f2)
+
+            ifneq ($(filter Linux FreeBSD,$(OStype)),)
+                ifeq ($(if_makeinfo),)
+                    $(error Please install makeinfo program)
+                endif
+            endif
+
+            if_makeinfo = $(shell which makeinfo)
+            ifeq ($(OStype),Darwin)
+                ifneq ($(if_makeinfo),/usr/local/opt/texinfo/bin/makeinfo)
+                    $(error Please run 'brew install texinfo')
+                endif
             endif
         endif
+    else
+        $(error You have to define MAKEINFO in huskymak.cfg to get .info docs)
     endif
 endif
 
