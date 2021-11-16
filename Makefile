@@ -320,6 +320,12 @@ ifneq ($($1_INFO),)
 		$(INFODIR_DST)$($1_INFO);
 endif
 
+ifneq ($(MAKECMDGOALS),update)
+    ifneq ($1,huskybse)     # skip ourself :)
+        include $$($1_ROOTDIR)Makefile
+    endif
+endif
+
 # main update rule for a subproject
 # <subproject>_update: <subproject>_glue <dep>_glue
 #                      <subproject>_date=$(<subproject>_date); \
@@ -380,10 +386,6 @@ uninstall: $(UNINSTALL_PREREQ) uninstall_DOCDIR_DST ;
 clean: $(CLEAN_PREREQ) ;
 
 distclean: $(DISTCLEAN_PREREQ) ;
-
-ifneq ($(MAKECMDGOALS),update)
-    include $(patsubst %,%/Makefile,$(filter-out huskybse,$(ENABLED)))
-endif
 
 $(DOCDIR_DST):
 	[ -d "$(PARENT_DOCDIR_DST)" ] || $(MKDIR) $(MKDIROPT) "$(PARENT_DOCDIR_DST)"
