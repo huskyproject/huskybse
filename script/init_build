@@ -11,16 +11,20 @@ die()
     exit 1
 }
 
-if [ -z "$(whereis -b git | cut -d: -f2)" ]
+if [ "$(uname -s)" = Linux ]
 then
-    die "Please install git"
+    [ -z "$(whereis -b git | cut -d: -f2)" ] && die "Please install git"
+elif [ "$(uname -s)" = FreeBSD ]
+then
+    [ -z "$(whereis -b git | cut -d: -f2)" ] && die "Please install git"
+    [ -z "$(which gmake)" ] && die "Please install gmake"
+    [ -z "$(which /usr/local/bin/grep)" ] && die "Please install gnugrep"
+elif [ "$(uname -s)" = Darwin ]
+then
+    [ -z "$(which git)" ] && die "Please install git"
+    [ "$(which make)" != /usr/local/opt/make/libexec/gnubin/make ] && die "Please install GNU make"
+    [ "$(which grep)" != /usr/local/opt/grep/libexec/gnubin/grep ] && die "Please install GNU grep"
 fi
-
-[ "$(uname -s)" = FreeBSD ] && [ -z "$(which gmake)" ] && \
-    die "Please install gmake"
-
-[ "$(uname -s)" = FreeBSD ] && [ -z "$(which /usr/local/bin/grep)" ] && \
-    die "Please install gnugrep"
 
 # Check that the script is not run by root
 [ "$(id -u)" -eq 0 ] && die "DO NOT run this as root"
@@ -93,6 +97,7 @@ git clone https://github.com/huskyproject/huskybse.git
 
 huskymak=huskybse/huskymak.cfg
 [ "$(uname -s)" = FreeBSD ] && huskymak=huskybse/huskymak.cfg.bsd
+[ "$(uname -s)" = Darwin ] && huskymak=huskybse/huskymak.cfg.macos
 
 cp -f -p huskybse/Makefile Makefile
 cp -f -p $huskymak huskymak.cfg.new
