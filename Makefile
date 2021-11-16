@@ -279,7 +279,7 @@ define gen_subproject
 
 # subproject default variables
 # LIBNAME is required for libraries, but makes no harm for others
-$1_LIBNAME := $1
+$1_LIBNAME := $(if $(filter huskylib,$1),husky,$1)
 # needs eval since ROOTDIR is used for overwrites
 $1_ROOTDIR := $1$(DIRSEP)
 $1_BUILDDIR := $$($1_ROOTDIR)$(BUILDDIR)$(DIRSEP)
