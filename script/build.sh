@@ -3,7 +3,7 @@
 # build.sh
 #
 
-VERSION="1.2"
+VERSION="1.3"
 
 die()
 {
@@ -110,6 +110,7 @@ fi
 
 huskymak=huskybse/huskymak.cfg
 [ "$(uname -s)" = FreeBSD ] && huskymak=huskybse/huskymak.cfg.bsd
+[ "$(uname -s)" = Darwin ] && huskymak=huskybse/huskymak.cfg.macos
 
 if [ "$no_update" -eq 0 ] && \
    [ -n "$(diff ./huskymak.cfg.new $huskymak)" ]
