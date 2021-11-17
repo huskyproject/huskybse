@@ -67,7 +67,7 @@ ifdef INFODIR
                 endif
             endif
 
-            if_makeinfo = $(shell which makeinfo)
+            if_makeinfo = $(shell which /usr/local/opt/texinfo/bin/makeinfo)
             ifeq ($(OStype),Darwin)
                 ifneq ($(if_makeinfo),/usr/local/opt/texinfo/bin/makeinfo)
                     $(error Please run 'brew install texinfo')
