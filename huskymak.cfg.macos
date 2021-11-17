@@ -32,6 +32,10 @@
 # may remove any program from the list, but to add a program missing in the
 # current list, one has to change makefiles.
 #
+# To build "util" (Perl utilities) you have first to run two commands:
+# brew install cpanminus
+# cpanm Module::Build
+#
 PROGRAMS=hpt htick hptkill hptsqfix sqpack msged fidoroute util
 
 # Perl support
@@ -76,10 +80,6 @@ TXT=1
 
 # Whether to create DVI documentation. This requires a "texi2dvi" program.
 #DVI=1
-
-# Whether to create PDF documentation. This requires a fairly new version of
-# the "texi2dvi" program.
-#PDF=1
 
 # Default codepage for Msged. One of the following values may be used:
 # CP437, CP850, CP865, CP866, KOI8-R, CP1125, LATIN-1, ISO-5
@@ -230,9 +230,6 @@ TOUCH=touch
 
 # You have to install GNU makeinfo by running `brew install texinfo`.
 MAKEINFO=/usr/local/opt/texinfo/bin/makeinfo
-
-# Convert Texinfo documents to DVI or PDF
-TEXI2DVI=texi2dvi
 
 #############################################################################
 # program options
