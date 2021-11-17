@@ -23,7 +23,7 @@ elif [ "$(uname -s)" = Darwin ]
 then
     [ -z "$(which git)" ] && die "Please install git"
     [ "$(which grep)" != /usr/local/opt/grep/libexec/gnubin/grep ] && \
-        die "Please run `brew install grep` to install GNU grep"
+        die "Please run 'brew install grep' to install GNU grep"
 fi
 
 # Check that the script is not run by root
