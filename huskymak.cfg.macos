@@ -219,9 +219,8 @@ RANLIB=ar s
 # and full access to internals.
 GIT=git
 
-# Grep searches through textual input for lines which contain a match to
-# a specified pattern and then prints the matching lines.
-GREP=grep
+# You have to install GNU grep by running `brew install grep`.
+GREP=/usr/local/opt/grep/libexec/gnubin/grep
 
 # Print real and effective user and group IDs
 ID=id
@@ -229,8 +228,8 @@ ID=id
 # Change file timestamps
 TOUCH=touch
 
-# Translate Texinfo source documentation to various other formats
-MAKEINFO=makeinfo
+# You have to install GNU makeinfo by running `brew install texinfo`.
+MAKEINFO=/usr/local/opt/texinfo/bin/makeinfo
 
 # Convert Texinfo documents to DVI or PDF
 TEXI2DVI=texi2dvi
