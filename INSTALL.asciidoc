@@ -160,7 +160,12 @@ where `YOUR_DIRECTORY` is the name of your directory. This option can also be
 used if the `~/husky` directory is already occupied by something else, for
 example, there are photos of your beloved dog there.
 
-These actions need to be performed only once. Now you can start the build:
+So you downloaded `init_build`, ran it, read `huskymak.cfg` carefully and
+corrected it according to your needs. You have to perform the actions only
+once. If in the future you want to build a new Husky version, you will not
+need to repeat the steps.
+
+Now you can start the build:
 
   ./build.sh
 
