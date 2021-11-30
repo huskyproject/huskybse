@@ -212,7 +212,7 @@ msged_INFO = msged.info.gz
 # Directories
 fidoroute_SRCDIR     = $(fidoroute_ROOTDIR)
 fidoroute_MANDIR     = $(fidoroute_ROOTDIR)
-fidoroute_DATEFILES := *.cpp
+fidoroute_DATEFILES := *.cpp *.h
 
 ### util ###
 # Directories
