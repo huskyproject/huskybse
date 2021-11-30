@@ -169,9 +169,10 @@ Now you can start the build:
 
   ./build.sh
 
-After the build is complete, you may install the built programs. If you have
-set PREFIX variable in your huskymak.cfg to some directory in your HOME, to
-install everything on Linux run
+It will build the programs listed in PROGRAMS in the file `huskymak.cfg` and
+the libraries they depend on. After the build is complete, you may install the
+built programs. If you have set PREFIX variable in your huskymak.cfg to some
+directory in your HOME, to install everything on Linux run
 
   make -j install
 
