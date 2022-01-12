@@ -258,7 +258,7 @@ $(foreach sub,$(SUBPROJECTS),\
 define gen_cvsdate
 	cd "$(or $($1_CVSDATEDIR),$($1_ROOTDIR))"; curval=""; \
 	[ -f $(cvsdate) ] && \
-	curval=$$($(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+' $(cvsdate)); \
+	curval=$$(perl -e 'open(fh, "<", "$(cvsdate)"); my @a=<fh>; close(fh); chomp @a; $$a[0]=~ m/^char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+/; print $$&;'); \
 	[ "$${$1_mdate}" != "$${curval}" ] && \
 	echo "Generating $(or $($1_CVSDATEDIR),$($1_ROOTDIR))cvsdate.h" && \
 	echo "char cvs_date[]=\"$${$1_mdate}\";" > $(cvsdate) ||:
