@@ -219,9 +219,6 @@ RANLIB=ar s
 # and full access to internals.
 GIT=git
 
-# You have to install GNU grep by running `brew install grep`.
-GREP=/usr/local/opt/grep/libexec/gnubin/grep
-
 # Print real and effective user and group IDs
 ID=id
 

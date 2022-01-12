@@ -207,10 +207,6 @@ RANLIB=ar s
 # and full access to internals.
 GIT=git
 
-# You have to install gnugrep, since makefiles use its possibility of
-# handling Perl regular expressions.
-GREP=/usr/local/bin/grep
-
 # Print real and effective user and group IDs
 ID=id
 

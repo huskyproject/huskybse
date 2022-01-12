@@ -257,6 +257,63 @@ $(foreach sub,$(SUBPROJECTS),\
         $(PROGRAMS) $(USED_LIBRARIES)),\
         $(eval ENABLED += $(sub)),))
 
+ifneq ($(filter install uninstall,$(MAKECMDGOALS)),)
+
+# Get the version components from the "version.h" file
+# $1 is the file path
+# $2 is <subproject>_VER_MAJOR
+# $3 is <subproject>_VER_MINOR
+# $4 is <subproject>_VER_PATCH
+# $5 is <subproject>_VER_BRANCH
+define getVerParts
+    perl -e 'use List::Util "first"; \
+    open(fh, "<", "$(1)"); my @a=<fh>; close(fh); chomp @a;  \
+    my $$b1 = first { s/$(2)/$$1/; } @a; \
+    my $$b2 = first { s/$(3)/$$1/; } @a; print "$$b1.$$b2 "; \
+    my $$b3 = first { s/$(4)/$$1/; } @a; print "$$b3 "; \
+    my $$b4 = first { s/$(5)/$$1/; } @a; print "$$b4";'
+endef
+
+# Get the date from the "svcdate.h" file
+# $1 is the file path
+define getCvsdate
+    perl -e 'use List::Util "first"; \
+    open(fh, "<", "$(1)"); my @a=<fh>; close(fh); chomp @a; \
+    $$a[0] =~ m/^char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+/; print "$$&";'
+endef
+
+# Generate the full subproject version, fetching information
+# from "version.h" and "cvsdate.h" files.
+# $1 is the subproject name
+define getVer
+    $1_file1 := $1/$$($1_H_DIR)version.h
+    $1_s1    := ^\#define\s+$1_VER_MAJOR\s+(\d+)
+    $1_s2    := ^\#define\s+$1_VER_MINOR\s+(\d+)
+    $1_s3    := ^\#define\s+$1_VER_PATCH\s+(\d+)
+    $1_s4    := ^\#define\s+$1_VER_BRANCH\s+(\w+)
+
+    $1_V:=$$(shell $$(call getVerParts,$$($1_file1),$$($1_s1),$$($1_s2),$$($1_s3),$$($1_s4)))
+
+    $1_VERH := $$(firstword $$($1_V))
+    $1_VERBRANCH := $$(lastword $$($1_V))
+
+    ifneq ($$($1_VERBRANCH),BRANCH_CURRENT)
+        $1_VERPATCH := $$(word 2,$$($$1_V))
+        $1_VER      := $$($$1_VERH).$$($$1_VERPATCH)
+    else
+        $1_file2    = $$(or $$($1_CVSDATEDIR),$1/)cvsdate.h
+        $1_cvsdate := $$(shell $$(call getCvsdate,$$($1_file2)))
+        $1_reldate := $$(subst -,,$$($1_cvsdate))
+        $1_VER     := $$($1_VERH).$$($1_reldate)
+    endif
+endef
+
+# Generate version numbers for subprojects
+$(foreach sub,$(USED_LIBRARIES) $(MSGED),$(eval $(call getVer,$(sub))))
+
+endif # ifneq ($(filter install uninstall,...
+
+
 # Generate cvsdate.h
 # Here $1 means a subproject name
 define gen_cvsdate
