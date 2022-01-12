@@ -329,9 +329,9 @@ ifneq ($($1_INFO),)
 		$(INSTALL) $(IMOPT) "$$<" "$$|"
 		$(TOUCH) "$$@"
 
-    uninfo_RECIPE += [ -f $(INFODIR_DST)$($1_INFO) ] && \
+    uninfo_RECIPE += $(if $(uninfo_RECIPE),;) [ -f $(INFODIR_DST)$($1_INFO) ] && \
 		install-info --remove --info-dir=$(DESTDIR)$(INFODIR) \
-		$(INFODIR_DST)$($1_INFO);
+		$(INFODIR_DST)$($1_INFO)
 endif
 
 ifneq ($(MAKECMDGOALS),update)
