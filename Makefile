@@ -8,10 +8,10 @@
 #
 
 SHELL = /bin/sh
-.DEFAULT_GOAL := all
+.DEFAULT_GOAL := build
 
 ifeq ($(MAKECMDGOALS),)
-    MAKECMDGOALS := all
+    MAKECMDGOALS := build
 endif
 
 Make = make
@@ -44,7 +44,7 @@ ifeq ($(MAKECMDGOALS),update)
     endif
 endif
 
-ifeq ($(MAKECMDGOALS),all)
+ifeq ($(MAKECMDGOALS),build)
     ifneq ($(filter util,$(PROGRAMS)),)
         ifeq ($(findstring This is perl,$(shell perl -v)),)
             $(error ERROR: To build util, you must install Perl)
@@ -370,7 +370,7 @@ $1_DOCDIR   := $$($1_ROOTDIR)doc$(DIRSEP)
 
 UPDATE_PREREQ        += $1_update
 ifneq ($1,huskybse)
-    ALL_PREREQ       += $1_all
+    BUILD_PREREQ     += $1_build
     DEPEND_PREREQ    += $1_depend
     INSTALL_PREREQ   += $1_install
     CLEAN_PREREQ     += $1_clean
@@ -380,7 +380,7 @@ ifneq ($1,huskybse)
 endif
 
 .PHONY: $($1_UNDOCDIR_PREREQ)
-.PHONY: $(addprefix $1_,all update depend install clean distclean uninstall)
+.PHONY: $(addprefix $1_,build update depend install clean distclean uninstall)
 
 ifneq ($($1_INFO),)
     info_PREREQ += $(INFODIR_DST)$($1_INFO)
@@ -427,12 +427,12 @@ endef # gen_subproject
 $(foreach sub,$(ENABLED),$(eval $(call gen_subproject,$(sub))))
 
 
-.PHONY: all install uninstall clean distclean depend update
+.PHONY: build install uninstall clean distclean depend update
 .PHONY: do_not_run_make_as_root
 
-all: $(ALL_PREREQ) ;
+build: $(BUILD_PREREQ) ;
 
-ifeq ($(MAKECMDGOALS),all)
+ifeq ($(MAKECMDGOALS),build)
     ifeq ($(OSTYPE), UNIX)
         do_not_run_make_as_root:
 		@[ $$($(ID) $(IDOPT)) -eq 0 ] && echo "DO NOT run \`make\` as root" && exit 1 || true
