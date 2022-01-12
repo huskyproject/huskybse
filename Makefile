@@ -356,7 +356,7 @@ endif
 #                      echo "char cvs_date[]=\"${<subproject>_mdate}\";" > $(cvsdate) ||:
 $1_update: $$(addsuffix _glue,$1 $$($1_DATEDEPS))
 	@$$(call gen_date_selection,$1,$$($1_DATEDEPS)) \
-	$$(call gen_cvsdate,$1)
+	$$(if $$(filter $1,huskybse),,$$(call gen_cvsdate,$1))
 
 .PHONY: $1_update $1_glue $1_git_update
 
