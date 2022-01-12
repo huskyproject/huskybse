@@ -247,10 +247,14 @@ ifneq ($(USE_HPTZIP), 1)
     HPTZIP :=
 endif
 
+MSGED := $(filter msged,$(PROGRAMS))
+
+USED_LIBRARIES := $(HUSKYLIB) $(SMAPI) $(FIDOCONF) $(AREAFIX) $(HPTZIP)
+
 ENABLED := huskybse
 $(foreach sub,$(SUBPROJECTS),\
     $(if $(filter $(sub),\
-        $(PROGRAMS) $(HUSKYLIB) $(SMAPI) $(FIDOCONF) $(AREAFIX) $(HPTZIP)),\
+        $(PROGRAMS) $(USED_LIBRARIES)),\
         $(eval ENABLED += $(sub)),))
 
 # Generate cvsdate.h
