@@ -274,7 +274,7 @@ define getVerParts
     my $$b4 = first { s/$(5)/$$1/; } @a; print "$$b4";'
 endef
 
-# Get the date from the "svcdate.h" file
+# Get the date from the "cvsdate.h" file
 # $1 is the file path
 define getCvsdate
     perl -e 'use List::Util "first"; \
