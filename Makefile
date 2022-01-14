@@ -257,7 +257,7 @@ $(foreach sub,$(SUBPROJECTS),\
         $(PROGRAMS) $(USED_LIBRARIES)),\
         $(eval ENABLED += $(sub)),))
 
-ifneq ($(filter install uninstall,$(MAKECMDGOALS)),)
+ifneq ($(filter build install,$(MAKECMDGOALS)),)
 
 # Get the version components from the "version.h" file
 # $1 is the file path
@@ -311,7 +311,7 @@ endef
 # Generate version numbers for subprojects
 $(foreach sub,$(USED_LIBRARIES) $(MSGED),$(eval $(call getVer,$(sub))))
 
-endif # ifneq ($(filter install uninstall,...
+endif # ifneq ($(filter build install,...
 
 
 # Generate cvsdate.h
