@@ -111,6 +111,7 @@ ifdef DOCDIR
 endif
 ifdef INFODIR
     INFODIR_DST=$(DESTDIR)$(INFODIR)$(DIRSEP)
+    info_RECIPE := cd $(INFODIR_DST);
 endif
 ifdef MAN1DIR
     MANDIR=$(dir $(MAN1DIR))
@@ -386,7 +387,7 @@ endif
 
 ifneq ($($1_INFO),)
     info_PREREQ += $(INFODIR_DST)$($1_INFO)
-    info_RECIPE +=  install-info --info-dir="$(INFODIR_DST)" "$(INFODIR_DST)$($1_INFO)";
+    info_RECIPE +=  install-info "$($1_INFO)" "$(INFODIR_DST)dir";
 
     $(INFODIR_DST)$($1_INFO): $$($1_BUILDDIR)$($1_INFO) | $(DESTDIR)$(INFODIR)
 		$(INSTALL) $(IMOPT) "$$<" "$$|"
