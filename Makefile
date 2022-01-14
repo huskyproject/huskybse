@@ -277,8 +277,7 @@ endef
 # Get the date from the "cvsdate.h" file
 # $1 is the file path
 define getCvsdate
-    perl -e 'use List::Util "first"; \
-    open(fh, "<", "$(1)"); my @a=<fh>; close(fh); chomp @a; \
+    perl -e 'open(fh, "<", "$(1)"); my @a=<fh>; close(fh); chomp @a; \
     $$a[0] =~ m/^char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+/; print "$$&";'
 endef
 
