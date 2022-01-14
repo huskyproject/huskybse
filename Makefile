@@ -249,6 +249,8 @@ endif
 
 MSGED := $(filter msged,$(PROGRAMS))
 
+UTIL := $(filter util,$(PROGRAMS))
+
 USED_LIBRARIES := $(HUSKYLIB) $(SMAPI) $(FIDOCONF) $(AREAFIX) $(HPTZIP)
 
 ENABLED := huskybse
@@ -296,19 +298,20 @@ define getVer
     $1_VERH := $$(firstword $$($1_V))
     $1_VERBRANCH := $$(lastword $$($1_V))
 
+    $1_file2    = $$(or $$($1_CVSDATEDIR),$1/)cvsdate.h
+    $1_cvsdate := $$(shell $$(call getCvsdate,$$($1_file2)))
+
     ifneq ($$($1_VERBRANCH),BRANCH_CURRENT)
         $1_VERPATCH := $$(word 2,$$($$1_V))
         $1_VER      := $$($$1_VERH).$$($$1_VERPATCH)
     else
-        $1_file2    = $$(or $$($1_CVSDATEDIR),$1/)cvsdate.h
-        $1_cvsdate := $$(shell $$(call getCvsdate,$$($1_file2)))
         $1_reldate := $$(subst -,,$$($1_cvsdate))
         $1_VER     := $$($1_VERH).$$($1_reldate)
     endif
 endef
 
 # Generate version numbers for subprojects
-$(foreach sub,$(USED_LIBRARIES) $(MSGED),$(eval $(call getVer,$(sub))))
+$(foreach sub,$(USED_LIBRARIES) $(MSGED) $(UTIL),$(eval $(call getVer,$(sub))))
 
 endif # ifneq ($(filter build install,...
 
