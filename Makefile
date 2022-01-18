@@ -14,8 +14,10 @@ ifeq ($(MAKECMDGOALS),)
     MAKECMDGOALS := build
 endif
 
+OStype := $(shell uname -s)
+
 Make = make
-ifeq ($(shell uname -s),FreeBSD)
+ifeq ($(OStype),FreeBSD)
     Make := gmake
 endif
 
@@ -58,7 +60,6 @@ endif
 ifdef INFODIR
     ifdef MAKEINFO
         ifeq ($(filter distclean uninstall,$(MAKECMDGOALS)),)
-            OStype := $(shell uname -s)
             if_makeinfo = $(shell whereis -b makeinfo | cut -d: -f2)
 
             ifneq ($(filter Linux FreeBSD,$(OStype)),)
