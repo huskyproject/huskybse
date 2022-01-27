@@ -18,12 +18,9 @@ elif [ "$(uname -s)" = FreeBSD ]
 then
     [ -z "$(whereis -b git | cut -d: -f2)" ] && die "Please install git"
     [ -z "$(which gmake)" ] && die "Please install gmake"
-    [ -z "$(which /usr/local/bin/grep)" ] && die "Please install gnugrep"
 elif [ "$(uname -s)" = Darwin ]
 then
     [ -z "$(which git)" ] && die "Please install git"
-    [ "$(which /usr/local/opt/grep/libexec/gnubin/grep)" != /usr/local/opt/grep/libexec/gnubin/grep ] && \
-        die "Please run 'brew install grep' to install GNU grep"
 fi
 
 # Check that the script is not run by root
