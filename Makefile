@@ -25,6 +25,8 @@ ifneq ($(words $(MAKECMDGOALS)),1)
     $(error Please use $(Make) with one goal at a time)
 endif
 
+__OBJ := \$(_OBJ)
+
 ifdef RPM_BUILD
     HUSKYMAK=./huskymak.rpm.cfg
 else ifdef RPM_BUILD_ROOT
