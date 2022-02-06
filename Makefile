@@ -529,5 +529,6 @@ $(addsuffix _glue,$(ENABLED)): %_glue: %_git_update
 # <subproject>_git_update pattern rule
 $(addsuffix _git_update,$(ENABLED)): %_git_update: do_not_run_update_as_root
 	@[ -d $($*_ROOTDIR).git ] && cd $($*_ROOTDIR) && \
+	echo "Trying to update $*" && \
 	{ $(GIT) $(PULL) || echo "####### ERROR #######"; } || \
 	$(GIT) $(CLONE) https://github.com/huskyproject/$*.git
