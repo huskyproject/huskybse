@@ -53,7 +53,7 @@ ifeq ($(MAKECMDGOALS),build)
         ifeq ($(findstring This is perl,$(shell perl -v)),)
             $(error ERROR: To build util, you must install Perl)
         endif
-        ifeq ($(findstring Module::Build - Build and install,$(shell perldoc Module::Build)),)
+        ifeq ($(findstring Yes,$(shell perl -MModule::Build -e 'print "Yes"')),)
             $(error ERROR: To build util, you must install Perl module Module::Build)
         endif
     endif
