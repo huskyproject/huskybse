@@ -3,7 +3,7 @@
 # init_build
 #
 
-VERSION="1.1"
+VERSION="1.2"
 
 die()
 {
@@ -11,14 +11,15 @@ die()
     exit 1
 }
 
-if [ "$(uname -s)" = Linux ]
+OS=$(uname -s)
+if [ "$OS" = Linux ]
 then
     [ -z "$(whereis -b git | cut -d: -f2)" ] && die "Please install git"
-elif [ "$(uname -s)" = FreeBSD ]
+elif [ "$OS" = FreeBSD ]
 then
     [ -z "$(whereis -b git | cut -d: -f2)" ] && die "Please install git"
     [ -z "$(which gmake)" ] && die "Please install gmake"
-elif [ "$(uname -s)" = Darwin ]
+elif [ "$OS" = Darwin ]
 then
     [ -z "$(which git)" ] && die "Please install git"
 fi
@@ -93,8 +94,9 @@ cd $top_directory
 git clone https://github.com/huskyproject/huskybse.git
 
 huskymak=huskybse/huskymak.cfg
-[ "$(uname -s)" = FreeBSD ] && huskymak=huskybse/huskymak.cfg.bsd
-[ "$(uname -s)" = Darwin ] && huskymak=huskybse/huskymak.cfg.macos
+[ "$OS" = FreeBSD ] && huskymak=huskybse/huskymak.cfg.bsd
+[ "$OS" = Darwin ] && huskymak=huskybse/huskymak.cfg.macos
+[ "$OS:0:5" = MINGW ] && huskymak=huskybse/huskymak.cfg.mgw
 
 cp -f -p huskybse/Makefile Makefile
 cp -f -p $huskymak huskymak.cfg.new

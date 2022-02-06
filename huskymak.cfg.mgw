@@ -1,0 +1,326 @@
+# Makefile configuration for Husky packages contains settings
+# used during their build. You have to modify this file according
+# to your needs. Alternatively you may give any such settings as
+# command line arguments to `make` invocation. Command line arguments
+# to `make` override any values given in this file or in any makefile.
+# There are two types of settings here. A setting of the first type
+# contains a string as its value. A setting of the second type is a
+# switch and may take two values, either 0 or 1. The value of 1 means
+# the switch is on and the value of 0 means it is off. A commented out
+# setting of the second type has the same meaning as having the value 0.
+
+##############################################################################
+# PART 1: PROGRAMS AND SOME OPTIONS
+# Most likely you will need to change something here to match your preferences
+##############################################################################
+
+# A list of programs to be built. Do not include here any libraries on which
+# the programs depend, since the libraries will be built automatically. You
+# may remove any program from the list, but to add a program missing in the
+# current list, one has to change makefiles.
+#
+PROGRAMS=hpt htick hptkill hptsqfix sqpack msged fidoroute util
+
+# Set PERL to 1 if you want to use Perl hooks in hpt
+# This setting does not influence Perl scripts in the "util" subproject
+PERL=1
+
+# ZipInternal packer
+USE_HPTZIP=1
+
+# The DYNLIBS switch controls if dynamic or static linkage is used.
+# If you set DYNLIBS=1, dynamic libraries (.dll files) will be
+# generated and used.
+DYNLIBS=0
+
+# Do you want debug information? (This is for developers only.)
+DEBUG=0
+
+# Whether to build and install huskylib utility (gnmsgid)
+GNMSGID=1
+
+# Whether to build and install fidoconf utilities (fconf2binkd,
+# fconf2fidogate, fconf2golded, fconf2aquaed, fconf2msged, fconf2squish,
+# fconf2tornado, fecfg2fconf, linked) and also whether to install the
+# utilities from fidoconf/util directory of the sources. The setting
+# also applies to the man pages for the utilities. But this does not
+# apply to tparser which is always built.
+FIDOCONF_UTIL=1
+
+# Whether to build and install hpt utilities (pktinfo, tpkt, txt2pkt, hptlink
+# and hpttree).
+HPT_UTIL=1
+
+# Whether to create HTML documentation.
+#HTML=0
+
+# Whether to create plain text documentation.
+#TXT=0
+
+# Whether to create DVI documentation. This requires a "texi2dvi" program.
+#DVI=1
+
+# Whether to create PDF documentation. This requires a fairly new version of
+# the "texi2dvi" program.
+#PDF=1
+
+# Default codepage for Msged. One of the following values may be used:
+# CP437, CP850, CP865, CP866, KOI8-R, CP1125, LATIN-1, ISO-5
+CODEPAGE=CP866
+
+##############################################################################
+# PART 2: DIRECTORIES AND FILENAMES
+# Most likely you will need to change something here.
+# Specify all directories without a trailing slash.
+##############################################################################
+
+# A subdirectory for the source files
+_SRC_DIR=src
+
+# A subdirectory for the files created during the build
+BUILDDIR=Build
+
+# A subdirectory for object files
+OBJDIR=${BUILDDIR}/obj
+
+# A subdirectory for generated dependency makefiles
+DEPDIR=${BUILDDIR}/dep
+
+# Prefix for all installation directories
+# Set to your homedir if you have no root privilegies
+PREFIX=~/fido
+
+# Where to put dynamic libraries (*.dll files) when DYNLIBS=1.
+LIBDIR=$(SystemRoot)/System32
+
+# Where to put programs.
+#BINDIR=${PREFIX}/bin
+
+# The fidoconfig config file will be in this directory:
+CFGDIR=$$HOME/fido/etc/husky
+
+# Filename (without path) for the config file (default: config)
+#CFGNAME=config
+
+# Name of the config file of MSGED TE:
+MSGEDCFG=\"$(CFGDIR)/msged.cfg\"
+
+# A directory for documentation in HTML, TXT, PDF formats.
+# If you comment it out, no documention in these formats will be produced and
+# you won't know how to use the software ;-).
+DOCDIR=${PREFIX}/doc/husky
+
+# The full path to the perldoc script
+PERLDOC=/c/Strawberry/perl/bin/perldoc.bat
+
+# The directory where zconf.h and zlib.h reside
+ZLIBHDIR=/c/Strawberry/c/include
+
+# The zlib static library
+ZLIBL=/c/Strawberry/c/lib/libz.a
+
+##############################################################################
+# PART 3: PLATFORM DEPENDENT SECTION
+# If you are running Linux with GNU gcc, you don't need to modify anything in
+# the following sections. If you are running any other operating system or
+# using any other C compiler, you should check the values. For some operating
+# systems, the comments contain information on what you need to change.
+##############################################################################
+
+
+##############################################################################
+# Programs
+##############################################################################
+
+# C-Compiler
+CC=/c/Strawberry/c/bin/gcc.exe
+
+# C++-Compiler
+CXX=/c/Strawberry/c/bin/g++.exe
+
+#Msged needs access to a termcap library. Define its name here.
+#On Linux, termcap is integrated into ncurses:
+#TERMCAP=ncurses
+#On FreeBSD or commerical Unices, you may try one of the following:
+#TERMCAP=termcap
+#TERMCAP=terminfo
+
+# archiver (for object-files)
+AR=ar
+
+# how to build shared libraries
+# use gcc on Linux, FreeBSD and MINGW
+# use ld on BeOS and also try ld if gcc does not work for you
+MKSHARED=/c/Strawberry/c/bin/gcc.exe
+
+# remove a file
+RM=rm
+
+# remove a directory
+RMDIR=rmdir
+
+# The "install" program.
+# On Linux and FreeBSD/NetBSD, use this:
+INSTALL=install
+# On Tru64 Unix, use this:
+# INSTALL=installbsd
+# On Solaris, use this:
+# INSTALL=/usr/ucb/install
+
+# link file (DOS: copy file)
+LN=ln
+
+# create directory
+MKDIR=mkdir
+
+# update dynamic library cache
+# If your operating system does not need this, you may comment out this line.
+#LDCONFIG=/sbin/ldconfig
+
+# rename a file
+MV=mv
+
+#copy a file
+CP=cp
+
+#Make a library file usable. You may leave this empty if it is n/a.
+RANLIB=ar s
+
+# Git is a fast, scalable, distributed revision control system with an
+# unusually rich command set that provides both high-level operations
+# and full access to internals.
+GIT=git
+
+# Print real and effective user and group IDs
+ID=id
+
+# Change file timestamps
+TOUCH=touch
+
+# Translate Texinfo source documentation to various other formats
+#MAKEINFO=makeinfo
+
+# Convert Texinfo documents to DVI or PDF
+#TEXI2DVI=texi2dvi
+
+#############################################################################
+# program options
+#############################################################################
+
+# type of operating system (UNIX,MSDOS,OS2,WINNT)
+# for BeOS, use UNIX!
+OSTYPE=WINNT
+
+# short name of operating system (used for PID lines etc.)
+UNAME=Win64
+#UNAME=BSD
+#UNAME=OS2
+#UNAME=BEOS
+
+# C-compiler: the option to specify the name of the object file
+OBJNAMEFLAG=-o
+
+# C-compiler: the option to specify the name of the executable file
+EXENAMEFLAG=-o
+
+# C-compiler: generate warnings
+WARNFLAGS=-Wall
+
+# C-compiler: optimization
+OPTCFLAGS=-c -g0 -O3 -fomit-frame-pointer -fPIC
+
+# C-compiler: debug
+DEBCFLAGS=-c -g -Og -fPIC
+
+# C-compiler: additional defines, for features of your OS
+# On Solaris, Msged only works with the curses interface, so use:
+#ADDCDEFS+=-DUSE_CURSES
+# Some FS and some OS don't support filelocking. Try alternative locking
+# *** THIS IS BETA-CODE *** report problems or success  to FIDOSOFT.HUSKY ***
+#ADDCDEFS+=-DALTLOCKING
+# If your are not under UNIX, EMX or DJGPP and have popen() uncomment this:
+#ADDCDEFS+=-DHAVE_POPEN
+
+# object linker: strip symbols
+OPTLFLAGS=-s
+
+# object linker: debug
+DEBLFLAGS=-g
+
+# options for installing programs
+OPTIBOPT=-c -s -m 555
+DEBIBOPT=-c -m 555
+
+# options for installing scripts
+ISOPT=-c -m 555
+
+# options for installing shared libs
+ILOPT=-c -m 555
+
+# options for installing man-pages
+IMOPT=-c -m 444
+
+# options for making symbolic links
+LNOPT=-s -f
+
+# option for making hard links
+LNHOPT=-f
+
+# archiver options
+AR_R = r
+
+# options for creating directories
+MKDIROPT=-p
+
+# options for removing files (e.g. for clean, distclean, uninstall)
+RMOPT=-f
+
+# option for cloning a git repository
+CLONE=clone
+
+# option for updating a local git repository from the remote one
+PULL=pull
+
+# an option for `id`: print only the effective user ID
+IDOPT=-u
+
+# Makeinfo option: generate only one output file
+#MINOSPLIT=--no-split
+
+# Makeinfo option: produce HTML
+#MIHTML=--html
+
+# Makeinfo option: produce plain text
+#MIPTEXT=--plaintext
+
+# Makeinfo option: produce PDF (texi2dvi must be installed)
+#MIPDF=--pdf
+
+# Makeinfo option: output file
+#MIOUT=-o
+
+#############################################################################
+# file extensions
+#############################################################################
+
+# extension of an executable (e.g. ".exe")
+_EXE=.exe
+
+# extension of an object file
+_OBJ=.o
+
+# extension of a C source file
+_C=.c
+
+# extension of static libs
+_LIB=.lib
+
+# extension of dynamic libs
+_DLL=.dll
+
+# extension of a generated dependency makefile
+_DEP=.d
+
+# directory separator (DOS-like: "\\", Unix-like: "/")
+
+DIRSEP=/
