@@ -105,7 +105,7 @@ else
 endif
 ifdef LIBDIR
     LIBDIR_DST=$(DESTDIR)$(LIBDIR)$(DIRSEP)
-else
+else ifeq ($(DYNLIBS),1)
     $(error LIBDIR not defined!)
 endif
 ifdef DOCDIR
