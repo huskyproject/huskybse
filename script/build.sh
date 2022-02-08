@@ -112,7 +112,7 @@ huskymak=huskybse/huskymak.cfg
 OS=$(uname -s)
 [ "$OS" = FreeBSD ] && huskymak=huskybse/huskymak.cfg.bsd
 [ "$OS" = Darwin ] && huskymak=huskybse/huskymak.cfg.macos
-[ "${OS:0:5}" = MINGW ] && huskymak=huskybse/huskymak.cfg.mgw
+[ "${OS%%${OS#MINGW}}" = MINGW ] && huskymak=huskybse/huskymak.cfg.mgw
 
 if [ "$no_update" -eq 0 ] && \
    [ -n "$(diff ./huskymak.cfg.new $huskymak)" ]
