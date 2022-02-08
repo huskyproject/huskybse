@@ -255,7 +255,7 @@ WARNFLAGS=-Wall
 OPTCFLAGS=-c -g0 -O3 -fomit-frame-pointer -fPIC
 
 # C-compiler: debug
-DEBCFLAGS=-c -g -O2 -fPIC
+DEBCFLAGS=-c -g -Og -fPIC
 
 # C-compiler: additional defines, for features of your OS
 # On Solaris, Msged only works with the curses interface, so use:
