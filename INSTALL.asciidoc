@@ -5,14 +5,15 @@ Contents
 --------
 
   1 Introduction
-  2 Installation using universal makefiles
-    2.1 Build configuration with `huskymak.cfg`
-    2.2 Installing Husky on rpm-based Linux distributions
-    2.3 Installing Husky on other UNIX-like operating systems
+  2 Installation Using Universal Makefiles
+    2.1 Before Starting Husky Build
+    2.2 Build Configuration with `huskymak.cfg`
+    2.3 Installing Husky on Rpm-based Linux Distributions
+    2.4 Installing Husky on Other UNIX-like Operating Systems
   3 Compiling with the Legacy Makefiles
     3.1 Overview
-    3.2 Getting the sources
-    3.3 List of platforms supported by the legacy makefiles
+    3.2 Getting the Sources
+    3.3 List of Platforms Supported by the legacy Makefiles
     3.4 Compiling
     3.5 Installing
 
@@ -38,14 +39,68 @@ and day.
 2 Installation using universal makefiles
 ========================================
 
-This assumes you have version 3.82 or newer of GNU make installed. In
-addition, to build packages of Perl utilities, you need to install
-`Module::Build`. Perhaps the corresponding package in your distribution is
-called `perl-Module-Build`. In addition, you will need to install `git`. On
-FreeBSD, you will additionally need to install `gnugrep`. To configure the
-build using universal makefiles, use the file *huskymak.cfg*.
+To configure the build using universal makefiles, use the *huskymak.cfg* file.
+But before you start downloading the sources, you have to install some
+programs you will need during the build. We assume you have version 3.81 or
+newer of GNU make installed.
 
-2.1 Build configuration with `huskymak.cfg`
+2.1 Before Starting Husky Build
+-------------------------------
+
+The tables below list the software packages you should install before building
+Husky on the most common operating systems. These tables also record the
+conditions under which you will need these packages.
+
+Red Hat Enterprise Linux, CentOS, Fedora, Rocky Linux
+
+  Package                 What requires the package
+  -------------------------------------------------
+  git                     getting the sources and updating them
+  make, gcc, gcc-c++      build from sources
+  perl-ExtUtils-Embed     hpt at PERL=1
+  zlib, zlib-devel        hpt, htick at USE_HPTZIP=1
+  zlib-static             hpt, htick at USE_HPTZIP=1 and DYNLIBS=0
+  texinfo                 hpt, htick, msged at ((HTML=1 or TXT=1 or
+                          PDF=1 or DVI=1) and defined DOCDIR) or
+                          defined INFODIR
+  texinfo-tex             hpt, htick, msged at (PDF=1 or DVI=1) and
+                          defined DOCDIR
+  ncurses-devel           msged
+  perl-Module-Build,      util
+  perl-Test-Simple
+
+Ubuntu
+
+  Package                 What requires the package
+  -------------------------------------------------
+  git                     getting the sources and updating them
+  make, gcc, g++          build from sources
+  libperl-dev             hpt at PERL=1
+  zlib1g, zlib1g-dev      hpt, htick at USE_HPTZIP=1
+  texinfo                 hpt, htick, msged at ((HTML=1 or TXT=1 or
+                          PDF=1 or DVI=1) and defined DOCDIR) or
+                          defined INFODIR
+  ncurses-base,           msged
+  ncurses-bin
+  libmodule-build-perl,   util
+  libtest-simple-perl
+
+FreeBSD
+
+  Package                 What requires the package
+  -------------------------------------------------
+  git                     getting the sources and updating them
+  gmake                   build from sources
+  libperl-dev             hpt at PERL=1
+  zlib1g, zlib1g-dev      hpt, htick at USE_HPTZIP=1
+  texinfo                 hpt, htick, msged at ((HTML=1 or TXT=1 or
+                          PDF=1 or DVI=1) and defined DOCDIR) or
+                          defined INFODIR
+  texlive-full-20150521   hpt, htick, msged at (PDF=1 or DVI=1) and
+                          defined DOCDIR
+  p5-Module-Build-0.4231  util
+
+2.2 Build Configuration with `huskymak.cfg`
 ------------------------------------------
 
 The configuration file `huskymak.cfg` contains the settings used during the
@@ -69,7 +124,7 @@ Otherwise, set
 If a setting of the second type is commented out, it is equivalent to its
 value of *0*.
 
-2.2 Installing Husky on rpm-based Linux distributions
+2.3 Installing Husky on Rpm-based Linux Distributions
 -----------------------------------------------------
 
 To build rpm packages, you need to install *mock* in addition to GNU make
@@ -135,7 +190,7 @@ You may also find some additional options for `build_rpm`.
 See `build_rpm --help`.
 
 
-2.3 Installing Husky on other UNIX-like operating systems
+2.4 Installing Husky on Other UNIX-like Operating Systems
 ---------------------------------------------------------
 
 To start the installation, follow these steps:
@@ -276,7 +331,7 @@ Against:
     modification date of the source code. You need to create these files
     yourself.
 
-3.2 Getting the sources
+3.2 Getting the Sources
 -----------------------
 
 The Husky Fidonet software project is split into several subprojects. A
@@ -342,7 +397,7 @@ for `hpt` you need to take the date from `huskylib`. The maximum date of the
 last change to the subproject itself and all of its dependencies should be
 taken as the date in `cvsdate.h`.
 
-3.3 List of platforms supported by the legacy makefiles
+3.3 List of Platforms Supported by the Legacy Makefiles
 -------------------------------------------------------
 
 The following is a list of platforms that are supported by legacy
