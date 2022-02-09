@@ -21,11 +21,11 @@
 #
 PROGRAMS=hpt htick hptkill hptsqfix sqpack msged fidoroute util
 
-# Set PERL to 1 if you want to use Perl hooks in hpt
-# This setting does not influence Perl scripts in the "util" subproject
+# Switch on a possibility to use Perl hooks in hpt. This has nothing to do
+# with standalone Perl scripts including scripts in "util" subproject.
 PERL=1
 
-# ZipInternal packer
+# Use internal ZIP packer
 USE_HPTZIP=1
 
 # The DYNLIBS switch controls if dynamic or static linkage is used.
@@ -51,17 +51,23 @@ FIDOCONF_UTIL=1
 # and hpttree).
 HPT_UTIL=1
 
-# Whether to create HTML documentation.
+# Whether to create HTML documentation. If DOCDIR (see PART 2: DIRECTORIES
+# AND FILENAMES below) is commented out, this setting is ignored.
 #HTML=0
 
-# Whether to create plain text documentation.
+# Whether to create plain text documentation. If DOCDIR (see PART 2:
+# DIRECTORIES AND FILENAMES below) is commented out, this setting
+# is ignored.
 #TXT=0
 
 # Whether to create DVI documentation. This requires a "texi2dvi" program.
+# If DOCDIR (see PART 2: DIRECTORIES AND FILENAMES below) is commented
+# out, this setting is ignored.
 #DVI=1
 
 # Whether to create PDF documentation. This requires a fairly new version of
-# the "texi2dvi" program.
+# the "texi2dvi" program. If DOCDIR (see PART 2: DIRECTORIES AND FILENAMES
+# below) is commented out, this setting is ignored.
 #PDF=1
 
 # Default codepage for Msged. One of the following values may be used:
@@ -148,9 +154,9 @@ CXX=/c/Strawberry/c/bin/g++.exe
 # archiver (for object-files)
 AR=ar
 
-# how to build shared libraries
-# use gcc on Linux, FreeBSD and MINGW
-# use ld on BeOS and also try ld if gcc does not work for you
+# How to build shared libraries.
+# Use gcc on Linux, Mingw and clang on FreeBSD,
+# use ld on BeOS and also try ld if gcc does not work for you.
 MKSHARED=/c/Strawberry/c/bin/gcc.exe
 
 # remove a file
@@ -180,10 +186,10 @@ MKDIR=mkdir
 # rename a file
 MV=mv
 
-#copy a file
+# copy a file
 CP=cp
 
-#Make a library file usable. You may leave this empty if it is n/a.
+# Make a library file usable. You may leave this empty if it is n/a.
 RANLIB=ar s
 
 # Git is a fast, scalable, distributed revision control system with an
@@ -322,5 +328,4 @@ _DLL=.dll
 _DEP=.d
 
 # directory separator (DOS-like: "\\", Unix-like: "/")
-
 DIRSEP=/

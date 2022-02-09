@@ -38,20 +38,16 @@
 #
 PROGRAMS=hpt htick hptkill hptsqfix sqpack msged fidoroute util
 
-# Perl support
+# Switch on a possibility to use Perl hooks in hpt. This has nothing to do
+# with standalone Perl scripts including scripts in "util" subproject.
 PERL=1
 
-# ZipInternal packer
+# Use internal ZIP packer
 USE_HPTZIP=0
 
 # The DYNLIBS switch controls if dynamic or static linkage is used.
-# This is tricky. If you set DYNLIBS=1, dynamic libraries (.so files)
-# will be generated and used. This will only work if you are running "gcc"
-# on Linux, FreeBSD or another real Unix operating system.
-
-# On other systems, you should set DYNLIBS=0. Even on Linux, you might 
-# want to do this if you are sick of shared library version mismatch
-# problems.
+# If you set DYNLIBS=1, dynamic libraries (.so files) will be generated
+# and used.
 DYNLIBS=1
 
 # Do you want debug information? (This is for developers only.)
@@ -72,13 +68,18 @@ FIDOCONF_UTIL=1
 # and hpttree).
 HPT_UTIL=1
 
-# Whether to create HTML documentation.
+# Whether to create HTML documentation. If DOCDIR (see PART 2: DIRECTORIES
+# AND FILENAMES below) is commented out, this setting is ignored.
 HTML=1
 
-# Whether to create plain text documentation.
+# Whether to create plain text documentation. If DOCDIR (see PART 2:
+# DIRECTORIES AND FILENAMES below) is commented out, this setting
+# is ignored.
 TXT=1
 
 # Whether to create DVI documentation. This requires a "texi2dvi" program.
+# If DOCDIR (see PART 2: DIRECTORIES AND FILENAMES below) is commented
+# out, this setting is ignored.
 #DVI=1
 
 # Default codepage for Msged. One of the following values may be used:
@@ -162,8 +163,8 @@ CC=clang
 # C++-Compiler
 CXX=clang++
 
-#Msged needs access to a termcap library. Define its name here.
-#On Linux, termcap is integrated into ncurses:
+# Msged needs access to a termcap library. Define its name here.
+# On Linux, termcap is integrated into ncurses:
 TERMCAP=ncurses
 #On FreeBSD or commerical Unices, you may try one of the following:
 #TERMCAP=termcap
@@ -208,10 +209,10 @@ MKDIR=mkdir
 # rename a file
 MV=mv
 
-#copy a file
+# copy a file
 CP=cp
 
-#Make a library file usable. You may leave this empty if it is n/a.
+# Make a library file usable. You may leave this empty if it is n/a.
 RANLIB=ar s
 
 # Git is a fast, scalable, distributed revision control system with an
@@ -225,6 +226,7 @@ ID=id
 # Change file timestamps
 TOUCH=touch
 
+# Translate Texinfo source documentation to various other formats.
 # You have to install GNU makeinfo by running `brew install texinfo`.
 MAKEINFO=/usr/local/opt/texinfo/bin/makeinfo
 
