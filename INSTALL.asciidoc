@@ -96,9 +96,10 @@ FreeBSD
   texinfo                 hpt, htick, msged at ((HTML=1 or TXT=1 or
                           PDF=1 or DVI=1) and defined DOCDIR) or
                           defined INFODIR
-  texlive-full-20150521   hpt, htick, msged at (PDF=1 or DVI=1) and
+  texlive-full            hpt, htick, msged at (PDF=1 or DVI=1) and
                           defined DOCDIR
-  p5-Module-Build-0.4231  util
+  p5-Module-Build,        util
+  p5-Test-Simple
 
 2.2 Build Configuration with `huskymak.cfg`
 ------------------------------------------

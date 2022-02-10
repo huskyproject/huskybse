@@ -96,10 +96,10 @@ FreeBSD
   texinfo                 hpt, htick, msged при ((HTML=1 или TXT=1 или
                           PDF=1 или DVI=1) и заданном DOCDIR) или
                           заданном INFODIR
-  texlive-full-20150521   hpt, htick, msged при (PDF=1 или DVI=1) и
+  texlive-full            hpt, htick, msged при (PDF=1 или DVI=1) и
                           заданном DOCDIR
-  p5-Module-Build-0.4231  util
-
+  p5-Module-Build,        util
+  p5-Test-Simple
 
 2.2 Конфигурирование сборки с помощью huskymak.cfg
 --------------------------------------------------
