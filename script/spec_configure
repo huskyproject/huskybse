@@ -110,16 +110,6 @@ sub get_version
         last if($num_versions == $num_regexps);
     }
 
-    if($file =~ /msged/)
-    {
-        my $vernum = $ver[0];
-        my $verpatch = $ver[1];
-        $verpatch =~ /^\.(\d+)$/;
-        $ver[2] = $1;
-        $vernum =~ /^(\d+)\.(\d+)$/;
-        $ver[0] = $1;
-        $ver[1] = $2;
-    }
     return @ver;
 }
 
@@ -188,10 +178,10 @@ $texi2dvi = ($PDF == 1 || $DVI == 1) ? 1 : 0;
 push(@macros, "%global texi2dvi $texi2dvi");
 
 # huskylib
-my $verfile  = "huskylib/huskylib/huskylib.h";
-my @regexp = ('^#define\s+HUSKYLIB_VER_MAJOR\s+(\d+)',
-              '^#define\s+HUSKYLIB_VER_MINOR\s+(\d+)',
-              '^#define\s+HUSKYLIB_VER_PATCH\s+(\d+)');
+my $verfile  = "huskylib/huskylib/version.h";
+my @regexp = ('^#define\s+huskylib_VER_MAJOR\s+(\d+)',
+              '^#define\s+huskylib_VER_MINOR\s+(\d+)',
+              '^#define\s+huskylib_VER_PATCH\s+(\d+)');
 
 my ($huskylib_ver_major,
     $huskylib_ver_minor,
@@ -208,10 +198,10 @@ push(@macros, "%global huskylib_reldate $huskylib_reldate");
 
 
 # smapi
-$verfile = "smapi/smapi/msgapi.h";
-@regexp = ('^#define\s+SMAPI_VER_MAJOR\s+(\d+)',
-           '^#define\s+SMAPI_VER_MINOR\s+(\d+)',
-           '^#define\s+SMAPI_VER_PATCH\s+(\d+)');
+$verfile = "smapi/smapi/version.h";
+@regexp = ('^#define\s+smapi_VER_MAJOR\s+(\d+)',
+           '^#define\s+smapi_VER_MINOR\s+(\d+)',
+           '^#define\s+smapi_VER_PATCH\s+(\d+)');
 
 my ($smapi_ver_major,
     $smapi_ver_minor,
@@ -229,9 +219,9 @@ push(@macros, "%global smapi_reldate $smapi_reldate");
 
 # fidoconf
 $verfile = "fidoconf/fidoconf/version.h";
-@regexp = ('^#define\s+FC_VER_MAJOR\s+(\d+)',
-           '^#define\s+FC_VER_MINOR\s+(\d+)',
-           '^#define\s+FC_VER_PATCH\s+(\d+)');
+@regexp = ('^#define\s+fidoconf_VER_MAJOR\s+(\d+)',
+           '^#define\s+fidoconf_VER_MINOR\s+(\d+)',
+           '^#define\s+fidoconf_VER_PATCH\s+(\d+)');
 
 my ($fidoconf_ver_major,
     $fidoconf_ver_minor,
@@ -259,9 +249,9 @@ $fidoconf_doc_date = max($fidoconf_doc_date, $keywords_htick_date);
 
 # areafix
 $verfile = "areafix/areafix/version.h";
-@regexp = ('^#define\s+AF_VER_MAJOR\s+(\d+)',
-           '^#define\s+AF_VER_MINOR\s+(\d+)',
-           '^#define\s+AF_VER_PATCH\s+(\d+)');
+@regexp = ('^#define\s+areafix_VER_MAJOR\s+(\d+)',
+           '^#define\s+areafix_VER_MINOR\s+(\d+)',
+           '^#define\s+areafix_VER_PATCH\s+(\d+)');
 
 my ($areafix_ver_major,
     $areafix_ver_minor,
@@ -281,9 +271,9 @@ push(@macros, "%global areafix_reldate $areafix_reldate");
 if($USE_HPTZIP == 1 && $DYNLIBS == 1)
 {
     $verfile = "hptzip/hptzip/version.h";
-    @regexp = ('^#define\s+HZ_VER_MAJOR\s+(\d+)',
-               '^#define\s+HZ_VER_MINOR\s+(\d+)',
-               '^#define\s+HZ_VER_PATCH\s+(\d+)');
+    @regexp = ('^#define\s+hptzip_VER_MAJOR\s+(\d+)',
+               '^#define\s+hptzip_VER_MINOR\s+(\d+)',
+               '^#define\s+hptzip_VER_PATCH\s+(\d+)');
 
     my ($hptzip_ver_major,
         $hptzip_ver_minor,
@@ -303,9 +293,9 @@ if($USE_HPTZIP == 1 && $DYNLIBS == 1)
 if($hpt)
 {
     $verfile = "hpt/h/version.h";
-    @regexp = ('^#define\s+VER_MAJOR\s+(\d+)',
-               '^#define\s+VER_MINOR\s+(\d+)',
-               '^#define\s+VER_PATCH\s+(\d+)');
+    @regexp = ('^#define\s+hpt_VER_MAJOR\s+(\d+)',
+               '^#define\s+hpt_VER_MINOR\s+(\d+)',
+               '^#define\s+hpt_VER_PATCH\s+(\d+)');
 
     my ($hpt_ver_major,
         $hpt_ver_minor,
@@ -329,9 +319,9 @@ if($hpt)
 if($htick)
 {
     $verfile = "htick/h/version.h";
-    @regexp = ('^#define\s+VER_MAJOR\s+(\d+)',
-               '^#define\s+VER_MINOR\s+(\d+)',
-               '^#define\s+VER_PATCH\s+(\d+)');
+    @regexp = ('^#define\s+htick_VER_MAJOR\s+(\d+)',
+               '^#define\s+htick_VER_MINOR\s+(\d+)',
+               '^#define\s+htick_VER_PATCH\s+(\d+)');
 
     my ($htick_ver_major,
         $htick_ver_minor,
@@ -353,9 +343,9 @@ if($htick)
 if($hptkill)
 {
     $verfile = "hptkill/h/version.h";
-    @regexp = ('^#define\s+VER_MAJOR\s+(\d+)',
-               '^#define\s+VER_MINOR\s+(\d+)',
-               '^#define\s+VER_PATCH\s+(\d+)');
+    @regexp = ('^#define\s+hptkill_VER_MAJOR\s+(\d+)',
+               '^#define\s+hptkill_VER_MINOR\s+(\d+)',
+               '^#define\s+hptkill_VER_PATCH\s+(\d+)');
 
     my ($hptkill_ver_major,
         $hptkill_ver_minor,
@@ -375,9 +365,9 @@ if($hptkill)
 if($hptsqfix)
 {
     $verfile = "hptsqfix/h/version.h";
-    @regexp = ('^#define\s+VER_MAJOR\s+(\d+)',
-               '^#define\s+VER_MINOR\s+(\d+)',
-               '^#define\s+VER_PATCH\s+(\d+)');
+    @regexp = ('^#define\s+hptsqfix_VER_MAJOR\s+(\d+)',
+               '^#define\s+hptsqfix_VER_MINOR\s+(\d+)',
+               '^#define\s+hptsqfix_VER_PATCH\s+(\d+)');
 
     my ($hptsqfix_ver_major,
         $hptsqfix_ver_minor,
@@ -397,9 +387,9 @@ if($hptsqfix)
 if($sqpack)
 {
     $verfile = "sqpack/version.h";
-    @regexp = ('^#define\s+VER_MAJOR\s+(\d+)',
-               '^#define\s+VER_MINOR\s+(\d+)',
-               '^#define\s+VER_PATCH\s+(\d+)');
+    @regexp = ('^#define\s+sqpack_VER_MAJOR\s+(\d+)',
+               '^#define\s+sqpack_VER_MINOR\s+(\d+)',
+               '^#define\s+sqpack_VER_PATCH\s+(\d+)');
 
     my ($sqpack_ver_major,
         $sqpack_ver_minor,
@@ -419,8 +409,9 @@ if($sqpack)
 if($msged)
 {
     $verfile = "msged/version.h";
-    @regexp = ('^#define\s+VERNUM\s+\"(\d+\.\d+)',
-               '^#define\s+VERPATCH\s+\"(\.\d+)');
+    @regexp = ('^#define\s+msged_VER_MAJOR\s+(\d+)',
+               '^#define\s+msged_VER_MINOR\s+(\d+)',
+               '^#define\s+msged_VER_PATCH\s+(\d+)');
 
     my ($msged_ver_major,
         $msged_ver_minor,
@@ -443,12 +434,18 @@ if($msged)
 
 if($fidoroute)
 {
-    $verfile = "fidoroute/fidoroute.cpp";
-    @regexp = ('^#define\s+VERSION\s+\"(\d+\.\d+)');
+    $verfile = "fidoroute/version.h";
+    @regexp = ('^#define\s+fidoroute_VER_MAJOR\s+(\d+)',
+               '^#define\s+fidoroute_VER_MINOR\s+(\d+)',
+               '^#define\s+fidoroute_VER_PATCH\s+(\d+)');
 
-    my ($fidoroute_ver) = get_version($verfile, @regexp);
+    my ($fidoroute_ver_major,
+        $fidoroute_ver_minor,
+        $fidoroute_ver_patch) = get_version($verfile, @regexp);
 
-    push(@macros, "%global fidoroute_ver $fidoroute_ver");
+    push(@macros, "%global fidoroute_ver_major $fidoroute_ver_major");
+    push(@macros, "%global fidoroute_ver_minor $fidoroute_ver_minor");
+    push(@macros, "%global fidoroute_ver_patch $fidoroute_ver_patch");
 
     $datefile = "fidoroute/cvsdate.h";
     $regex = '^char\s+cvs_date\[\]\s*=\s*"(\d+)-(\d+)-(\d+)';
