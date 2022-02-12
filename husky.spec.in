@@ -338,7 +338,7 @@ Provides: msged = %version-%release
         %define fidoroute_name fidoroute-static
     %endif
 %package -n %fidoroute_name
-Version: %fidoroute_ver.%fidoroute_reldate
+Version: %fidoroute_ver_major.%fidoroute_ver_minor.%fidoroute_reldate
 Release: %{vendor_prefix}%fidoroute_relnum%{vendor_suffix}
     %if "%_vendor" != "redhat"
 Group: %pkg_group
