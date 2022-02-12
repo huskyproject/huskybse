@@ -25,8 +25,6 @@ ifneq ($(words $(MAKECMDGOALS)),1)
     $(error Please use $(Make) with one goal at a time)
 endif
 
-__OBJ := \$(_OBJ)
-
 ifdef RPM_BUILD
     HUSKYMAK=./huskymak.rpm.cfg
 else ifdef RPM_BUILD_ROOT
@@ -140,6 +138,9 @@ SUBPROJECTS := huskybse huskylib smapi fidoconf areafix hptzip hpt \
 # MANDIR = $(<subproject>_ROOTDIR)man        # overwritable
 # DOCDIR = $(<subproject>_ROOTDIR)doc
 
+# The default soutce file extension
+DEFAULT_SRC_EXT := $(_C)
+
 ### huskylib ###
 # The directory with header files
 huskylib_H_DIR = huskylib$(DIRSEP)
@@ -147,12 +148,10 @@ huskylib_H_DIR = huskylib$(DIRSEP)
 ### smapi ###
 # The directory with header files
 smapi_H_DIR = smapi$(DIRSEP)
-# Directories
 
 ### fidoconf ###
 # The directory with header files
 fidoconf_H_DIR := fidoconf$(DIRSEP)
-# Directories
 fidoconf_DATEDEPS = smapi huskylib
 fidoconf_UNDOCDIR_PREREQ := fidoconf_docs_uninstall
 fidoconf_INFO = fidoconfig.info.gz
@@ -176,7 +175,6 @@ hpt_INFO = hpt.info.gz
 ### htick ###
 # The directory with header files
 htick_H_DIR = h$(DIRSEP)
-# Directories
 htick_DOCDIR   = $(htick_ROOTDIR)doc$(DIRSEP)
 htick_DATEDEPS = $(HPTZIP) areafix fidoconf smapi huskylib
 htick_UNDOCDIR_PREREQ := htick_doc_uninstall
@@ -185,38 +183,41 @@ htick_INFO = htick.info.gz
 ### hptkill ###
 # The directory with header files
 hptkill_H_DIR = h$(DIRSEP)
+hptkill_DATEDEPS = fidoconf smapi huskylib
 # Directories
 hptkill_MANDIR   = $(hptkill_ROOTDIR)
-hptkill_DATEDEPS = fidoconf smapi huskylib
 
 ### hptsqfix ###
 # The directory with header files
 hptsqfix_H_DIR   = h$(DIRSEP)
-# Directories
 hptsqfix_CVSDATEDIR := hptsqfix$(DIRSEP)$(hptsqfix_H_DIR)
 hptsqfix_DATEDEPS  = smapi huskylib
 
 ### sqpack ###
+# The source files
+sqpack_DATEFILES := *$(_C) *.h
 # Directories
 sqpack_SRCDIR     = $(sqpack_ROOTDIR)
 sqpack_MANDIR     = $(sqpack_ROOTDIR)
 sqpack_DATEDEPS   = fidoconf smapi huskylib
-sqpack_DATEFILES := *.c *.h
 
 ### msged ###
+# The source files
+msged_DATEFILES := *$(_C) *.h
 # Directories
 msged_SRCDIR     = $(msged_ROOTDIR)
 msged_MAPDIR     = $(msged_ROOTDIR)maps$(DIRSEP)
 msged_DATEDEPS   = fidoconf smapi huskylib
-msged_DATEFILES := *.c *.h
 msged_UNDOCDIR_PREREQ := uninstall_msged_DOCDIR_DST
 msged_INFO = msged.info.gz
 
 ### fidoroute ###
+# The source files
+fidoroute_SRC_EXT   := .cpp
+fidoroute_DATEFILES := *.cpp *.h
 # Directories
 fidoroute_SRCDIR     = $(fidoroute_ROOTDIR)
 fidoroute_MANDIR     = $(fidoroute_ROOTDIR)
-fidoroute_DATEFILES := *.cpp *.h
 
 ### util ###
 # Directories
@@ -343,7 +344,7 @@ define gen_date_selection
 endef
 
 # to use inside get_mdate function which takes $1 as subproject name
-DEFAULT_DATEFILES = $($1_H_DIR)*.h $(_SRC_DIR)$(DIRSEP)*.c
+DEFAULT_DATEFILES = $($1_H_DIR)*.h $(_SRC_DIR)$(DIRSEP)*$(_C)
 
 # get the project's last modification date
 # uses DEFAULT_DATEFILES for files to check if <project>_DATEFILES is not set
@@ -371,6 +372,17 @@ $1_DEPDIR   := $$($1_ROOTDIR)$(DEPDIR)$(DIRSEP)
 $1_SRCDIR   := $$(or $$($1_SRCDIR),$$($1_ROOTDIR)$(_SRC_DIR)$(DIRSEP))
 $1_MANDIR   := $$(or $$($1_MANDIR),$$($1_ROOTDIR)man$(DIRSEP))
 $1_DOCDIR   := $$($1_ROOTDIR)doc$(DIRSEP)
+$1_CFLAGS   := $$(CFLAGS)
+$1_ALL_SRC  := $$(wildcard $$($1_SRCDIR)*$$(or $$($1_SRC_EXT),$$(DEFAULT_SRC_EXT)))
+ifeq ($1,hpt)
+    ifeq ($(PERL),1)
+        $1_CFLAGS   := -DDO_PERL $$(shell perl -MExtUtils::Embed -e ccopts) $$(CFLAGS)
+    else
+        $1_ALL_SRC  := $$(filter-out $$($1_SRCDIR)perl.c,$$($1_ALL_SRC))
+    endif
+endif
+$1_ALL_OBJS := $$(addprefix $$($1_OBJDIR),$$(notdir $$($1_ALL_SRC:$$(or $$($1_SRC_EXT),$$(DEFAULT_SRC_EXT))=$$(_OBJ))))
+$1_DEPS     := $$(addprefix $$($1_DEPDIR),$$(notdir $$($1_ALL_SRC:$$(or $$($1_SRC_EXT),$$(DEFAULT_SRC_EXT))=$$(_DEP))))
 
 # Add subproject rules to the dependencies
 
@@ -388,17 +400,17 @@ endif
 .PHONY: $($1_UNDOCDIR_PREREQ)
 .PHONY: $(addprefix $1_,build update depend install clean distclean uninstall)
 
-ifneq ($($1_INFO),)
-    info_PREREQ += $(INFODIR_DST)$($1_INFO)
-    info_RECIPE +=  install-info "$($1_INFO)" "$(INFODIR_DST)dir";
+ifneq ($$($1_INFO),)
+    info_PREREQ += $(INFODIR_DST)$$($1_INFO)
+    info_RECIPE +=  install-info "$$($1_INFO)" "$(INFODIR_DST)dir";
 
-    $(INFODIR_DST)$($1_INFO): $$($1_BUILDDIR)$($1_INFO) | $(DESTDIR)$(INFODIR)
+    $(INFODIR_DST)$$($1_INFO): $$($1_BUILDDIR)$$($1_INFO) | $(DESTDIR)$(INFODIR)
 		$(INSTALL) $(IMOPT) "$$<" "$$|"
 		$(TOUCH) "$$@"
 
-    uninfo_RECIPE += $(if $(uninfo_RECIPE),;) [ -f $(INFODIR_DST)$($1_INFO) ] && \
+    uninfo_RECIPE += $(if $(uninfo_RECIPE),;) [ -f $(INFODIR_DST)$$($1_INFO) ] && \
 		install-info --remove --info-dir=$(DESTDIR)$(INFODIR) \
-		$(INFODIR_DST)$($1_INFO)
+		$(INFODIR_DST)$$($1_INFO)
 endif
 
 ifneq ($(MAKECMDGOALS),update)
@@ -425,16 +437,45 @@ $1_update: $$(addsuffix _glue,$1 $$($1_DATEDEPS))
 	@$$(call gen_date_selection,$1,$$($1_DATEDEPS)) \
 	$$(if $$(filter $1,huskybse),,$$(call gen_cvsdate,$1))
 
-.PHONY: $1_update $1_glue $1_git_update
+ifeq ($(MAKECMDGOALS),depend)
+ifeq ($$(filter $1,huskybse fidoroute util),)
+    # main depend rule for a subproject
+    $1_depend: $$($1_DEPS)
+
+    # Build a dependency makefile for every source file
+#    $(areafix_DEPS): $(areafix_DEPDIR)%$(_DEP): $(areafix_SRCDIR)%.c | $(areafix_DEPDIR)
+#    	@set -e; rm -f $@; \
+#    	$(CC) -MM $(CFLAGS) $(areafix_CDEFS) $< > $@.$$$$; \
+#    	sed 's,\($*\)\$(_OBJ)[ :]*,$(areafix_OBJDIR)\1$(_OBJ) $@ : ,g' < $@.$$$$ > $@; \
+#    	rm -f $@.$$$$
+    $$($1_DEPS): $$($1_DEPDIR)%$$(_DEP): \
+        $$($1_SRCDIR)%$$(or $$($1_SRC_EXT),$$(DEFAULT_SRC_EXT)) | $$($1_DEPDIR)
+		@set -e; rm -f $$@; \
+		$$(CC) -MM $$($1_CFLAGS) $$($1_CDEFS) $$< > $$@.$$$$$$$$; \
+		sed 's,\($$*\)\$$(_OBJ)[ :]*,$$($1_OBJDIR)\1$$(_OBJ) $$@ : ,g' \
+		< $$@.$$$$$$$$ > $$@; \
+		rm -f $$@.$$$$$$$$
+
+    $$($1_DEPDIR): | $$($1_BUILDDIR) do_not_run_depend_as_root
+		[ -d $$@ ] || $(MKDIR) $(MKDIROPT) $$@
+endif # filter
+endif # depend
+
+ifeq ($$(filter $1,huskybse util),)
+$$($1_BUILDDIR):
+	[ -d $$@ ] || $(MKDIR) $(MKDIROPT) $$@
+endif
+
+.PHONY: $1_update $1_glue $1_git_update $1_depend
 
 endef # gen_subproject
 
-# Generate main update rule for subprojects
+# Generate main update and depend rules for subprojects
 $(foreach sub,$(ENABLED),$(eval $(call gen_subproject,$(sub))))
 
 
 .PHONY: build install uninstall clean distclean depend update
-.PHONY: do_not_run_make_as_root
+.PHONY: do_not_run_make_as_root do_not_run_depend_as_root
 
 build: $(BUILD_PREREQ) ;
 
