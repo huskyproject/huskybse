@@ -387,6 +387,51 @@ ifeq ($1,hptzip)
          $1_ALL_SRC := $$(filter-out $$($1_SRCDIR)iowin32.c,$$($1_ALL_SRC))
     endif
 endif
+ifeq ($1,msged)
+    ifeq ($(OSTYPE), UNIX)
+        ifneq ("$(TERMCAP)", "")
+            msged_OSLIBS=-l$(TERMCAP)
+        endif
+        # remove what belongs to OS2
+        $1_ALL_SRC := $$(filter-out $$($1_SRCDIR)os2scr.c,$$($1_ALL_SRC))
+        $1_ALL_SRC := $$(filter-out $$($1_SRCDIR)malloc16.c,$$($1_ALL_SRC))
+        # remove what belongs to WINNT
+        $1_ALL_SRC := $$(filter-out $$($1_SRCDIR)winntscr.c,$$($1_ALL_SRC))
+    endif
+    ifeq ($(OSTYPE), OS2)
+        # remove what belongs to UNIX
+        $1_ALL_SRC := $$(filter-out $$($1_SRCDIR)ansi.c,$$($1_ALL_SRC))
+        $1_ALL_SRC := $$(filter-out $$($1_SRCDIR)readtc.c,$$($1_ALL_SRC))
+        # remove what belongs to  WINNT
+        $1_ALL_SRC := $$(filter-out $$($1_SRCDIR)winntscr.c,$$($1_ALL_SRC))
+    endif
+    ifneq ($$(findstring MINGW,$(OStype)),)
+        # remove what belongs to UNIX
+        $1_ALL_SRC := $$(filter-out $$($1_SRCDIR)ansi.c,$$($1_ALL_SRC))
+        $1_ALL_SRC := $$(filter-out $$($1_SRCDIR)readtc.c,$$($1_ALL_SRC))
+        # remove what belongs to OS2
+        $1_ALL_SRC := $$(filter-out $$($1_SRCDIR)os2scr.c,$$($1_ALL_SRC))
+        $1_ALL_SRC := $$(filter-out $$($1_SRCDIR)malloc16.c,$$($1_ALL_SRC))
+    endif
+    ifeq ($(OSTYPE), Cygwin)
+        ifneq ("$(TERMCAP)", )
+            msged_OSLIBS=-l$(TERMCAP)
+        endif
+        # remove what belongs to OS2
+        $1_ALL_SRC := $$(filter-out $$($1_SRCDIR)os2scr.c,$$($1_ALL_SRC))
+        $1_ALL_SRC := $$(filter-out $$($1_SRCDIR)malloc16.c,$$($1_ALL_SRC))
+        # remove what belongs to WINNT
+        $1_ALL_SRC := $$(filter-out $$($1_SRCDIR)winntscr.c,$$($1_ALL_SRC))
+    endif
+    ifneq ($(OSTYPE), MSDOS)
+        $1_ALL_SRC := $$(filter-out $$($1_SRCDIR)dosasm.c,$$($1_ALL_SRC))
+        $1_ALL_SRC := $$(filter-out $$($1_SRCDIR)dosmisc.c,$$($1_ALL_SRC))
+    endif
+    # The source files to exclude
+    msged_excl := ibmscrn.c mouse4.c pacific.c rfind1st.c sasc.c vio.c
+    msged_excl := $$(addprefix $$(msged_SRCDIR),$$(msged_excl))
+    $1_ALL_SRC := $$(filter-out $$(msged_excl),$$($1_ALL_SRC))
+endif
 $1_ALL_OBJS := $$(addprefix $$($1_OBJDIR),$$(notdir $$($1_ALL_SRC:$$(or $$($1_SRC_EXT),$$(DEFAULT_SRC_EXT))=$$(_OBJ))))
 $1_DEPS     := $$(addprefix $$($1_DEPDIR),$$(notdir $$($1_ALL_SRC:$$(or $$($1_SRC_EXT),$$(DEFAULT_SRC_EXT))=$$(_DEP))))
 
