@@ -381,6 +381,12 @@ ifeq ($1,hpt)
         $1_ALL_SRC  := $$(filter-out $$($1_SRCDIR)perl.c,$$($1_ALL_SRC))
     endif
 endif
+ifeq ($1,hptzip)
+    $1_ALL_SRC := $$(filter-out $$($1_SRCDIR)test.c $$($1_SRCDIR)version.c,$$($1_ALL_SRC))
+    ifeq ($(findstring MINGW,$(OStype)),)
+         $1_ALL_SRC := $$(filter-out $$($1_SRCDIR)iowin32.c,$$($1_ALL_SRC))
+    endif
+endif
 $1_ALL_OBJS := $$(addprefix $$($1_OBJDIR),$$(notdir $$($1_ALL_SRC:$$(or $$($1_SRC_EXT),$$(DEFAULT_SRC_EXT))=$$(_OBJ))))
 $1_DEPS     := $$(addprefix $$($1_DEPDIR),$$(notdir $$($1_ALL_SRC:$$(or $$($1_SRC_EXT),$$(DEFAULT_SRC_EXT))=$$(_DEP))))
 
