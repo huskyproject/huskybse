@@ -14,10 +14,10 @@ ifeq ($(MAKECMDGOALS),)
     MAKECMDGOALS := build
 endif
 
-OStype := $(shell uname -s)
+ostyp := $(shell uname -s)
 
 Make = make
-ifeq ($(OStype),FreeBSD)
+ifeq ($(ostyp),FreeBSD)
     Make := gmake
 endif
 
@@ -62,14 +62,14 @@ ifdef INFODIR
         ifeq ($(filter distclean uninstall,$(MAKECMDGOALS)),)
             if_makeinfo = $(shell whereis -b makeinfo | cut -d: -f2)
 
-            ifneq ($(filter Linux FreeBSD,$(OStype)),)
+            ifneq ($(filter Linux FreeBSD,$(ostyp)),)
                 ifeq ($(if_makeinfo),)
                     $(error Please install makeinfo program)
                 endif
             endif
 
             if_makeinfo = $(shell which /usr/local/opt/texinfo/bin/makeinfo)
-            ifeq ($(OStype),Darwin)
+            ifeq ($(ostyp),Darwin)
                 ifneq ($(if_makeinfo),/usr/local/opt/texinfo/bin/makeinfo)
                     $(error Please run 'brew install texinfo')
                 endif
@@ -383,7 +383,7 @@ ifeq ($1,hpt)
 endif
 ifeq ($1,hptzip)
     $1_ALL_SRC := $$(filter-out $$($1_SRCDIR)test.c $$($1_SRCDIR)version.c,$$($1_ALL_SRC))
-    ifeq ($(findstring MINGW,$(OStype)),)
+    ifeq ($(findstring MINGW,$(ostyp)),)
          $1_ALL_SRC := $$(filter-out $$($1_SRCDIR)iowin32.c,$$($1_ALL_SRC))
     endif
 endif
@@ -405,7 +405,7 @@ ifeq ($1,msged)
         # remove what belongs to  WINNT
         $1_ALL_SRC := $$(filter-out $$($1_SRCDIR)winntscr.c,$$($1_ALL_SRC))
     endif
-    ifneq ($$(findstring MINGW,$(OStype)),)
+    ifneq ($$(findstring MINGW,$(ostyp)),)
         # remove what belongs to UNIX
         $1_ALL_SRC := $$(filter-out $$($1_SRCDIR)ansi.c,$$($1_ALL_SRC))
         $1_ALL_SRC := $$(filter-out $$($1_SRCDIR)readtc.c,$$($1_ALL_SRC))
