@@ -8,15 +8,6 @@
 #EN# Main settings
 #RU# Основные установки
 
-#EN# 'version' is one of predefined variables. It is set to husky
-#EN# version like MAJOR.MINOR.PATHLEVEL. We may want to check it
-#EN# first to eliminate problems with incompatible config and binaries.
-#RU# 'version' - одна из предопределенных констант. Она установлена в
-#RU# husky в виде MAJOR.MINOR.PATHLEVEL. Можно проверять эту переменную
-#RU# для установки различных конфигов для разных версий husky (например,
-#RU# если есть проблемы с совместимостью конфига между версиями).
-if "[version]"=="1.9.0"
-
 #EN# The name of the system.
 #EN# It is used as default origin in program-generated mail.
 #RU# Имя системы.
@@ -282,5 +273,3 @@ Include cc_cfg
 #EN# Routing should be placed after links definition!
 #RU# Правила роутинга должны быть описаны после описания линков!
 Include route_cfg
-
-endif
