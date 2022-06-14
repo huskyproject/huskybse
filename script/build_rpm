@@ -19,10 +19,15 @@ show_help()
 Download the necessary sources and build RPMs for the programs specified
 in PROGRAMS setting in huskymak.rpm.cfg and for the libraries they depend on.
 Usage:
-    build_rpm [-r|--chroot CONFIG] [-n|--no-update] [-j JOBS]
+    build_rpm [-d|--dir TOP_DIRECTORY] [-r|--chroot CONFIG] \
+              [-n|--no-update] [-j JOBS]
     build_rpm [-v|--version]
     build_rpm [-h|-\?|--help]
 Options:
+    -d TOP_DIRECTORY
+    --dir TOP_DIRECTORY
+        It is the same TOP_DIRECTORY as you have used in init_rpm_build.
+
     -r CONFIG
     --chroot CONFIG
     --chroot=CONFIG
@@ -70,6 +75,18 @@ do
         -v|--version)
             echo "version = $VERSION"
             exit
+            ;;
+        -d|--dir)
+            if [ "$2" ]
+            then
+                top_directory="$2"
+                [ "${top_directory%"${top_directory#?}"}" != '/' ] && \
+                    [ "${top_directory%"${top_directory#??}"}" != '~/' ] && \
+                    die 'ERROR: the directory must start with "/" or "~/"'
+                shift
+            else
+                die 'ERROR: "-d" or "--dir" requires a non-empty option argument'
+            fi
             ;;
         -r|--chroot)
             if [ -z "$(whereis -b mock | cut -d: -f2)" ]
