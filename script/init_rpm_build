@@ -3,7 +3,31 @@
 # init_rpm_build
 #
 
-VERSION="1.1"
+VERSION="1.2"
+
+show_help()
+{
+    cat <<EOF
+
+Prepare to build RPMs from the Husky sources.
+
+Usage:.
+    init_rpm_build [-d|--dir TOP_DIRECTORY] [-v|--version] [-h|-\?|--help]
+Options:
+    -d TOP_DIRECTORY
+    --dir TOP_DIRECTORY
+        Put all Husky sources in TOP_DIRECTORY. It should be an absolute path.
+
+    -v
+    --version
+        Print the script version and exit.
+
+    -h
+    -?
+    --help
+        Print this help and exit.
+EOF
+}
 
 die()
 {
