@@ -3,15 +3,43 @@
 # init_rpm_build
 #
 
-VERSION="1.0"
-
-top_directory=~/husky_build
+VERSION="1.1"
 
 die()
 {
     printf '%s\n' "$1" >&2
     exit 1
 }
+
+top_directory=~/husky_build
+help=0
+
+case $1 in
+    -h|-\?|--help)
+        help=1
+        ;;
+    -v|--version)
+        echo "version = $VERSION"
+        exit
+        ;;
+    -d|--dir)
+        if [ "$2" ]
+        then
+            top_directory="$2"
+            [ "${top_directory%"${top_directory#?}"}" != '/' ] && \
+                [ "${top_directory%"${top_directory#??}"}" != '~/' ] && \
+                die 'ERROR: the directory must start with "/" or "~/"'
+            shift
+        else
+            die 'ERROR: "-d" or "--dir" requires a non-empty option argument'
+        fi
+        ;;
+    -*)
+        printf 'WARN: Unknown option (ignored): %s\n' "$1" >&2
+        ;;
+    *)
+        ;;
+esac
 
 n=0
 if [ -z "$(whereis -b git | cut -d: -f2)" ]
