@@ -3,6 +3,8 @@
 # init_rpm_build
 #
 
+VERSION="1.0"
+
 top_directory=~/husky_build
 
 die()
