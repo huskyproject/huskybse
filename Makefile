@@ -46,40 +46,6 @@ ifeq ($(MAKECMDGOALS),update)
     endif
 endif
 
-ifeq ($(MAKECMDGOALS),build)
-    ifneq ($(filter util,$(PROGRAMS)),)
-        ifeq ($(findstring This is perl,$(shell perl -v)),)
-            $(error ERROR: To build util, you must install Perl)
-        endif
-        ifeq ($(findstring Yes,$(shell perl -MModule::Build -e 'print "Yes"')),)
-            $(error ERROR: To build util, you must install Perl module Module::Build)
-        endif
-    endif
-endif
-
-ifdef INFODIR
-    ifdef MAKEINFO
-        ifeq ($(filter distclean uninstall,$(MAKECMDGOALS)),)
-            if_makeinfo = $(shell whereis -b makeinfo | cut -d: -f2)
-
-            ifneq ($(filter Linux FreeBSD,$(ostyp)),)
-                ifeq ($(if_makeinfo),)
-                    $(error Please install makeinfo program)
-                endif
-            endif
-
-            if_makeinfo = $(shell which /usr/local/opt/texinfo/bin/makeinfo)
-            ifeq ($(ostyp),Darwin)
-                ifneq ($(if_makeinfo),/usr/local/opt/texinfo/bin/makeinfo)
-                    $(error Please run 'brew install texinfo')
-                endif
-            endif
-        endif
-    else
-        $(error You have to define MAKEINFO in huskymak.cfg to get .info docs)
-    endif
-endif
-
 ifeq ($(OSTYPE), UNIX)
   LIBPREFIX=lib
   DLLPREFIX=lib
