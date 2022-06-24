@@ -150,16 +150,22 @@ fi
 
 [ "$restart" -eq 1 ] && exit
 
-if [ -n "$(grep 'PROGRAMS=' $huskymak | grep 'util')" ] && \
-   [ -z "$(perl -v 2>&1 | grep 'This is perl')" ]
+if [ -n "$(grep 'PROGRAMS=' $huskymak | grep 'hpt')" ] && \
+   [ -n "$(grep '^PERL=1' $huskymak)" ] && \
+   ( [ -z "$(perl -v 2>&1 | grep 'This is perl')" ] || \
+     [ -z "$(perl -MExtUtils::Embed -e 'print "Yes"' 2>&1 | grep 'Yes')" ] )
 then
-    die "To build util, you must install Perl"
+    printf '%s\n' "To build hpt with Perl, you must install Perl" >&2
+    die "and Perl module 'ExtUtils::Embed'"
 fi
 
 if [ -n "$(grep 'PROGRAMS=' $huskymak | grep 'util')" ] && \
-   [ -z "$(perl -MModule::Build -e 'print "Yes"' 2>&1 | grep 'Yes')" ]
+   ( [ -z "$(perl -v 2>&1 | grep 'This is perl')" ] || \
+     [ -z "$(perl -MModule::Build -e 'print "Yes"' 2>&1 | grep 'Yes')" ] || \
+     [ -z "$(perl -MTest::More -e 'print "Yes"' 2>&1 | grep 'Yes')" ] )
 then
-    die "To build util, you must install Perl module 'Module::Build'"
+    printf '%s\n' "To build util, you must install Perl" >&2
+    die "and Perl modules 'Module::Build' and 'Test::More'"
 fi
 
 if [ -n "$(grep '^INFODIR='  $huskymak | cut -d= -f2)" ] && \
