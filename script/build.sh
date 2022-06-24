@@ -150,4 +150,32 @@ fi
 
 [ "$restart" -eq 1 ] && exit
 
+if [ -n "$(grep 'PROGRAMS=' $huskymak | grep 'util')" ] && \
+   [ -z "$(perl -v 2>&1 | grep 'This is perl')" ]
+then
+    die "To build util, you must install Perl"
+fi
+
+if [ -n "$(grep 'PROGRAMS=' $huskymak | grep 'util')" ] && \
+   [ -n "$(perl -MModule::Build -e 'print "Yes"' 2>&1 | grep 'Yes')" ]
+then
+    die "To build util, you must install Perl module 'Module::Build'"
+fi
+
+if [ -n "$(grep '^INFODIR='  $huskymak | cut -d= -f2)" ] && \
+   [ -n "$(grep '^MAKEINFO=' $huskymak | cut -d= -f2)" ]
+then
+    if [ "$OS" = Linux ] || [ "$OS" = FreeBSD ]
+    then
+        if [ -z "$(whereis -b makeinfo | cut -d: -f2)" ]
+        then
+            die "Please install 'makeinfo' program"
+        fi
+    elif [ "$OS" = Darwin ] && \
+         [ -z "$(which /usr/local/opt/texinfo/bin/makeinfo | grep '/usr/local/opt/texinfo/bin/makeinfo')" ]
+    then
+        die "Please run 'brew install texinfo'"
+    fi
+fi
+
 ${MAKE} $jobs depend && ${MAKE} $jobs
