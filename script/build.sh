@@ -157,7 +157,7 @@ then
 fi
 
 if [ -n "$(grep 'PROGRAMS=' $huskymak | grep 'util')" ] && \
-   [ -n "$(perl -MModule::Build -e 'print "Yes"' 2>&1 | grep 'Yes')" ]
+   [ -z "$(perl -MModule::Build -e 'print "Yes"' 2>&1 | grep 'Yes')" ]
 then
     die "To build util, you must install Perl module 'Module::Build'"
 fi
