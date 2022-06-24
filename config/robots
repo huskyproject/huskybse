@@ -40,13 +40,13 @@ robot default
 #RU# Этот параметр задает аттрибуты сообщений от роботов.
 #EN#       kill reports
 #RU#       удалить сообщения после отправки
-#       reportsAttr loc pvt k/s npd
+#       reportsAttr loc pvt k/s
 #EN#       kill reports and send directly
 #RU#       послать директом и удалить после этого
-#       reportsAttr loc pvt k/s npd dir
+#       reportsAttr loc pvt k/s dir
 #EN#       do not kill reports
 #RU#       оставлять в сообщения нетмайл-области
-        reportsAttr loc pvt npd         # do not kill reports
+        reportsAttr loc pvt         # do not kill reports
 
 
 
