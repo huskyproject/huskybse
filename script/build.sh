@@ -3,7 +3,7 @@
 # build.sh
 #
 
-VERSION="1.4"
+VERSION="1.5"
 
 die()
 {
@@ -19,13 +19,20 @@ Download the necessary sources and build executables for the programs
 specified in PROGRAMS setting of huskymak.cfg and for the libraries
 they depend on.
 
-Usage:.
-    build.sh [-n|--no-update] [-j JOBS] [-v|--version] [-h|-\?|--help]
+Usage:
+    build.sh [-n|--no-update] [--offline] [-j JOBS]
+    build.sh [-v|--version] [-h|-\?|--help]
 Options:
 
     -n
     --no-update
         Do not update Makefile, huskymak.cfg, build.sh
+
+    --offline
+        Do not download or update anything. This option implies --no-update. Be
+        warned that the files 'cvsdate.h' with release dates are created during
+        update of the sources. So you can use the option only if all the
+        sources and these files are already present.
 
     -j JOBS
         JOBS is a positive integer. It specifies the number of makefile
@@ -46,6 +53,7 @@ EOF
 
 help=0
 no_update=0
+offline=0
 jobs=-j
 
 while :
@@ -60,6 +68,10 @@ do
             exit
             ;;
         -n|--no-update)
+            no_update=1
+            ;;
+        --offline)
+            offline=1
             no_update=1
             ;;
         -j)
@@ -98,8 +110,11 @@ fi
 MAKE=make
 [ "$(uname -s)" = FreeBSD ] && MAKE=gmake
 
-${MAKE} $jobs update
-[ "$?" -ne 0 ] && exit 1
+if [ "$offline" -eq 0 ]
+then
+    ${MAKE} $jobs update
+    [ "$?" -ne 0 ] && exit 1
+fi
 
 restart=0
 
@@ -149,6 +164,7 @@ then
 fi
 
 [ "$restart" -eq 1 ] && exit
+huskymak=./huskymak.cfg
 
 if [ -n "$(grep 'PROGRAMS=' $huskymak | grep 'hpt')" ] && \
    [ -n "$(grep '^PERL=1' $huskymak)" ] && \
