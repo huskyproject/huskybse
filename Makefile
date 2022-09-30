@@ -194,6 +194,12 @@ util_DATEFILES := bin/*.pl t/*.t \
     Fidoconfig-Token/lib/Fidoconfig/Token.pm Fidoconfig-Token/t/*.t \
     Husky-Rmfiles/lib/Husky/Rmfiles.pm Husky-Rmfiles/t/*.t
 
+### areastat ###
+# The directory with header files
+areastat_H_DIR = h$(DIRSEP)
+areastat_DATEDEPS   = smapi huskylib
+areastat_CVSDATEDIR := areastat$(DIRSEP)$(areastat_H_DIR)
+
 # define "space"
 nil   :=
 space := $(nil) $(nil)
@@ -202,7 +208,7 @@ space := $(nil) $(nil)
 huskybse_DATEFILES:= $(space)
 
 
-HUSKYLIB := $(and $(filter hpt htick hptkill hptsqfix sqpack msged, \
+HUSKYLIB := $(and $(filter hpt htick hptkill hptsqfix sqpack msged areastat, \
                     $(PROGRAMS)), huskylib)
 
 SMAPI := $(and $(HUSKYLIB),smapi)
