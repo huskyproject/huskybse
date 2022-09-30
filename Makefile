@@ -88,7 +88,8 @@ cvsdate=cvsdate.h
 
 # In dependency order
 SUBPROJECTS := huskybse huskylib smapi fidoconf areafix hptzip hpt \
-               htick hptkill hptsqfix sqpack msged fidoroute util
+               htick hptkill hptsqfix sqpack msged fidoroute util \
+	       areastat
 
 # Per-subproject special variables
 # gen_subproject generates defaults (in form <subproject>_<NAME>, skipping DIRSEP):
