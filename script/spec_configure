@@ -140,7 +140,7 @@ fetch($huskymak);
 
 for my $var (@progs)
 {
-    my $value = $PROGRAMS =~ /$var/ ? 1 : 0;
+    my $value = $PROGRAMS =~ ($PROGRAMS =~ /$var\s+/) || ($PROGRAMS =~ /$var$/) ? 1 : 0;
     eval('$'."$var = $value");
     push(@macros, "%global $var $value");
 }
