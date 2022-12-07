@@ -25,13 +25,7 @@ ifneq ($(words $(MAKECMDGOALS)),1)
     $(error Please use $(Make) with one goal at a time)
 endif
 
-ifdef RPM_BUILD
-    HUSKYMAK=./huskymak.rpm.cfg
-else ifdef RPM_BUILD_ROOT
-    HUSKYMAK=./huskymak.rpm.cfg
-else
-    HUSKYMAK=./huskymak.cfg
-endif
+HUSKYMAK=./huskymak.cfg
 
 # include Husky-Makefile-Config
 include $(HUSKYMAK)

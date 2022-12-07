@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 #
 # spec_configure - produce husky.spec from the husky.spec.in stub using
-#                  the settings from huskymak.rpm.cfg and the version
+#                  the settings from huskymak.cfg and the version
 #                  numbers from the sources.
 
 use File::Basename;
@@ -13,7 +13,7 @@ my $husky_ver_minor = 9;
 my $husky_ver_patch = 0;
 
 # The file with makefile settings
-my $huskymak = "huskymak.rpm.cfg";
+my $huskymak = "huskymak.cfg";
 my $stub     = "husky.spec.in";
 my $spec     = "husky.spec";
 

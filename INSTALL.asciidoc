@@ -145,9 +145,7 @@ As a result, the `~/husky_build` directory will be created, and the `husky`
 directory will be in it. Husky sources will be downloaded to this `husky`
 directory. But now we are interested in the file `huskymak.rpm.cfg` lying
 in this directory. This is the very build configuration file that you need
-to view and, possibly, change something in it. Please note that it is
-necessary to edit `huskymak.rpm.cfg`, and not `huskymak.cfg`. You may notice
-that
+to view and, possibly, change something in it. You may notice that
 
   DEBUG=1
 
@@ -162,7 +160,7 @@ the build:
 
   ~/husky_build/build_rpm
 
-If you have `mock`, you may find the result in the directory
+If you have `mock` utility, you may find the result in the directory
 `~/husky_build/result`. If you have no `mock`, the result is in the directory
 `~/rpmbuild/RPMS`.
 

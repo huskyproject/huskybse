@@ -95,14 +95,13 @@ git clone https://github.com/huskyproject/huskybse.git
 
 cp -a huskybse/Makefile Makefile
 cp -a huskybse/husky.spec.in husky.spec.in
-cp -a huskybse/huskymak.cfg huskymak.cfg
-cp -a huskybse/huskymak.rpm.cfg huskymak.rpm.cfg
+cp -a huskybse/huskymak.rpm.cfg huskymak.cfg
 cp -a huskybse/huskymak.rpm.cfg ../huskymak.rpm.cfg.new
 cp -a huskybse/script/spec_configure ../spec_configure
 cp -a huskybse/script/build_rpm ../build_rpm
 echo
 echo "########################################################################"
-echo "Now you need to make changes to \"$top_directory/husky/huskymak.rpm.cfg\""
+echo "Now you need to make changes to \"$top_directory/husky/huskymak.cfg\""
 echo "per your requirements and then run \"$top_directory/build_rpm\"."
 echo "########################################################################"
 echo

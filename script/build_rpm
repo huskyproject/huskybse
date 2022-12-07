@@ -179,9 +179,9 @@ if [ "$no_update" -eq 0 ] && \
 then
     mv $top_directory/huskymak.rpm.cfg.new $top_directory/huskymak.rpm.cfg.old
     cp -a huskybse/huskymak.rpm.cfg $top_directory/huskymak.rpm.cfg.new
-    if [ ! -e ./huskymak.rpm.cfg ]
+    if [ ! -e ./huskymak.cfg ]
     then
-        cp -a $top_directory/huskymak.rpm.cfg.new huskymak.rpm.cfg
+        cp -a $top_directory/huskymak.rpm.cfg.new huskymak.cfg
     fi
     echo
     echo "\"huskybse/huskymak.rpm.cfg\" has changed"
@@ -189,7 +189,7 @@ then
     echo "A new version of \"huskybse/huskymak.rpm.cfg\" is now"
     echo "in \"$top_directory/huskymak.rpm.cfg.new\" and its old version"
     echo "is now in \"$top_directory/huskymak.rpm.cfg.old\"."
-    echo "Please adjust your \"$top_directory/husky/huskymak.rpm.cfg\" to the changes"
+    echo "Please adjust your \"$top_directory/husky/huskymak.cfg\" to the changes"
     echo "in \"$top_directory/huskymak.rpm.cfg.new\" and run \"build_rpm\" once more."
     echo
     restart=1
