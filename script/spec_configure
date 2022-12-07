@@ -27,17 +27,23 @@ my ($hpt, $htick, $hptkill, $hptsqfix, $sqpack, $msged, $fidoroute, $util,
     $PROGRAMS, $PERL, $USE_HPTZIP, $DYNLIBS, $DEBUG, $GNMSGID, $FIDOCONF_UTIL,
     $HPT_UTIL, $HTML, $TXT, $DVI, $PDF, $PREFIX, $LIBDIR, $BINDIR, $PERLDATADIR,
     $MAN1DIR, $MAN3DIR, $MAN5DIR, $INFODIR, $DOCDIR, $CC, $DOC, $texi2dvi,
+    $huskylib_reldate, $smapi_reldate, $fidoconf_reldate, $areafix_reldate,
     $hptzip_reldate, $hpt_reldate, $htick_reldate, $hptkill_reldate,
     $hptsqfix_reldate, $sqpack_reldate, $msged_reldate, $fidoroute_reldate,
     $util_reldate, $hpt_doc_date, $htick_doc_date, $msged_doc_date,
-    $fidoroute_doc_date, $doc_reldate);
+    $fidoconf_doc_date, $fidoroute_doc_date, $doc_reldate);
 
 # Initialize variables
 $PERL = $USE_HPTZIP = $DYNLIBS = $DEBUG = $GNMSGID = $FIDOCONF_UTIL = 0;
 $HPT_UTIL = $HTML = $TXT = $DVI = $PDF = 0;
 $PROGRAMS = $PREFIX = $PERLDATADIR = $MAN1DIR = $MAN3DIR = "";
 $MAN5DIR = $INFODIR = $DOCDIR = $CC = "";
-$hpt_doc_date = $htick_doc_date = $msged_doc_date = $doc_reldate = 0;
+$huskylib_reldate = $smapi_reldate = $fidoconf_reldate = $areafix_reldate = 0;
+$hptzip_reldate = $hpt_reldate = $htick_reldate = $hptkill_reldate = 0;
+$hptsqfix_reldate = $sqpack_reldate = $msged_reldate = $fidoroute_reldate = 0;
+$util_reldate = 0;
+$hpt_doc_date = $htick_doc_date = $msged_doc_date = $fidoconf_doc_date = 0;
+$fidoroute_doc_date = $doc_reldate = 0;
 @macros = ("# husky.spec", "");
 
 # Read a file to @lines
@@ -140,7 +146,7 @@ fetch($huskymak);
 
 for my $var (@progs)
 {
-    my $value = $PROGRAMS =~ ($PROGRAMS =~ /$var\s+/) || ($PROGRAMS =~ /$var$/) ? 1 : 0;
+    my $value = ($PROGRAMS =~ /$var\s+/) || ($PROGRAMS =~ /$var$/) ? 1 : 0;
     eval('$'."$var = $value");
     push(@macros, "%global $var $value");
 }
@@ -177,100 +183,115 @@ push(@macros, "%global DOC $DOC");
 $texi2dvi = ($PDF == 1 || $DVI == 1) ? 1 : 0;
 push(@macros, "%global texi2dvi $texi2dvi");
 
+my @regexp;
+my ($datefile, $regex);
+
 # huskylib
 my $verfile  = "huskylib/huskylib/version.h";
-my @regexp = ('^#define\s+huskylib_VER_MAJOR\s+(\d+)',
-              '^#define\s+huskylib_VER_MINOR\s+(\d+)',
-              '^#define\s+huskylib_VER_PATCH\s+(\d+)');
+if(-e $verfile)
+{
+    @regexp = ('^#define\s+huskylib_VER_MAJOR\s+(\d+)',
+               '^#define\s+huskylib_VER_MINOR\s+(\d+)',
+               '^#define\s+huskylib_VER_PATCH\s+(\d+)');
 
-my ($huskylib_ver_major,
-    $huskylib_ver_minor,
-    $huskylib_ver_patch) = get_version($verfile, @regexp);
+    my ($huskylib_ver_major,
+        $huskylib_ver_minor,
+        $huskylib_ver_patch) = get_version($verfile, @regexp);
 
-push(@macros, "%global huskylib_ver_major $huskylib_ver_major");
-push(@macros, "%global huskylib_ver_minor $huskylib_ver_minor");
-push(@macros, "%global huskylib_ver_patch $huskylib_ver_patch");
+    push(@macros, "%global huskylib_ver_major $huskylib_ver_major");
+    push(@macros, "%global huskylib_ver_minor $huskylib_ver_minor");
+    push(@macros, "%global huskylib_ver_patch $huskylib_ver_patch");
 
-my $datefile = "huskylib/cvsdate.h";
-my $regex = '^char\s+cvs_date\[\]\s*=\s*"(\d+)-(\d+)-(\d+)';
-my $huskylib_reldate = get_reldate($datefile, $regex);
-push(@macros, "%global huskylib_reldate $huskylib_reldate");
+    my $datefile = "huskylib/cvsdate.h";
+    $regex = '^char\s+cvs_date\[\]\s*=\s*"(\d+)-(\d+)-(\d+)';
+    $huskylib_reldate = get_reldate($datefile, $regex);
+    push(@macros, "%global huskylib_reldate $huskylib_reldate");
+}
 
 
 # smapi
 $verfile = "smapi/smapi/version.h";
-@regexp = ('^#define\s+smapi_VER_MAJOR\s+(\d+)',
-           '^#define\s+smapi_VER_MINOR\s+(\d+)',
-           '^#define\s+smapi_VER_PATCH\s+(\d+)');
+if(-e $verfile)
+{
+    @regexp = ('^#define\s+smapi_VER_MAJOR\s+(\d+)',
+               '^#define\s+smapi_VER_MINOR\s+(\d+)',
+               '^#define\s+smapi_VER_PATCH\s+(\d+)');
 
-my ($smapi_ver_major,
-    $smapi_ver_minor,
-    $smapi_ver_patch) = get_version($verfile, @regexp);
+    my ($smapi_ver_major,
+        $smapi_ver_minor,
+        $smapi_ver_patch) = get_version($verfile, @regexp);
 
-push(@macros, "%global smapi_ver_major $smapi_ver_major");
-push(@macros, "%global smapi_ver_minor $smapi_ver_minor");
-push(@macros, "%global smapi_ver_patch $smapi_ver_patch");
+    push(@macros, "%global smapi_ver_major $smapi_ver_major");
+    push(@macros, "%global smapi_ver_minor $smapi_ver_minor");
+    push(@macros, "%global smapi_ver_patch $smapi_ver_patch");
 
-$datefile = "smapi/cvsdate.h";
-$regex = '^char\s+cvs_date\[\]\s*=\s*"(\d+)-(\d+)-(\d+)';
-my $smapi_reldate = get_reldate($datefile, $regex);
-push(@macros, "%global smapi_reldate $smapi_reldate");
+    $datefile = "smapi/cvsdate.h";
+    $regex = '^char\s+cvs_date\[\]\s*=\s*"(\d+)-(\d+)-(\d+)';
+    $smapi_reldate = get_reldate($datefile, $regex);
+    push(@macros, "%global smapi_reldate $smapi_reldate");
+}
 
 
 # fidoconf
 $verfile = "fidoconf/fidoconf/version.h";
-@regexp = ('^#define\s+fidoconf_VER_MAJOR\s+(\d+)',
-           '^#define\s+fidoconf_VER_MINOR\s+(\d+)',
-           '^#define\s+fidoconf_VER_PATCH\s+(\d+)');
+if(-e $verfile)
+{
+    @regexp = ('^#define\s+fidoconf_VER_MAJOR\s+(\d+)',
+               '^#define\s+fidoconf_VER_MINOR\s+(\d+)',
+               '^#define\s+fidoconf_VER_PATCH\s+(\d+)');
 
-my ($fidoconf_ver_major,
-    $fidoconf_ver_minor,
-    $fidoconf_ver_patch) = get_version($verfile, @regexp);
+    my ($fidoconf_ver_major,
+        $fidoconf_ver_minor,
+        $fidoconf_ver_patch) = get_version($verfile, @regexp);
 
-push(@macros, "%global fidoconf_ver_major $fidoconf_ver_major");
-push(@macros, "%global fidoconf_ver_minor $fidoconf_ver_minor");
-push(@macros, "%global fidoconf_ver_patch $fidoconf_ver_patch");
+    push(@macros, "%global fidoconf_ver_major $fidoconf_ver_major");
+    push(@macros, "%global fidoconf_ver_minor $fidoconf_ver_minor");
+    push(@macros, "%global fidoconf_ver_patch $fidoconf_ver_patch");
 
-$datefile = "fidoconf/cvsdate.h";
-$regex = '^char\s+cvs_date\[\]\s*=\s*"(\d+)-(\d+)-(\d+)';
-my $fidoconf_reldate = get_reldate($datefile, $regex);
-push(@macros, "%global fidoconf_reldate $fidoconf_reldate");
+    $datefile = "fidoconf/cvsdate.h";
+    $regex = '^char\s+cvs_date\[\]\s*=\s*"(\d+)-(\d+)-(\d+)';
+    $fidoconf_reldate = get_reldate($datefile, $regex);
+    push(@macros, "%global fidoconf_reldate $fidoconf_reldate");
 
-my $fidoconfig_texi_date = get_commit_date("fidoconf", "doc/fidoconfig.texi");
-my $proposal_texi_date = get_commit_date("fidoconf", "doc/proposal.texi");
-my $fidoconf_doc_date = max($fidoconfig_texi_date, $proposal_texi_date);
-my $keywords_bp_date = get_commit_date("fidoconf", "doc/keywords.bp");
-$fidoconf_doc_date = max($fidoconf_doc_date, $keywords_bp_date);
-my $keywords_hpt_date = get_commit_date("fidoconf", "doc/keywords.hpt");
-$fidoconf_doc_date = max($fidoconf_doc_date, $keywords_hpt_date);
-my $keywords_htick_date = get_commit_date("fidoconf", "doc/keywords.htick");
-$fidoconf_doc_date = max($fidoconf_doc_date, $keywords_htick_date);
+    my $fidoconfig_texi_date = get_commit_date("fidoconf", "doc/fidoconfig.texi");
+    my $proposal_texi_date = get_commit_date("fidoconf", "doc/proposal.texi");
+    $fidoconf_doc_date = max($fidoconfig_texi_date, $proposal_texi_date);
+    my $keywords_bp_date = get_commit_date("fidoconf", "doc/keywords.bp");
+    $fidoconf_doc_date = max($fidoconf_doc_date, $keywords_bp_date);
+    my $keywords_hpt_date = get_commit_date("fidoconf", "doc/keywords.hpt");
+    $fidoconf_doc_date = max($fidoconf_doc_date, $keywords_hpt_date);
+    my $keywords_htick_date = get_commit_date("fidoconf", "doc/keywords.htick");
+    $fidoconf_doc_date = max($fidoconf_doc_date, $keywords_htick_date);
+}
 
 
 # areafix
 $verfile = "areafix/areafix/version.h";
-@regexp = ('^#define\s+areafix_VER_MAJOR\s+(\d+)',
-           '^#define\s+areafix_VER_MINOR\s+(\d+)',
-           '^#define\s+areafix_VER_PATCH\s+(\d+)');
+if(-e $verfile)
+{
+    @regexp = ('^#define\s+areafix_VER_MAJOR\s+(\d+)',
+               '^#define\s+areafix_VER_MINOR\s+(\d+)',
+               '^#define\s+areafix_VER_PATCH\s+(\d+)');
 
-my ($areafix_ver_major,
-    $areafix_ver_minor,
-    $areafix_ver_patch) = get_version($verfile, @regexp);
+    my ($areafix_ver_major,
+        $areafix_ver_minor,
+        $areafix_ver_patch) = get_version($verfile, @regexp);
 
-push(@macros, "%global areafix_ver_major $areafix_ver_major");
-push(@macros, "%global areafix_ver_minor $areafix_ver_minor");
-push(@macros, "%global areafix_ver_patch $areafix_ver_patch");
+    push(@macros, "%global areafix_ver_major $areafix_ver_major");
+    push(@macros, "%global areafix_ver_minor $areafix_ver_minor");
+    push(@macros, "%global areafix_ver_patch $areafix_ver_patch");
 
-$datefile = "areafix/cvsdate.h";
-$regex = '^char\s+cvs_date\[\]\s*=\s*"(\d+)-(\d+)-(\d+)';
-my $areafix_reldate = get_reldate($datefile, $regex);
-push(@macros, "%global areafix_reldate $areafix_reldate");
+    $datefile = "areafix/cvsdate.h";
+    $regex = '^char\s+cvs_date\[\]\s*=\s*"(\d+)-(\d+)-(\d+)';
+    $areafix_reldate = get_reldate($datefile, $regex);
+    push(@macros, "%global areafix_reldate $areafix_reldate");
+}
 
 
 # hptzip
-if($USE_HPTZIP == 1 && $DYNLIBS == 1)
+$verfile = "hptzip/hptzip/version.h";
+if(-e $verfile)
 {
-    $verfile = "hptzip/hptzip/version.h";
     @regexp = ('^#define\s+hptzip_VER_MAJOR\s+(\d+)',
                '^#define\s+hptzip_VER_MINOR\s+(\d+)',
                '^#define\s+hptzip_VER_PATCH\s+(\d+)');
@@ -290,9 +311,10 @@ if($USE_HPTZIP == 1 && $DYNLIBS == 1)
 }
 
 
-if($hpt)
+# hpt
+$verfile = "hpt/h/version.h";
+if(-e $verfile)
 {
-    $verfile = "hpt/h/version.h";
     @regexp = ('^#define\s+hpt_VER_MAJOR\s+(\d+)',
                '^#define\s+hpt_VER_MINOR\s+(\d+)',
                '^#define\s+hpt_VER_PATCH\s+(\d+)');
@@ -316,9 +338,10 @@ if($hpt)
 }
 
 
-if($htick)
+# htick
+$verfile = "htick/h/version.h";
+if(-e $verfile)
 {
-    $verfile = "htick/h/version.h";
     @regexp = ('^#define\s+htick_VER_MAJOR\s+(\d+)',
                '^#define\s+htick_VER_MINOR\s+(\d+)',
                '^#define\s+htick_VER_PATCH\s+(\d+)');
@@ -340,9 +363,10 @@ if($htick)
 }
 
 
-if($hptkill)
+# hptkill
+$verfile = "hptkill/h/version.h";
+if(-e $verfile)
 {
-    $verfile = "hptkill/h/version.h";
     @regexp = ('^#define\s+hptkill_VER_MAJOR\s+(\d+)',
                '^#define\s+hptkill_VER_MINOR\s+(\d+)',
                '^#define\s+hptkill_VER_PATCH\s+(\d+)');
@@ -362,9 +386,10 @@ if($hptkill)
 }
 
 
-if($hptsqfix)
+# hptsqfix
+$verfile = "hptsqfix/h/version.h";
+if(-e $verfile)
 {
-    $verfile = "hptsqfix/h/version.h";
     @regexp = ('^#define\s+hptsqfix_VER_MAJOR\s+(\d+)',
                '^#define\s+hptsqfix_VER_MINOR\s+(\d+)',
                '^#define\s+hptsqfix_VER_PATCH\s+(\d+)');
@@ -384,9 +409,10 @@ if($hptsqfix)
 }
 
 
-if($sqpack)
+# sqpack
+$verfile = "sqpack/version.h";
+if(-e $verfile)
 {
-    $verfile = "sqpack/version.h";
     @regexp = ('^#define\s+sqpack_VER_MAJOR\s+(\d+)',
                '^#define\s+sqpack_VER_MINOR\s+(\d+)',
                '^#define\s+sqpack_VER_PATCH\s+(\d+)');
@@ -406,9 +432,10 @@ if($sqpack)
 }
 
 
-if($msged)
+# msged
+$verfile = "msged/version.h";
+if(-e $verfile)
 {
-    $verfile = "msged/version.h";
     @regexp = ('^#define\s+msged_VER_MAJOR\s+(\d+)',
                '^#define\s+msged_VER_MINOR\s+(\d+)',
                '^#define\s+msged_VER_PATCH\s+(\d+)');
@@ -432,9 +459,10 @@ if($msged)
 }
 
 
-if($fidoroute)
+# fidoroute
+$verfile = "fidoroute/version.h";
+if(-e $verfile)
 {
-    $verfile = "fidoroute/version.h";
     @regexp = ('^#define\s+fidoroute_VER_MAJOR\s+(\d+)',
                '^#define\s+fidoroute_VER_MINOR\s+(\d+)',
                '^#define\s+fidoroute_VER_PATCH\s+(\d+)');
@@ -458,9 +486,10 @@ if($fidoroute)
 }
 
 
-if($util)
+# util
+$verfile = "util/Fidoconfig-Token/lib/Fidoconfig/Token.pm";
+if(-e $verfile)
 {
-    $verfile = "util/Fidoconfig-Token/lib/Fidoconfig/Token.pm";
     @regexp = ('^\$VERSION\s+=\s+\"(\d+\.\d+)\";$');
 
     my ($token_ver) = get_version($verfile, @regexp);
@@ -514,48 +543,60 @@ if($util)
 
 
 # Compute $husky_reldate as maximum reldate of its components
-my $husky_reldate = $huskylib_reldate;
-my @reldates = ($smapi_reldate, $fidoconf_reldate, $areafix_reldate);
-if($USE_HPTZIP == 1 && $DYNLIBS == 1)
+my @reldates;
+if($smapi_reldate)
+{
+    push(@reldates, $smapi_reldate);
+}
+if($fidoconf_reldate)
+{
+    push(@reldates, $fidoconf_reldate);
+}
+if($areafix_reldate)
+{
+    push(@reldates, $areafix_reldate);
+}
+if($hptzip_reldate)
 {
     push(@reldates, $hptzip_reldate);
 }
-if($hpt)
+if($hpt_reldate)
 {
     push(@reldates, $hpt_reldate);
 }
-if($htick)
+if($htick_reldate)
 {
     push(@reldates, $htick_reldate);
 }
-if($hptkill)
+if($hptkill_reldate)
 {
     push(@reldates, $hptkill_reldate);
 }
-if($hptsqfix)
+if($hptsqfix_reldate)
 {
     push(@reldates, $hptsqfix_reldate);
 }
-if($sqpack)
+if($sqpack_reldate)
 {
     push(@reldates, $sqpack_reldate);
 }
-if($msged)
+if($msged_reldate)
 {
     push(@reldates, $msged_reldate);
 }
-if($fidoroute)
+if($fidoroute_reldate)
 {
     push(@reldates, $fidoroute_reldate);
 }
-if($util)
+if($util_reldate)
 {
     push(@reldates, $util_reldate);
 }
 
+my $husky_reldate = $huskylib_reldate;
 for my $reldate (@reldates)
 {
-    $husky_reldate = $reldate if($reldate > $husky_reldate);
+    $husky_reldate = max($reldate, $husky_reldate);
 }
 
 push(@macros, "%global husky_ver_major $husky_ver_major");
