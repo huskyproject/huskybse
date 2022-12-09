@@ -6,7 +6,7 @@ License: LGPLv2
 Summary: Husky is a set of Fidonet software with common configuration
 Source: %name.tar.gz
 BuildRequires: %compiler
-%if "%USE_HPTZIP" == "1"
+%if "%hptzip" == "1"
 BuildRequires: zlib-devel
 %endif
 %description
@@ -33,7 +33,7 @@ BuildRequires: zlib-devel
 %endif
 
 %define huskylib_relnum 1
-%if "%DYNLIBS" == "1"
+%if "%huskylib" == "1"
 %package -n huskylib
 Version: %huskylib_ver_major.%huskylib_ver_minor.%huskylib_reldate
 Release: %{vendor_prefix}%huskylib_relnum%{vendor_suffix}
@@ -66,7 +66,7 @@ Provides: huskylib-utils = %version-%release
 %endif
 
 
-%if "%DYNLIBS" == "1"
+%if "%smapi" == "1"
 %package -n smapi
     %define smapi_relnum 6
 Version: %smapi_ver_major.%smapi_ver_minor.%smapi_reldate
@@ -82,7 +82,7 @@ Provides: libsmapi.so = %version-%release
 %endif
 
 %define fidoconf_relnum 1
-%if "%DYNLIBS" == "1"
+%if "%fidoconf" == "1"
 %package -n fidoconf
 Version: %fidoconf_ver_major.%fidoconf_ver_minor.%fidoconf_reldate
 Release: %{vendor_prefix}%fidoconf_relnum%{vendor_suffix}
@@ -131,7 +131,7 @@ Provides: fidoconf-utils = %version-%release
 %summary
 %endif
 
-%if "%DYNLIBS" == "1"
+%if "%areafix" == "1"
     %define areafix_relnum 5
 %package -n areafix
 Version: %areafix_ver_major.%areafix_ver_minor.%areafix_reldate
@@ -148,8 +148,7 @@ Provides: libareafix.so = %version-%release
 %endif
 
 
-%if "%USE_HPTZIP" == "1"
-%if "%DYNLIBS" == "1"
+%if "%hptzip" == "1"
     %define hptzip_relnum 1
 %package -n hptzip
 Version: %hptzip_ver_major.%hptzip_ver_minor.%hptzip_reldate
@@ -163,7 +162,6 @@ BuildRequires: zlib-devel
 Provides: libhptzip.so = %version-%release
 %description -n hptzip
 %summary
-%endif
 %endif
 
 %if "%hpt" == "1"
@@ -531,8 +529,10 @@ Group: %pkg_group
     %endif
 Summary: Documentation for the Husky Project
 License: LGPLv2
-    %if "%{?INFODIR}"
+    %if "%{?texinfo}" == "1"
 BuildRequires: texinfo
+    %endif
+    %if "%{?INFODIR}"
 Requires(post): /sbin/install-info
 Requires(preun): /sbin/install-info
     %endif
@@ -597,7 +597,7 @@ umask 022
 chmod -R a+rX,u+w,go-w %buildroot
 
 
-%if "%DYNLIBS" == "1"
+%if "%huskylib" == "1"
 %files -n huskylib
 %defattr(-,root,root)
     %_libdir/*husky*.so.%huskylib_ver_major.%huskylib_ver_minor.%huskylib_reldate
@@ -614,7 +614,7 @@ chmod -R a+rX,u+w,go-w %buildroot
     %endif
 %endif
 
-%if "%DYNLIBS" == "1"
+%if "%smapi" == "1"
 %files -n smapi
 %defattr(-,root,root)
     %_libdir/*smapi*.so.%smapi_ver_major.%smapi_ver_minor.%smapi_reldate
@@ -623,7 +623,7 @@ chmod -R a+rX,u+w,go-w %buildroot
 %endif
 
 
-%if "%DYNLIBS" == "1"
+%if "%fidoconf" == "1"
 %files -n fidoconf
 %defattr(-,root,root)
     %_libdir/*fidoconf*.so.%fidoconf_ver_major.%fidoconf_ver_minor.%fidoconf_reldate
@@ -655,7 +655,7 @@ chmod -R a+rX,u+w,go-w %buildroot
 %endif
 
 
-%if "%DYNLIBS" == "1"
+%if "%areafix" == "1"
 %files -n areafix
 %defattr(-,root,root)
     %_libdir/*areafix*.so.%areafix_ver_major.%areafix_ver_minor.%areafix_reldate
@@ -663,14 +663,12 @@ chmod -R a+rX,u+w,go-w %buildroot
     %_libdir/*areafix*.so
 %endif
 
-%if "%USE_HPTZIP" == "1"
-    %if "%DYNLIBS" == "1"
+%if "%hptzip" == "1"
 %files -n hptzip
 %defattr(-,root,root)
         %_libdir/*hptzip*.so.%hptzip_ver_major.%hptzip_ver_minor.%hptzip_reldate
         %_libdir/*hptzip*.so.%hptzip_ver_major.%hptzip_ver_minor
         %_libdir/*hptzip*.so
-    %endif
 %endif
 
 
