@@ -14,10 +14,10 @@
 # Most likely you will need to change something here to match your preferences
 ##############################################################################
 
-# A list of programs to be built. Do not include here any libraries on which
-# the programs depend, since the libraries will be built automatically. You
-# may remove any program from the list, but to add a program missing in the
-# current list, one has to change makefiles.
+# A list of programs to be built separated by spaces. Do not include here any
+# libraries on which the programs depend, since the libraries will be
+# built automatically. You may remove any program from the list, but to add
+# a program missing in the current list, one has to change makefiles.
 #
 PROGRAMS=hpt htick hptkill hptsqfix sqpack msged fidoroute util
 
@@ -48,7 +48,8 @@ GNMSGID=1
 FIDOCONF_UTIL=1
 
 # Whether to build and install hpt utilities (pktinfo, tpkt, txt2pkt, hptlink
-# and hpttree).
+# and hpttree). If PROGRAMS does not include "hpt", this setting is ignored
+# and the utilities are not built.
 HPT_UTIL=1
 
 # Whether to create HTML documentation. If DOCDIR (see PART 2: DIRECTORIES

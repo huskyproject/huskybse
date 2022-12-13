@@ -132,6 +132,9 @@ hpt_H_DIR = h$(DIRSEP)
 hpt_DATEDEPS = $(HPTZIP) areafix fidoconf smapi huskylib
 hpt_UNDOCDIR_PREREQ := hpt_doc_uninstall
 hpt_INFO = hpt.info.gz
+ifeq ($(filter hpt,$(PROGRAMS)),)
+    HPT_UTIL := 0
+endif
 
 ### htick ###
 # The directory with header files
