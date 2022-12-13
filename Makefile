@@ -83,7 +83,7 @@ cvsdate=cvsdate.h
 # In dependency order
 SUBPROJECTS := huskybse huskylib smapi fidoconf areafix hptzip hpt \
                htick hptkill hptsqfix sqpack msged fidoroute util \
-	       areastat nltools
+               areastat nltools
 
 # Per-subproject special variables
 # gen_subproject generates defaults (in form <subproject>_<NAME>, skipping DIRSEP):
@@ -210,9 +210,10 @@ huskybse_DATEFILES:= $(space)
 
 
 HUSKYLIB := $(and $(filter hpt htick hptkill hptsqfix sqpack msged \
-		    areastat nltools,$(PROGRAMS)), huskylib)
+                    areastat nltools,$(PROGRAMS)), huskylib)
 
-SMAPI := $(and $(HUSKYLIB),smapi)
+SMAPI := $(and $(filter hpt htick hptkill hptsqfix sqpack msged \
+                 areastat nltools,$(PROGRAMS)), smapi)
 
 FIDOCONF := $(and $(filter hpt htick hptkill sqpack msged nltools,$(PROGRAMS)), \
                   fidoconf)
@@ -533,12 +534,30 @@ clean: $(CLEAN_PREREQ) ;
 
 distclean: $(DISTCLEAN_PREREQ) ;
 
+$(DESTDIR)$(BINDIR):
+	-[ -d "$(DESTDIR)$(BINDIR)" ] || $(MKDIR) $(MKDIROPT) $(DESTDIR)$(BINDIR)
+
 $(DOCDIR_DST):
 	[ -d "$(PARENT_DOCDIR_DST)" ] || $(MKDIR) $(MKDIROPT) "$(PARENT_DOCDIR_DST)"
 	[ -d "$@" ] || $(MKDIR) $(MKDIROPT) "$@"
 
 $(DESTDIR)$(MANDIR):
 	[ -d "$@" ] || $(MKDIR) $(MKDIROPT) "$@"
+
+ifdef MAN1DIR
+$(DESTDIR)$(MAN1DIR): | $(DESTDIR)$(MANDIR)
+	-[ -d "$@" ] || $(MKDIR) $(MKDIROPT) $@
+endif
+
+ifdef MAN3DIR
+$(DESTDIR)$(MAN3DIR): | $(DESTDIR)$(MANDIR)
+	-[ -d "$@" ] || $(MKDIR) $(MKDIROPT) $@
+endif
+
+ifdef MAN5DIR
+$(DESTDIR)$(MAN5DIR): | $(DESTDIR)$(MANDIR)
+	-[ -d "$@" ] || $(MKDIR) $(MKDIROPT) $@
+endif
 
 ifndef INFODIR
     all_info_install: ;
