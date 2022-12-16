@@ -24,6 +24,7 @@ my @settings = qw(PROGRAMS PERL USE_HPTZIP DYNLIBS DEBUG GNMSGID FIDOCONF_UTIL
                   MAN1DIR MAN3DIR MAN5DIR INFODIR DOCDIR CC);
 my @progs = qw(hpt htick hptkill hptsqfix sqpack msged fidoroute util);
 my ($hpt, $htick, $hptkill, $hptsqfix, $sqpack, $msged, $fidoroute, $util,
+    $tparser,
     $huskylib, $smapi, $fidoconf, $areafix, $hptzip,
     $PROGRAMS, $PERL, $USE_HPTZIP, $DYNLIBS, $DEBUG, $GNMSGID, $FIDOCONF_UTIL,
     $HPT_UTIL, $HTML, $TXT, $DVI, $PDF, $PREFIX, $LIBDIR, $BINDIR, $PERLDATADIR,
@@ -145,6 +146,8 @@ sub max
     return $first > $second ? $first : $second;
 }
 
+###### Here the program starts ######
+
 fetch($huskymak);
 
 for my $var (@progs)
@@ -205,8 +208,12 @@ if(-e $verfile)
     my $regex = '^char\s+cvs_date\[\]\s*=\s*"(\d+)-(\d+)-(\d+)';
     $huskylib_reldate = get_reldate($datefile, $regex);
 
-    $huskylib = 1 if($DYNLIBS);
-    if($huskylib)
+    $huskylib = ($PROGRAMS =~ /hpt\s+/) || ($PROGRAMS =~ /hpt$/) ||
+                ($PROGRAMS =~ /htick/) || ($PROGRAMS =~ /hptkill/) ||
+                ($PROGRAMS =~ /hptsqfix/) || ($PROGRAMS =~ /sqpack/) ||
+                ($PROGRAMS =~ /msged/) || ($PROGRAMS =~ /areastat/) ||
+                ($PROGRAMS =~ /nltools/) ? 1 : 0;
+    if($huskylib == 1 || $GNMSGID == 1)
     {
         push(@macros, "%global huskylib_reldate $huskylib_reldate");
         @regexp = ('^#define\s+huskylib_VER_MAJOR\s+(\d+)',
@@ -221,6 +228,7 @@ if(-e $verfile)
         push(@macros, "%global huskylib_ver_minor $huskylib_ver_minor");
         push(@macros, "%global huskylib_ver_patch $huskylib_ver_patch");
     }
+    $huskylib = ($huskylib == 1 && $DYNLIBS == 1) ? 1 : 0;
 }
 push(@macros, "%global huskylib $huskylib");
 
@@ -233,7 +241,11 @@ if(-e $verfile)
     my $regex = '^char\s+cvs_date\[\]\s*=\s*"(\d+)-(\d+)-(\d+)';
     $smapi_reldate = get_reldate($datefile, $regex);
 
-    $smapi = 1 if($DYNLIBS);
+    $smapi = ($PROGRAMS =~ /hpt\s+/) || ($PROGRAMS =~ /hpt$/) ||
+             ($PROGRAMS =~ /htick/) || ($PROGRAMS =~ /hptkill/) ||
+             ($PROGRAMS =~ /hptsqfix/) || ($PROGRAMS =~ /sqpack/) ||
+             ($PROGRAMS =~ /msged/) || ($PROGRAMS =~ /areastat/) ||
+             ($PROGRAMS =~ /nltools/) ? 1 : 0;
     if($smapi)
     {
         push(@macros, "%global smapi_reldate $smapi_reldate");
@@ -249,6 +261,7 @@ if(-e $verfile)
         push(@macros, "%global smapi_ver_minor $smapi_ver_minor");
         push(@macros, "%global smapi_ver_patch $smapi_ver_patch");
     }
+    $smapi = ($smapi == 1 && $DYNLIBS == 1) ? 1 : 0;
 }
 push(@macros, "%global smapi $smapi");
 
@@ -271,8 +284,14 @@ if(-e $verfile)
     my $keywords_htick_date = get_commit_date("fidoconf", "doc/keywords.htick");
     $fidoconf_doc_date = max($fidoconf_doc_date, $keywords_htick_date);
 
-    $fidoconf = 1 if($DYNLIBS);
-    if($fidoconf)
+    $tparser = ($PROGRAMS =~ /hpt\s+/) || ($PROGRAMS =~ /hpt$/) ||
+               ($PROGRAMS =~ /htick/) || ($PROGRAMS =~ /hptkill/) ||
+               ($PROGRAMS =~ /sqpack/) || ($PROGRAMS =~ /msged/) ||
+               ($PROGRAMS =~ /nltools/) ? 1 : 0;
+    push(@macros, "%global tparser $tparser");
+
+    $fidoconf = ($tparser == 1 && $DYNLIBS == 1) ? 1 : 0;
+    if($tparser)
     {
         push(@macros, "%global fidoconf_reldate $fidoconf_reldate");
 
@@ -300,7 +319,8 @@ if(-e $verfile)
     my $regex = '^char\s+cvs_date\[\]\s*=\s*"(\d+)-(\d+)-(\d+)';
     $areafix_reldate = get_reldate($datefile, $regex);
 
-    $areafix = 1 if($DYNLIBS);
+    $areafix = (($PROGRAMS =~ /hpt\s+/) || ($PROGRAMS =~ /hpt$/) ||
+                ($PROGRAMS =~ /htick/)) ? 1 : 0;
     if($areafix)
     {
         push(@macros, "%global areafix_reldate $areafix_reldate");
@@ -316,6 +336,7 @@ if(-e $verfile)
         push(@macros, "%global areafix_ver_minor $areafix_ver_minor");
         push(@macros, "%global areafix_ver_patch $areafix_ver_patch");
     }
+    $areafix = ($areafix == 1 && $DYNLIBS == 1) ? 1 : 0;
 }
 push(@macros, "%global areafix $areafix");
 
@@ -328,7 +349,9 @@ if(-e $verfile)
     my $regex = '^char\s+cvs_date\[\]\s*=\s*"(\d+)-(\d+)-(\d+)';
     $hptzip_reldate = get_reldate($datefile, $regex);
 
-    $hptzip = 1 if($DYNLIBS && $USE_HPTZIP);
+    $hptzip = ((($PROGRAMS =~ /hpt\s+/) || ($PROGRAMS =~ /hpt$/) ||
+                ($PROGRAMS =~ /htick/) || ($PROGRAMS =~ /nltools/)) &&
+               $USE_HPTZIP == 1) ? 1 : 0;
     if($hptzip)
     {
         push(@macros, "%global hptzip_reldate $hptzip_reldate");
@@ -344,13 +367,14 @@ if(-e $verfile)
         push(@macros, "%global hptzip_ver_minor $hptzip_ver_minor");
         push(@macros, "%global hptzip_ver_patch $hptzip_ver_patch");
     }
+    $hptzip = ($hptzip == 1 && $DYNLIBS == 1) ? 1 : 0;
 }
 push(@macros, "%global hptzip $hptzip");
 
 
 # hpt
 $verfile = "hpt/h/version.h";
-if(-e $verfile)
+if(-e $verfile && $hpt == 1)
 {
     @regexp = ('^#define\s+hpt_VER_MAJOR\s+(\d+)',
                '^#define\s+hpt_VER_MINOR\s+(\d+)',
@@ -369,15 +393,18 @@ if(-e $verfile)
     $hpt_reldate = get_reldate($datefile, $regex);
     push(@macros, "%global hpt_reldate $hpt_reldate");
 
-    my $hpt_texi_date = get_commit_date("hpt", "doc/hpt.texi");
-    my $texinfo_tex_date = get_commit_date("hpt", "doc/texinfo.tex");
-    $hpt_doc_date = max($hpt_texi_date, $texinfo_tex_date);
+    if($DOCDIR ne "")
+    {
+        my $hpt_texi_date = get_commit_date("hpt", "doc/hpt.texi");
+        my $texinfo_tex_date = get_commit_date("hpt", "doc/texinfo.tex");
+        $hpt_doc_date = max($hpt_texi_date, $texinfo_tex_date);
+    }
 }
 
 
 # htick
 $verfile = "htick/h/version.h";
-if(-e $verfile)
+if(-e $verfile && $htick == 1)
 {
     @regexp = ('^#define\s+htick_VER_MAJOR\s+(\d+)',
                '^#define\s+htick_VER_MINOR\s+(\d+)',
@@ -396,13 +423,16 @@ if(-e $verfile)
     $htick_reldate = get_reldate($datefile, $regex);
     push(@macros, "%global htick_reldate $htick_reldate");
 
-    $htick_doc_date = get_commit_date("htick", "doc/htick.texi");
+    if($DOCDIR ne "")
+    {
+        $htick_doc_date = get_commit_date("htick", "doc/htick.texi");
+    }
 }
 
 
 # hptkill
 $verfile = "hptkill/h/version.h";
-if(-e $verfile)
+if(-e $verfile && $hptkill == 1)
 {
     @regexp = ('^#define\s+hptkill_VER_MAJOR\s+(\d+)',
                '^#define\s+hptkill_VER_MINOR\s+(\d+)',
@@ -425,7 +455,7 @@ if(-e $verfile)
 
 # hptsqfix
 $verfile = "hptsqfix/h/version.h";
-if(-e $verfile)
+if(-e $verfile && $hptsqfix == 1)
 {
     @regexp = ('^#define\s+hptsqfix_VER_MAJOR\s+(\d+)',
                '^#define\s+hptsqfix_VER_MINOR\s+(\d+)',
@@ -448,7 +478,7 @@ if(-e $verfile)
 
 # sqpack
 $verfile = "sqpack/version.h";
-if(-e $verfile)
+if(-e $verfile && $sqpack)
 {
     @regexp = ('^#define\s+sqpack_VER_MAJOR\s+(\d+)',
                '^#define\s+sqpack_VER_MINOR\s+(\d+)',
@@ -471,7 +501,7 @@ if(-e $verfile)
 
 # msged
 $verfile = "msged/version.h";
-if(-e $verfile)
+if(-e $verfile && $msged == 1)
 {
     @regexp = ('^#define\s+msged_VER_MAJOR\s+(\d+)',
                '^#define\s+msged_VER_MINOR\s+(\d+)',
@@ -490,15 +520,18 @@ if(-e $verfile)
     $msged_reldate = get_reldate($datefile, $regex);
     push(@macros, "%global msged_reldate $msged_reldate");
 
-    my $msged_texi_date = get_commit_date("msged", "doc/manual/msged.texi");
-    my $texinfo_tex_date = get_commit_date("msged", "doc/manual/texinfo.tex");
-    $msged_doc_date = max($msged_texi_date, $texinfo_tex_date);
+    if($DOCDIR ne "")
+    {
+        my $msged_texi_date = get_commit_date("msged", "doc/manual/msged.texi");
+        my $texinfo_tex_date = get_commit_date("msged", "doc/manual/texinfo.tex");
+        $msged_doc_date = max($msged_texi_date, $texinfo_tex_date);
+    }
 }
 
 
 # fidoroute
 $verfile = "fidoroute/version.h";
-if(-e $verfile)
+if(-e $verfile && $fidoroute)
 {
     @regexp = ('^#define\s+fidoroute_VER_MAJOR\s+(\d+)',
                '^#define\s+fidoroute_VER_MINOR\s+(\d+)',
@@ -525,7 +558,7 @@ if(-e $verfile)
 
 # util
 $verfile = "util/Fidoconfig-Token/lib/Fidoconfig/Token.pm";
-if(-e $verfile)
+if(-e $verfile && $util == 1)
 {
     @regexp = ('^\$VERSION\s+=\s+\"(\d+\.\d+)\";$');
 

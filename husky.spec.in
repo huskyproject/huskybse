@@ -6,9 +6,6 @@ License: LGPLv2
 Summary: Husky is a set of Fidonet software with common configuration
 Source: %name.tar.gz
 BuildRequires: %compiler
-%if "%hptzip" == "1"
-BuildRequires: zlib-devel
-%endif
 %description
 %summary
 
@@ -97,11 +94,12 @@ Provides: libfidoconfig.so = %version-%release
 %endif
 
 
-%if "%{?DYNLIBS}" == "1"
-    %define tparser_name tparser
-%else
-    %define tparser_name tparser-static
-%endif
+%if "%{?tparser}" == "1"
+    %if "%{?DYNLIBS}" == "1"
+        %define tparser_name tparser
+    %else
+        %define tparser_name tparser-static
+    %endif
 %package -n %tparser_name
 Version: %fidoconf_ver_major.%fidoconf_ver_minor.%fidoconf_reldate
 Release: %{vendor_prefix}%fidoconf_relnum%{vendor_suffix}
@@ -110,7 +108,7 @@ License: LGPLv2
 Provides: tparser = %version-%release
 %description -n %tparser_name
 %summary
-
+%endif
 
 %if "%{?FIDOCONF_UTIL}" == "1"
     %if "%{?DYNLIBS}" == "1"
@@ -198,7 +196,7 @@ Requires: perl >= 5.8.8
 Provides: hpt = %version-%release
 %description -n %hpt_name
 %summary
-
+%endif
 
     %if "%{?HPT_UTIL}" == "1"
         %if "%{?DYNLIBS}" == "1"
@@ -632,11 +630,13 @@ chmod -R a+rX,u+w,go-w %buildroot
 %endif
 
 
+%if "%{?tparser}" == "1"
 %files -n %tparser_name
 %defattr(-,root,root)
 %_bindir/tparser
-%if "%{?MAN1DIR}"
-    %doc %MAN1DIR/tparser.*
+    %if "%{?MAN1DIR}"
+        %doc %MAN1DIR/tparser.*
+    %endif
 %endif
 
 
