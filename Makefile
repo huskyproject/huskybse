@@ -223,7 +223,7 @@ FIDOCONF := $(and $(filter hpt htick hptkill sqpack msged nltools,$(PROGRAMS)), 
 
 AREAFIX := $(and $(filter hpt htick,$(PROGRAMS)), areafix)
 
-HPTZIP := $(and $(AREAFIX),hptzip)
+HPTZIP := $(and $(filter hpt htick nltools,$(PROGRAMS)),hptzip)
 
 ifneq ($(USE_HPTZIP), 1)
     HPTZIP :=
