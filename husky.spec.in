@@ -698,7 +698,7 @@ chmod -R a+rX,u+w,go-w %buildroot
 %endif
 
 
-%if "%htick" == "1"
+%if "%{?htick}" == "1"
 %files -n %htick_name
 %defattr(-,root,root)
     %_bindir/htick
@@ -708,7 +708,7 @@ chmod -R a+rX,u+w,go-w %buildroot
 %endif
 
 
-%if "%hptkill" == "1"
+%if "%{?hptkill}" == "1"
 %files -n %hptkill_name
 %defattr(-,root,root)
     %_bindir/hptkill
@@ -718,7 +718,7 @@ chmod -R a+rX,u+w,go-w %buildroot
 %endif
 
 
-%if "%hptsqfix" == "1"
+%if "%{?hptsqfix}" == "1"
 %files -n %hptsqfix_name
 %defattr(-,root,root)
     %_bindir/hptsqfix
@@ -728,7 +728,7 @@ chmod -R a+rX,u+w,go-w %buildroot
 %endif
 
 
-%if "%sqpack" == "1"
+%if "%{?sqpack}" == "1"
 %files -n %sqpack_name
 %defattr(-,root,root)
     %_bindir/sqpack
@@ -738,7 +738,7 @@ chmod -R a+rX,u+w,go-w %buildroot
 %endif
 
 
-%if "%msged" == "1"
+%if "%{?msged}" == "1"
 %files -n %msged_name
 %defattr(-,root,root)
     %_bindir/msged
@@ -753,7 +753,7 @@ chmod -R a+rX,u+w,go-w %buildroot
 %endif
 
 
-%if "%fidoroute" == "1"
+%if "%{?fidoroute}" == "1"
 %files -n %fidoroute_name
 %defattr(-,root,root)
     %_bindir/fidoroute
@@ -769,7 +769,7 @@ chmod -R a+rX,u+w,go-w %buildroot
 %endif
 
 
-%if "%util" == "1"
+%if "%{?util}" == "1"
 %files -n perl-Fidoconfig-Token
 %defattr(-,root,root)
     %PERLDATADIR/Fidoconfig/Token.pm
@@ -799,7 +799,7 @@ chmod -R a+rX,u+w,go-w %buildroot
     %endif
 %endif
 
-%if "%DOC" == "1"
+%if "%{?DOC}" == "1"
 %files -n husky-doc
 %defattr(-,root,root)
     %if "%{?INFODIR}"
@@ -807,16 +807,16 @@ chmod -R a+rX,u+w,go-w %buildroot
         %exclude %INFODIR/dir
     %endif
     %if "%{?DOCDIR}"
-        %if "%HTML" == "1"
+        %if "%{?HTML}" == "1"
             %doc %DOCDIR/*.html
         %endif
-        %if "%TXT" == "1"
+        %if "%{?TXT}" == "1"
             %doc %DOCDIR/*.txt
         %endif
-        %if "%PDF" == "1"
+        %if "%{?PDF}" == "1"
             %doc %DOCDIR/*.pdf
         %endif
-        %if "%DVI" == "1"
+        %if "%{?DVI}" == "1"
             %doc %DOCDIR/*.dvi
         %endif
     %endif
