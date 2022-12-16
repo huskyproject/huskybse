@@ -22,7 +22,7 @@ my (@lines, @macros);
 my @settings = qw(PROGRAMS PERL USE_HPTZIP DYNLIBS DEBUG GNMSGID FIDOCONF_UTIL
                   HPT_UTIL HTML TXT DVI PDF PREFIX LIBDIR BINDIR
                   MAN1DIR MAN3DIR MAN5DIR INFODIR DOCDIR CC);
-my @progs = qw(hpt htick hptkill hptsqfix sqpack msged fidoroute util);
+my @progs = qw(hpt htick hptkill hptsqfix sqpack msged fidoroute util areastat nltools);
 my ($hpt, $htick, $hptkill, $hptsqfix, $sqpack, $msged, $fidoroute, $util,
     $areastat, $nltools, $tparser,
     $huskylib, $smapi, $fidoconf, $areafix, $hptzip,
