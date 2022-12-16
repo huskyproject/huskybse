@@ -516,6 +516,62 @@ fixOutbound.pl - remove from outbound the echomail bundles not referred
 %summary
 %endif
 
+
+%if "%{?areastat}" == "1"
+    %global areastat_relnum 1
+    %if "%{?DYNLIBS}" == "1"
+        %define areastat_name areastat
+    %else
+        %define areastat_name areastat-static
+    %endif
+%package -n %areastat_name
+Version: %areastat_ver_major.%areastat_ver_minor.%areastat_reldate
+Release: %{vendor_prefix}%areastat_relnum%{vendor_suffix}
+    %if "%_vendor" != "redhat"
+Group: %pkg_group
+    %endif
+Summary: areastat creates statistics for Fidonet message bases
+License: LGPLv2
+Provides: areastat = %version-%release
+%description -n %areastat_name
+Areastat can be used to create statistics for Msg, Squish and JAM
+message areas. Areastat can generate 12 types of statistics (by name, by from,
+by to, by from -> to, by size (in bytes), by quote percent, by subjects,
+by date, by week day, by time and it can generate summary statistics for any
+area).
+%endif
+
+
+%if "%{?nltools}" == "1"
+    %global nltools_relnum 1
+    %if "%{?DYNLIBS}" == "1"
+        %define nltools_name nltools
+    %else
+        %define nltools_name nltools-static
+    %endif
+%package -n %nltools_name
+Version: %nltools_ver_major.%nltools_ver_minor.%nltools_reldate
+Release: %{vendor_prefix}%nltools_relnum%{vendor_suffix}
+    %if "%_vendor" != "redhat"
+Group: %pkg_group
+    %endif
+Summary: nltools contains a set of nodelist management utilities
+License: LGPLv2
+    %if "%{?USE_HPTZIP}" == "1"
+BuildRequires: zlib-devel
+        %if "%{?DYNLIBS}" != "1"
+BuildRequires: zlib-static
+        %endif
+    %endif
+Provides: nltools = %version-%release
+%description -n %nltools_name
+nltools contains a set of nodelist management utilities. They are nlupd,
+ulc, nlcrc, nldiff. nlupd manages your nodelists and keeps them up to date.
+ulc is a Husky Fidonet userlist compiler. nlcrc checks the CRC of a given
+nodelist. nldiff applies a nodediff file to a nodelist.
+%endif
+
+
 %if "%{?DOC}" == "1"
     %global doc_relnum 1
 %package -n husky-doc
@@ -798,6 +854,36 @@ chmod -R a+rX,u+w,go-w %buildroot
         %doc %MAN1DIR/rmLinkMail.pl.1*
     %endif
 %endif
+
+
+%if "%{?areastat}" == "1"
+%files -n %areastat_name
+%defattr(-,root,root)
+    %_bindir/areastat
+    %if "%{?MAN1DIR}"
+        %doc %MAN1DIR/areastat.*
+    %endif
+    %if "%{?MAN5DIR}"
+        %doc %MAN5DIR/areastat.conf.*
+    %endif
+%endif
+
+
+%if "%{?nltools}" == "1"
+%files -n %nltools_name
+%defattr(-,root,root)
+    %_bindir/nlcrc
+    %_bindir/nldiff
+    %_bindir/nlupd
+    %_bindir/ulc
+    %if "%{?MAN1DIR}"
+        %doc %MAN1DIR/nlcrc.*
+        %doc %MAN1DIR/nldiff.*
+        %doc %MAN1DIR/nlupdate.*
+        %doc %MAN1DIR/ulc.*
+    %endif
+%endif
+
 
 %if "%{?DOC}" == "1"
 %files -n husky-doc

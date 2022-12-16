@@ -24,7 +24,7 @@ my @settings = qw(PROGRAMS PERL USE_HPTZIP DYNLIBS DEBUG GNMSGID FIDOCONF_UTIL
                   MAN1DIR MAN3DIR MAN5DIR INFODIR DOCDIR CC);
 my @progs = qw(hpt htick hptkill hptsqfix sqpack msged fidoroute util);
 my ($hpt, $htick, $hptkill, $hptsqfix, $sqpack, $msged, $fidoroute, $util,
-    $tparser,
+    $areastat, $nltools, $tparser,
     $huskylib, $smapi, $fidoconf, $areafix, $hptzip,
     $PROGRAMS, $PERL, $USE_HPTZIP, $DYNLIBS, $DEBUG, $GNMSGID, $FIDOCONF_UTIL,
     $HPT_UTIL, $HTML, $TXT, $DVI, $PDF, $PREFIX, $LIBDIR, $BINDIR, $PERLDATADIR,
@@ -33,8 +33,9 @@ my ($hpt, $htick, $hptkill, $hptsqfix, $sqpack, $msged, $fidoroute, $util,
     $huskylib_reldate, $smapi_reldate, $fidoconf_reldate, $areafix_reldate,
     $hptzip_reldate, $hpt_reldate, $htick_reldate, $hptkill_reldate,
     $hptsqfix_reldate, $sqpack_reldate, $msged_reldate, $fidoroute_reldate,
-    $util_reldate, $hpt_doc_date, $htick_doc_date, $msged_doc_date,
-    $fidoconf_doc_date, $fidoroute_doc_date, $doc_reldate);
+    $util_reldate, $areastat_reldate, $nltools_reldate,
+    $hpt_doc_date, $htick_doc_date, $msged_doc_date, $fidoconf_doc_date,
+    $fidoroute_doc_date, $doc_reldate);
 
 # Initialize variables
 $huskylib = $smapi = $fidoconf = $areafix = $hptzip = 0;
@@ -45,7 +46,7 @@ $MAN5DIR = $INFODIR = $DOCDIR = $CC = "";
 $huskylib_reldate = $smapi_reldate = $fidoconf_reldate = $areafix_reldate = 0;
 $hptzip_reldate = $hpt_reldate = $htick_reldate = $hptkill_reldate = 0;
 $hptsqfix_reldate = $sqpack_reldate = $msged_reldate = $fidoroute_reldate = 0;
-$util_reldate = 0;
+$util_reldate = $areastat_reldate = $nltools_reldate = 0;
 $hpt_doc_date = $htick_doc_date = $msged_doc_date = $fidoconf_doc_date = 0;
 $fidoroute_doc_date = $doc_reldate = 0;
 @macros = ("# husky.spec", "");
@@ -612,6 +613,52 @@ if(-e $verfile && $util == 1)
 }
 
 
+# areastat
+$verfile = "areastat/h/version.h";
+if(-e $verfile && $areastat == 1)
+{
+    @regexp = ('^#define\s+areastat_VER_MAJOR\s+(\d+)',
+               '^#define\s+areastat_VER_MINOR\s+(\d+)',
+               '^#define\s+areastat_VER_PATCH\s+(\d+)');
+
+    my ($areastat_ver_major,
+        $areastat_ver_minor,
+        $areastat_ver_patch) = get_version($verfile, @regexp);
+
+    push(@macros, "%global areastat_ver_major $areastat_ver_major");
+    push(@macros, "%global areastat_ver_minor $areastat_ver_minor");
+    push(@macros, "%global areastat_ver_patch $areastat_ver_patch");
+
+    my $datefile = "areastat/h/cvsdate.h";
+    my $regex = '^char\s+cvs_date\[\]\s*=\s*"(\d+)-(\d+)-(\d+)';
+    $areastat_reldate = get_reldate($datefile, $regex);
+    push(@macros, "%global areastat_reldate $areastat_reldate");
+}
+
+
+# nltools
+$verfile = "nltools/h/version.h";
+if(-e $verfile && $nltools == 1)
+{
+    @regexp = ('^#define\s+nltools_VER_MAJOR\s+(\d+)',
+               '^#define\s+nltools_VER_MINOR\s+(\d+)',
+               '^#define\s+nltools_VER_PATCH\s+(\d+)');
+
+    my ($nltools_ver_major,
+        $nltools_ver_minor,
+        $nltools_ver_patch) = get_version($verfile, @regexp);
+
+    push(@macros, "%global nltools_ver_major $nltools_ver_major");
+    push(@macros, "%global nltools_ver_minor $nltools_ver_minor");
+    push(@macros, "%global nltools_ver_patch $nltools_ver_patch");
+
+    my $datefile = "nltools/h/cvsdate.h";
+    my $regex = '^char\s+cvs_date\[\]\s*=\s*"(\d+)-(\d+)-(\d+)';
+    $nltools_reldate = get_reldate($datefile, $regex);
+    push(@macros, "%global nltools_reldate $nltools_reldate");
+}
+
+
 # Compute $husky_reldate as maximum reldate of its components
 my @reldates;
 if($smapi_reldate)
@@ -661,6 +708,14 @@ if($fidoroute_reldate)
 if($util_reldate)
 {
     push(@reldates, $util_reldate);
+}
+if($areastat_reldate)
+{
+    push(@reldates, $areastat_reldate);
+}
+if($nltools_reldate)
+{
+    push(@reldates, $nltools_reldate);
 }
 
 my $husky_reldate = max($huskylib_reldate, 0);
