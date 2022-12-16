@@ -196,7 +196,6 @@ Requires: perl >= 5.8.8
 Provides: hpt = %version-%release
 %description -n %hpt_name
 %summary
-%endif
 
     %if "%{?HPT_UTIL}" == "1"
         %if "%{?DYNLIBS}" == "1"
