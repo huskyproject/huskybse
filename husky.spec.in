@@ -12,7 +12,7 @@ BuildRequires: zlib-devel
 %description
 %summary
 
-%if "%DEBUG" != "1"
+%if "%{?DEBUG}" != "1"
     %global debug_package %nil
 %endif
 
@@ -33,7 +33,7 @@ BuildRequires: zlib-devel
 %endif
 
 %define huskylib_relnum 1
-%if "%huskylib" == "1"
+%if "%{?huskylib}" == "1"
 %package -n huskylib
 Version: %huskylib_ver_major.%huskylib_ver_minor.%huskylib_reldate
 Release: %{vendor_prefix}%huskylib_relnum%{vendor_suffix}
@@ -47,8 +47,8 @@ Provides: libhusky.so = %version-%release
 %summary
 %endif
 
-%if "%GNMSGID" == "1"
-    %if "%DYNLIBS" != "1"
+%if "%{?GNMSGID}" == "1"
+    %if "%{?DYNLIBS}" != "1"
         %define huskylib_utils_name huskylib-utils-static
     %else
         %define huskylib_utils_name huskylib-utils
@@ -66,7 +66,7 @@ Provides: huskylib-utils = %version-%release
 %endif
 
 
-%if "%smapi" == "1"
+%if "%{?smapi}" == "1"
 %package -n smapi
     %define smapi_relnum 6
 Version: %smapi_ver_major.%smapi_ver_minor.%smapi_reldate
@@ -82,7 +82,7 @@ Provides: libsmapi.so = %version-%release
 %endif
 
 %define fidoconf_relnum 1
-%if "%fidoconf" == "1"
+%if "%{?fidoconf}" == "1"
 %package -n fidoconf
 Version: %fidoconf_ver_major.%fidoconf_ver_minor.%fidoconf_reldate
 Release: %{vendor_prefix}%fidoconf_relnum%{vendor_suffix}
@@ -97,7 +97,7 @@ Provides: libfidoconfig.so = %version-%release
 %endif
 
 
-%if "%DYNLIBS" == "1"
+%if "%{?DYNLIBS}" == "1"
     %define tparser_name tparser
 %else
     %define tparser_name tparser-static
@@ -112,8 +112,8 @@ Provides: tparser = %version-%release
 %summary
 
 
-%if "%FIDOCONF_UTIL" == "1"
-    %if "%DYNLIBS" == "1"
+%if "%{?FIDOCONF_UTIL}" == "1"
+    %if "%{?DYNLIBS}" == "1"
         %define fidoconf_utils_name fidoconf-utils
     %else
         %define fidoconf_utils_name fidoconf-utils-static
@@ -131,7 +131,7 @@ Provides: fidoconf-utils = %version-%release
 %summary
 %endif
 
-%if "%areafix" == "1"
+%if "%{?areafix}" == "1"
     %define areafix_relnum 5
 %package -n areafix
 Version: %areafix_ver_major.%areafix_ver_minor.%areafix_reldate
@@ -148,7 +148,7 @@ Provides: libareafix.so = %version-%release
 %endif
 
 
-%if "%hptzip" == "1"
+%if "%{?hptzip}" == "1"
     %define hptzip_relnum 1
 %package -n hptzip
 Version: %hptzip_ver_major.%hptzip_ver_minor.%hptzip_reldate
@@ -164,9 +164,9 @@ Provides: libhptzip.so = %version-%release
 %summary
 %endif
 
-%if "%hpt" == "1"
+%if "%{?hpt}" == "1"
 %global hpt_relnum 1
-    %if "%DYNLIBS" == "1"
+    %if "%{?DYNLIBS}" == "1"
         %define hpt_name hpt
     %else
         %define hpt_name hpt-static
@@ -179,13 +179,13 @@ Group: %pkg_group
     %endif
 Summary: HPT is an FTN tosser from the Husky Project
 License: LGPLv2
-    %if "%USE_HPTZIP" == "1"
+    %if "%{?USE_HPTZIP}" == "1"
 BuildRequires: zlib-devel
-        %if "%DYNLIBS" != "1"
+        %if "%{?DYNLIBS}" != "1"
 BuildRequires: zlib-static
         %endif
     %endif
-    %if "%PERL" == "1"
+    %if "%{?PERL}" == "1"
         %if "%_vendor" == "redhat"
 BuildRequires: perl(:VERSION) >= 5.8.8, perl-devel >= 5.8.8
 BuildRequires: perl(ExtUtils::Embed)
@@ -200,8 +200,8 @@ Provides: hpt = %version-%release
 %summary
 
 
-    %if "%HPT_UTIL" == "1"
-        %if "%DYNLIBS" == "1"
+    %if "%{?HPT_UTIL}" == "1"
+        %if "%{?DYNLIBS}" == "1"
             %define hpt_utils_name hpt-utils
         %else
             %define hpt_utils_name hpt-utils-static
@@ -214,9 +214,9 @@ Group: %pkg_group
         %endif
 Summary: Optional utilities for hpt
 License: LGPLv2
-        %if "%USE_HPTZIP" == "1"
+        %if "%{?USE_HPTZIP}" == "1"
 BuildRequires: zlib-devel
-            %if "%DYNLIBS" != "1"
+            %if "%{?DYNLIBS}" != "1"
 BuildRequires: zlib-static
             %endif
         %endif
@@ -226,9 +226,9 @@ Provides: hpt-utils = %version-%release
     %endif
 %endif
 
-%if "%htick" == "1"
+%if "%{?htick}" == "1"
     %global htick_relnum 1
-    %if "%DYNLIBS" == "1"
+    %if "%{?DYNLIBS}" == "1"
         %define htick_name htick
     %else
         %define htick_name htick-static
@@ -246,9 +246,9 @@ Provides: htick = %version-%release
 %summary
 %endif
 
-%if "%hptkill" == "1"
+%if "%{?hptkill}" == "1"
     %global hptkill_relnum 1
-    %if "%DYNLIBS" == "1"
+    %if "%{?DYNLIBS}" == "1"
         %define hptkill_name hptkill
     %else
         %define hptkill_name hptkill-static
@@ -266,9 +266,9 @@ Provides: hptkill = %version-%release
 %summary
 %endif
 
-%if "%hptsqfix" == "1"
+%if "%{?hptsqfix}" == "1"
     %global hptsqfix_relnum 1
-    %if "%DYNLIBS" == "1"
+    %if "%{?DYNLIBS}" == "1"
         %define hptsqfix_name hptsqfix
     %else
         %define hptsqfix_name hptsqfix-static
@@ -286,9 +286,9 @@ Provides: hptsqfix = %version-%release
 %summary
 %endif
 
-%if "%sqpack" == "1"
+%if "%{?sqpack}" == "1"
     %global sqpack_relnum 1
-    %if "%DYNLIBS" == "1"
+    %if "%{?DYNLIBS}" == "1"
         %define sqpack_name sqpack
     %else
         %define sqpack_name sqpack-static
@@ -307,9 +307,9 @@ sqpack takes the information about squish and jam msgbases from fidoconfig
 and purges the msgbases according to the -m and -p statements.
 %endif
 
-%if "%msged" == "1"
+%if "%{?msged}" == "1"
     %global msged_relnum 1
-    %if "%DYNLIBS" == "1"
+    %if "%{?DYNLIBS}" == "1"
         %define msged_name msged
     %else
         %define msged_name msged-static
@@ -328,9 +328,9 @@ Provides: msged = %version-%release
 %summary
 %endif
 
-%if "%fidoroute" == "1"
+%if "%{?fidoroute}" == "1"
     %global fidoroute_relnum 1
-    %if "%DYNLIBS" == "1"
+    %if "%{?DYNLIBS}" == "1"
         %define fidoroute_name fidoroute
     %else
         %define fidoroute_name fidoroute-static
@@ -349,7 +349,7 @@ Provides: fidoroute = %version-%release
 %summary
 %endif
 
-%if "%util" == "1"
+%if "%{?util}" == "1"
     %global token_relnum 1
 %package -n  perl-Fidoconfig-Token
 Version: %token_ver.%token_reldate
@@ -518,7 +518,7 @@ fixOutbound.pl - remove from outbound the echomail bundles not referred
 %summary
 %endif
 
-%if "%DOC" == "1"
+%if "%{?DOC}" == "1"
     %global doc_relnum 1
 %package -n husky-doc
 Version: %husky_ver_major.%husky_ver_minor.%doc_reldate
@@ -550,13 +550,13 @@ BuildRequires: texi2dvi
     %if "%{?INFODIR}"
 %post -n husky-doc
         /sbin/install-info --info-dir=%INFODIR %INFODIR/fidoconfig.info.gz || :
-        %if "%hpt" == "1"
+        %if "%{?hpt}" == "1"
             /sbin/install-info --info-dir=%INFODIR %INFODIR/hpt.info.gz || :
         %endif
-        %if "%htick" == "1"
+        %if "%{?htick}" == "1"
             /sbin/install-info --info-dir=%INFODIR %INFODIR/htick.info.gz || :
         %endif
-        %if "%msged" == "1"
+        %if "%{?msged}" == "1"
             /sbin/install-info --info-dir=%INFODIR %INFODIR/msged.info.gz || :
         %endif
 
@@ -564,17 +564,17 @@ BuildRequires: texi2dvi
         if [ "$1" = 0 ] ; then
             /sbin/install-info --info-dir=%INFODIR --delete %INFODIR/fidoconfig.info.gz || :
         fi
-        %if "%hpt" == "1"
+        %if "%{?hpt}" == "1"
             if [ "$1" = 0 ] ; then
                 /sbin/install-info --info-dir=%INFODIR --delete %INFODIR/hpt.info.gz || :
             fi
         %endif
-        %if "%htick" == "1"
+        %if "%{?htick}" == "1"
             if [ "$1" = 0 ] ; then
                 /sbin/install-info --info-dir=%INFODIR --delete %INFODIR/htick.info.gz || :
             fi
         %endif
-        %if "%msged" == "1"
+        %if "%{?msged}" == "1"
             if [ "$1" = 0 ] ; then
                 /sbin/install-info --info-dir=%INFODIR --delete %INFODIR/msged.info.gz || :
             fi
@@ -597,7 +597,7 @@ umask 022
 chmod -R a+rX,u+w,go-w %buildroot
 
 
-%if "%huskylib" == "1"
+%if "%{?huskylib}" == "1"
 %files -n huskylib
 %defattr(-,root,root)
     %_libdir/*husky*.so.%huskylib_ver_major.%huskylib_ver_minor.%huskylib_reldate
@@ -605,7 +605,7 @@ chmod -R a+rX,u+w,go-w %buildroot
     %_libdir/*husky*.so
 %endif
 
-%if "%GNMSGID" == "1"
+%if "%{?GNMSGID}" == "1"
 %files -n %huskylib_utils_name
 %defattr(-,root,root)
     %_bindir/gnmsgid
@@ -614,7 +614,7 @@ chmod -R a+rX,u+w,go-w %buildroot
     %endif
 %endif
 
-%if "%smapi" == "1"
+%if "%{?smapi}" == "1"
 %files -n smapi
 %defattr(-,root,root)
     %_libdir/*smapi*.so.%smapi_ver_major.%smapi_ver_minor.%smapi_reldate
@@ -623,7 +623,7 @@ chmod -R a+rX,u+w,go-w %buildroot
 %endif
 
 
-%if "%fidoconf" == "1"
+%if "%{?fidoconf}" == "1"
 %files -n fidoconf
 %defattr(-,root,root)
     %_libdir/*fidoconf*.so.%fidoconf_ver_major.%fidoconf_ver_minor.%fidoconf_reldate
@@ -640,7 +640,7 @@ chmod -R a+rX,u+w,go-w %buildroot
 %endif
 
 
-%if "%FIDOCONF_UTIL" == "1"
+%if "%{?FIDOCONF_UTIL}" == "1"
 %files -n %fidoconf_utils_name
 %defattr(-,root,root)
     %_bindir/linked*
@@ -655,7 +655,7 @@ chmod -R a+rX,u+w,go-w %buildroot
 %endif
 
 
-%if "%areafix" == "1"
+%if "%{?areafix}" == "1"
 %files -n areafix
 %defattr(-,root,root)
     %_libdir/*areafix*.so.%areafix_ver_major.%areafix_ver_minor.%areafix_reldate
@@ -663,7 +663,7 @@ chmod -R a+rX,u+w,go-w %buildroot
     %_libdir/*areafix*.so
 %endif
 
-%if "%hptzip" == "1"
+%if "%{?hptzip}" == "1"
 %files -n hptzip
 %defattr(-,root,root)
         %_libdir/*hptzip*.so.%hptzip_ver_major.%hptzip_ver_minor.%hptzip_reldate
@@ -672,7 +672,7 @@ chmod -R a+rX,u+w,go-w %buildroot
 %endif
 
 
-%if "%hpt" == "1"
+%if "%{?hpt}" == "1"
 %files -n %hpt_name
 %defattr(-,root,root)
 %_bindir/hpt
@@ -680,7 +680,7 @@ chmod -R a+rX,u+w,go-w %buildroot
         %doc %MAN1DIR/hpt.*
     %endif
 
-    %if "%HPT_UTIL" == "1"
+    %if "%{?HPT_UTIL}" == "1"
 %files -n %hpt_utils_name
 %defattr(-,root,root)
         %_bindir/pktinfo
