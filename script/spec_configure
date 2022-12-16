@@ -154,6 +154,11 @@ for my $var (@progs)
     push(@macros, "%global $var $value");
 }
 
+if(!(($PROGRAMS =~ /hpt\s+/) || ($PROGRAMS =~ /hpt$/)))
+{
+    $HPT_UTIL = 0;
+}
+
 for my $var (@settings)
 {
     next if($var eq "PROGRAMS");
