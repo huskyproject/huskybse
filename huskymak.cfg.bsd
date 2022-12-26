@@ -246,7 +246,7 @@ EXENAMEFLAG=-o
 WARNFLAGS=-Wall
 
 # C-compiler: optimization
-OPTCFLAGS=-c -g0 -O3 -fomit-frame-pointer -fPIC
+OPTCFLAGS=-c -g0 -O3 -fomit-frame-pointer -fPIC -ferror-limit=0
 
 # C-compiler: debug
 DEBCFLAGS=-c -g -Og -fPIC
