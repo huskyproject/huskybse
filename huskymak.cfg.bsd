@@ -1,8 +1,8 @@
 # Makefile configuration for Husky packages contains settings
 # used during their build. You have to modify this file according
 # to your needs. Alternatively you may give any such settings as
-# command line arguments to `make` invocation. Command line arguments
-# to `make` override any values given in this file or in any makefile.
+# command line arguments to `gmake` invocation. Command line arguments
+# to `gmake` override any values given in this file or in any makefile.
 # There are two types of settings here. A setting of the first type
 # contains a string as its value. A setting of the second type is a
 # switch and may take two values, either 0 or 1. The value of 1 means
