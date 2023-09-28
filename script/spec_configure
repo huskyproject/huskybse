@@ -493,7 +493,7 @@ if(-e $verfile && $hptutil == 1)
     push(@macros, "%global hptutil_ver_minor $hptutil_ver_minor");
     push(@macros, "%global hptutil_ver_patch $hptutil_ver_patch");
 
-    my $datefile = "hptutil/cvsdate.h";
+    my $datefile = "hptutil/h/cvsdate.h";
     my $regex = '^char\s+cvs_date\[\]\s*=\s*"(\d+)-(\d+)-(\d+)';
     $hptutil_reldate = get_reldate($datefile, $regex);
     push(@macros, "%global hptutil_reldate $hptutil_reldate");
