@@ -283,6 +283,27 @@ Provides: hptsqfix = %version-%release
 %summary
 %endif
 
+%if "%{?hptutil}" == "1"
+    %global hptutil_relnum 1
+    %if "%{?DYNLIBS}" == "1"
+        %define hptutil_name hptutil
+    %else
+        %define hptutil_name hptutil-static
+    %endif
+%package -n %hptutil_name
+Version: %hptutil_ver_major.%hptutil_ver_minor.%hptutil_reldate
+Release: %{vendor_prefix}%hptutil_relnum%{vendor_suffix}
+    %if "%_vendor" != "redhat"
+Group: %pkg_group
+    %endif
+Summary: hptutil is a service tool for handling echo areas
+License: LGPLv2
+Provides: hptutil = %version-%release
+%description -n %hptutil_name
+hptutil is a tool for fixing errors, purging, undeleting, packing, sorting
+and linking echo areas
+%endif
+
 %if "%{?sqpack}" == "1"
     %global sqpack_relnum 1
     %if "%{?DYNLIBS}" == "1"
@@ -779,6 +800,16 @@ chmod -R a+rX,u+w,go-w %buildroot
     %_bindir/hptsqfix
     %if "%{?MAN1DIR}"
         %doc %MAN1DIR/hptsqfix.*
+    %endif
+%endif
+
+
+%if "%{?hptutil}" == "1"
+%files -n %hptutil_name
+%defattr(-,root,root)
+    %_bindir/hptutil
+    %if "%{?MAN1DIR}"
+        %doc %MAN1DIR/hptutil.*
     %endif
 %endif
 

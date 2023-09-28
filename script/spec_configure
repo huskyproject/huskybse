@@ -22,9 +22,9 @@ my (@lines, @macros);
 my @settings = qw(PROGRAMS PERL USE_HPTZIP DYNLIBS DEBUG GNMSGID FIDOCONF_UTIL
                   HPT_UTIL HTML TXT DVI PDF PREFIX LIBDIR BINDIR
                   MAN1DIR MAN3DIR MAN5DIR INFODIR DOCDIR CC);
-my @progs = qw(hpt htick hptkill hptsqfix sqpack msged fidoroute util areastat nltools);
-my ($hpt, $htick, $hptkill, $hptsqfix, $sqpack, $msged, $fidoroute, $util,
-    $areastat, $nltools, $tparser,
+my @progs = qw(hpt htick hptkill hptsqfix hptutil sqpack msged fidoroute util areastat nltools);
+my ($hpt, $htick, $hptkill, $hptutil, $hptsqfix, $sqpack, $msged, $fidoroute,
+    $util, $areastat, $nltools, $tparser,
     $huskylib, $smapi, $fidoconf, $areafix, $hptzip,
     $PROGRAMS, $PERL, $USE_HPTZIP, $DYNLIBS, $DEBUG, $GNMSGID, $FIDOCONF_UTIL,
     $HPT_UTIL, $HTML, $TXT, $DVI, $PDF, $PREFIX, $LIBDIR, $BINDIR, $PERLDATADIR,
@@ -32,8 +32,8 @@ my ($hpt, $htick, $hptkill, $hptsqfix, $sqpack, $msged, $fidoroute, $util,
     $texinfo,
     $huskylib_reldate, $smapi_reldate, $fidoconf_reldate, $areafix_reldate,
     $hptzip_reldate, $hpt_reldate, $htick_reldate, $hptkill_reldate,
-    $hptsqfix_reldate, $sqpack_reldate, $msged_reldate, $fidoroute_reldate,
-    $util_reldate, $areastat_reldate, $nltools_reldate,
+    $hptsqfix_reldate, $hptutil_reldate, $sqpack_reldate, $msged_reldate,
+    $fidoroute_reldate, $util_reldate, $areastat_reldate, $nltools_reldate,
     $hpt_doc_date, $htick_doc_date, $msged_doc_date, $fidoconf_doc_date,
     $fidoroute_doc_date, $doc_reldate);
 
@@ -45,8 +45,8 @@ $PROGRAMS = $PREFIX = $PERLDATADIR = $MAN1DIR = $MAN3DIR = "";
 $MAN5DIR = $INFODIR = $DOCDIR = $CC = "";
 $huskylib_reldate = $smapi_reldate = $fidoconf_reldate = $areafix_reldate = 0;
 $hptzip_reldate = $hpt_reldate = $htick_reldate = $hptkill_reldate = 0;
-$hptsqfix_reldate = $sqpack_reldate = $msged_reldate = $fidoroute_reldate = 0;
-$util_reldate = $areastat_reldate = $nltools_reldate = 0;
+$hptsqfix_reldate = $hptutil_reldate = $sqpack_reldate = $msged_reldate = 0;
+$fidoroute_reldate = $util_reldate = $areastat_reldate = $nltools_reldate = 0;
 $hpt_doc_date = $htick_doc_date = $msged_doc_date = $fidoconf_doc_date = 0;
 $fidoroute_doc_date = $doc_reldate = 0;
 @macros = ("# husky.spec", "");
@@ -477,6 +477,29 @@ if(-e $verfile && $hptsqfix == 1)
 }
 
 
+# hptutil
+$verfile = "hptutil/h/version.h";
+if(-e $verfile && $hptutil == 1)
+{
+    @regexp = ('^#define\s+hptutil_VER_MAJOR\s+(\d+)',
+               '^#define\s+hptutil_VER_MINOR\s+(\d+)',
+               '^#define\s+hptutil_VER_PATCH\s+(\d+)');
+
+    my ($hptutil_ver_major,
+        $hptutil_ver_minor,
+        $hptutil_ver_patch) = get_version($verfile, @regexp);
+
+    push(@macros, "%global hptutil_ver_major $hptutil_ver_major");
+    push(@macros, "%global hptutil_ver_minor $hptutil_ver_minor");
+    push(@macros, "%global hptutil_ver_patch $hptutil_ver_patch");
+
+    my $datefile = "hptutil/cvsdate.h";
+    my $regex = '^char\s+cvs_date\[\]\s*=\s*"(\d+)-(\d+)-(\d+)';
+    $hptutil_reldate = get_reldate($datefile, $regex);
+    push(@macros, "%global hptutil_reldate $hptutil_reldate");
+}
+
+
 # sqpack
 $verfile = "sqpack/version.h";
 if(-e $verfile && $sqpack)
@@ -692,6 +715,10 @@ if($hptkill_reldate)
 if($hptsqfix_reldate)
 {
     push(@reldates, $hptsqfix_reldate);
+}
+if($hptutil_reldate)
+{
+    push(@reldates, $hptutil_reldate);
 }
 if($sqpack_reldate)
 {
