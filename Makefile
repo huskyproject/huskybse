@@ -115,7 +115,7 @@ smapi_H_DIR = smapi$(DIRSEP)
 fidoconf_H_DIR := fidoconf$(DIRSEP)
 fidoconf_DATEDEPS = smapi huskylib
 fidoconf_UNDOCDIR_PREREQ := fidoconf_docs_uninstall
-fidoconf_INFO = fidoconfig.info.gz
+fidoconf_INFO = fidoconfig.info$(_COMPR)
 
 ### areafix ###
 # The directory with header files
@@ -131,7 +131,7 @@ hpt_H_DIR = h$(DIRSEP)
 # must be lazy due to HPTZIP
 hpt_DATEDEPS = $(HPTZIP) areafix fidoconf smapi huskylib
 hpt_UNDOCDIR_PREREQ := hpt_doc_uninstall
-hpt_INFO = hpt.info.gz
+hpt_INFO = hpt.info$(_COMPR)
 ifeq ($(filter hpt,$(PROGRAMS)),)
     HPT_UTIL := 0
 endif
@@ -142,7 +142,7 @@ htick_H_DIR = h$(DIRSEP)
 htick_DOCDIR   = $(htick_ROOTDIR)doc$(DIRSEP)
 htick_DATEDEPS = $(HPTZIP) areafix fidoconf smapi huskylib
 htick_UNDOCDIR_PREREQ := htick_doc_uninstall
-htick_INFO = htick.info.gz
+htick_INFO = htick.info$(_COMPR)
 
 ### hptkill ###
 # The directory with header files
@@ -179,7 +179,7 @@ msged_SRCDIR     = $(msged_ROOTDIR)
 msged_MAPDIR     = $(msged_ROOTDIR)maps$(DIRSEP)
 msged_DATEDEPS   = fidoconf smapi huskylib
 msged_UNDOCDIR_PREREQ := uninstall_msged_DOCDIR_DST
-msged_INFO = msged.info.gz
+msged_INFO = msged.info$(_COMPR)
 
 ### fidoroute ###
 # The source files
