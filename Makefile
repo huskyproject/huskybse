@@ -215,6 +215,8 @@ nltools_CVSDATEDIR := nltools$(DIRSEP)$(nltools_H_DIR)
 bsopack_H_DIR = h$(DIRSEP)
 bsopack_DATEDEPS   = fidoconf smapi huskylib
 bsopack_CVSDATEDIR := bsopack$(DIRSEP)$(bsopack_H_DIR)
+bsopack_UNDOCDIR_PREREQ := bsopack_doc_uninstall
+bsopack_INFO = bsopack.info$(_COMPR)
 
 # define "space"
 nil   :=
