@@ -83,7 +83,7 @@ cvsdate=cvsdate.h
 # In dependency order
 SUBPROJECTS := huskybse huskylib smapi fidoconf areafix hptzip hpt \
                htick hptkill hptsqfix hptutil sqpack msged fidoroute \
-               util areastat nltools
+               util areastat nltools bsopack
 
 # Per-subproject special variables
 # gen_subproject generates defaults (in form <subproject>_<NAME>, skipping DIRSEP):
@@ -210,6 +210,12 @@ nltools_H_DIR = h$(DIRSEP)
 nltools_DATEDEPS   = $(HPTZIP) fidoconf smapi huskylib
 nltools_CVSDATEDIR := nltools$(DIRSEP)$(nltools_H_DIR)
 
+### bsopack ###
+# The directory with header files
+bsopack_H_DIR = h$(DIRSEP)
+bsopack_DATEDEPS   = fidoconf smapi huskylib
+bsopack_CVSDATEDIR := bsopack$(DIRSEP)$(bsopack_H_DIR)
+
 # define "space"
 nil   :=
 space := $(nil) $(nil)
@@ -219,12 +225,12 @@ huskybse_DATEFILES:= $(space)
 
 
 HUSKYLIB := $(and $(filter hpt htick hptkill hptsqfix hptutil sqpack msged \
-                    areastat nltools,$(PROGRAMS)), huskylib)
+                    areastat nltools bsopack,$(PROGRAMS)), huskylib)
 
 SMAPI := $(and $(filter hpt htick hptkill hptsqfix hptutil sqpack msged \
-                 areastat nltools,$(PROGRAMS)), smapi)
+                 areastat nltools bsopack,$(PROGRAMS)), smapi)
 
-FIDOCONF := $(and $(filter hpt htick hptkill hptutil sqpack msged nltools,$(PROGRAMS)), \
+FIDOCONF := $(and $(filter hpt htick hptkill hptutil sqpack msged nltools bsopack,$(PROGRAMS)), \
                   fidoconf)
 
 AREAFIX := $(and $(filter hpt htick,$(PROGRAMS)), areafix)
