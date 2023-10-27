@@ -36,7 +36,7 @@
 # brew install cpanminus
 # cpanm Module::Build
 #
-PROGRAMS=hpt htick hptkill hptsqfix hptutil sqpack msged fidoroute util areastat nltools bsopack
+PROGRAMS=hpt htick hptkill hptsqfix hptutil sqpack msged fidoroute util areastat nltools bsopack hpucode
 
 # Switch on a possibility to use Perl hooks in hpt. This has nothing to do
 # with standalone Perl scripts including scripts in "util" subproject.
