@@ -30,6 +30,10 @@ HUSKYMAK=./huskymak.cfg
 # include Husky-Makefile-Config
 include $(HUSKYMAK)
 
+ifeq ($(COMPRESS),)
+    _COMPR=
+endif
+
 ifneq ($(findstring ~,$(PREFIX)),)
     $(eval PREFIX := $(subst ~,$${HOME},$(PREFIX)))
 endif
