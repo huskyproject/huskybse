@@ -39,7 +39,7 @@ ifneq ($(findstring ~,$(PREFIX)),)
 endif
 
 ifeq ($(MAKECMDGOALS),update)
-    ifeq ($(findstring git version,$(shell git --version)),)
+    ifeq ($(findstring git version,$(shell $(GIT) --version)),)
         $(error ERROR: To update Husky, you must install git)
     endif
 endif
