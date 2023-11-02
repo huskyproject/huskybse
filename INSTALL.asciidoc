@@ -200,6 +200,9 @@ To start the installation, follow these steps:
 
 These commands are for Linux. On FreeBSD, write `fetch` instead of `wget`,
 the rest is the same. As a result, the `~/husky` directory will be created.
+
+  cd ~/husky
+
 Husky sources will be downloaded to this directory in the future. But now we
 are interested in the file `huskymak.cfg` residing in this directory. This is
 the very build configuration file that you need to view and, possibly, change
@@ -209,6 +212,7 @@ If you previously cloned the Husky repositories from GitHub into a directory
 with a different name, run `init_build` this way:
 
   ./init_build -d YOUR_DIRECTORY
+  cd YOUR_DIRECTORY
 
 where `YOUR_DIRECTORY` is the name of your directory. This option can also be
 used if the `~/husky` directory is already occupied by something else, for
