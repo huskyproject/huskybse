@@ -23,7 +23,7 @@ Contents
 *Husky* is a set of programs for processing incoming messages and files
 according to Fidonet standards. Here's how to install Husky. You can use two
 types of makefiles for installation. Universal makefiles allow installation
-in different operating systems due to the presence of the configuration file
+on different operating systems due to the presence of the configuration file
 `huskymak.cfg`. Makefiles of the second type (legacy ones) are intended for
 a specific operating system.
 
@@ -41,14 +41,14 @@ and day.
 
 To configure the build using universal makefiles, use the *huskymak.cfg* file.
 But before you start downloading the sources, you have to install some
-programs you will need during the build. We assume you have version 3.81 or
-newer of GNU make installed.
+programs you will need during the build. We assume you have installed GNU make
+version 3.81 or newer.
 
 2.1 Before Starting Husky Build
 -------------------------------
 
 The tables below list the software packages you should install before building
-Husky on the most common operating systems. These tables also record the
+Husky on the most common operating systems. These tables also list the
 conditions under which you will need these packages.
 
 Red Hat Enterprise Linux, CentOS, Fedora, Alma Linux, Rocky Linux
@@ -227,10 +227,10 @@ Now you can start the build:
 
   ./build.sh
 
-It will build the programs listed in PROGRAMS in the file `huskymak.cfg` and
+It will build the programs listed in `PROGRAMS` in the file `huskymak.cfg` and
 the libraries they depend on. After the build is complete, you may install the
-built programs. If you have set PREFIX variable in your huskymak.cfg to some
-directory in your HOME, to install everything on Linux run
+built programs. If you have set the `PREFIX' variable in your `huskymak.cfg` to
+some directory in your `$HOME`, to install everything on Linux, run
 
   make -j install
 
