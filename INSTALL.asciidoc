@@ -51,7 +51,7 @@ The tables below list the software packages you should install before building
 Husky on the most common operating systems. These tables also record the
 conditions under which you will need these packages.
 
-Red Hat Enterprise Linux, CentOS, Fedora, Rocky Linux
+Red Hat Enterprise Linux, CentOS, Fedora, Alma Linux, Rocky Linux
 
   Package                 What requires the package
   -------------------------------------------------
@@ -248,23 +248,19 @@ and on FreeBSD
 
 Here, the `-j` option sets the parallel execution. 
 
-Before you start using the installed Perl utilities, it is important to
-consider whether the directory where the Perl modules are installed is in
-`@INC` array. If you used `PREFIX=/usr/local`, you have nothing to worry about.
-Otherwise, the directory with Perl modules is `$PREFIX/share/perl5`. To
-compare it with members of @INC array you first have to manually substitute
-`$PREFIX` with the value you have set for it in your `huskymak.cfg`. `@INC` is
-displayed at the end of the output from the command
+Before you start using the installed Perl utilities, it is *IMPORTANT* to
+consider whether the `PREFIX=/share/perl5` directory, where the Perl modules
+are installed, is in `@INC` array. To compare the directory with members of the
+`@INC` array, you first have to manually substitute `$PREFIX` with the value
+you have set for `PREFIX` in your `huskymak.cfg`. `@INC` is displayed at the
+end of the output from the command
 
   perl -V
 
-You may not bother to look at @INC if you have set `PREFIX` to a subdirectory
-of `HOME`, since in this case `@INC` definitely does not contain
-`$PREFIX/share/perl5`.
-
-If `PREFIX` is a subdirectory of `HOME`, you have to set and export `PERL5LIB`
-environment variable. On Linux with the default bash shell add the
-line to your `~/.bash_profile`:
+If the `PREFIX=/share/perl5` directory coinsides with one of the elements of
+the `@INC` array, you have nothing to worry about. Otherwise, you have to set
+and export `PERL5LIB` environment variable. On Linux with the default bash
+shell add the line to your `~/.bash_profile`:
 
   export PERL5LIB=$PREFIX/share/perl5
 
@@ -272,9 +268,9 @@ in which you manually substitute `$PREFIX` with its value. On FreeBSD you
 have to add this line to `~/.profile`. You also have to add `$PREFIX/bin`
 to `PATH` if the `PATH` does not contain `$PREFIX/bin`.
 
-If your `PREFIX` is not a subdirectory of `HOME` and `@INC` does not contain
-`$PREFIX/share/perl5`, you have to add the line exporting `PERL5LIB` to
-`/root/.bash_profile` on Linux and to `/root/.profile` on FreeBSD.
+If your `PREFIX` is not a subdirectory of `$HOME` and `@INC` does not contain
+`$PREFIX/share/perl5`, you also have to add the same line exporting `PERL5LIB`
+to `/root/.bash_profile` on Linux and to `/root/.profile` on FreeBSD.
 
 If `@INC` contains `$PREFIX/share/perl5` directory, you have to add nothing.
 
@@ -286,7 +282,7 @@ and on FreeBSD
 
   env SHELL=/bin/sh sudo -s gmake -j uninstall
 
-If you want to delete all the built results, run
+If you want to delete all results of the build, run
 
   make distclean           (Linux)
   gmake distclean          (FreeBSD)
