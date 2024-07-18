@@ -87,6 +87,7 @@ then
     exit
 fi
 
+[ "${top_directory%?}/" = "${top_directory}" ] && top_directory="${top_directory%?}"
 mkdir -p $top_directory
 cd $top_directory
 

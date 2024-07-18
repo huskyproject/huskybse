@@ -87,6 +87,7 @@ fi
 # Check that the script is not run by root
 [ "$(id -u)" -eq 0 ] && die "DO NOT run this as root"
 
+[ "${top_directory%?}/" = "${top_directory}" ] && top_directory="${top_directory%?}"
 mkdir -p $top_directory
 cd $top_directory
 mkdir husky
